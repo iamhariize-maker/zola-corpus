@@ -17,7 +17,8 @@ fully offline.
 | **Updates itself** | Publish a new `index.html` and open copies show **New build ready · Reload**. Copies left open for a while check again when you return to them. |
 | **Home-screen shortcuts** | Long-press the icon to jump to Forecast, Hacking or CSAT. When the app is already open, a shortcut reuses that window instead of opening a second one. |
 | **Keeps your progress** | Once installed, the app asks the browser to keep its storage, so a storage clean-up can't wipe your review progress. |
-| **Looks right** | Crisp SVG favicon, maskable and monochrome (Android 13 themed) icons, a status bar that follows the in-app theme button, and a share card for WhatsApp/Telegram links. |
+| **The wH⚡p mark** | The app icon is the wH⚡p wordmark: extra-bold letters from the app's own typeface, cut through by a marigold bolt, over the seal-red bar, on a violet-ink gradient. Browser tabs get the bolt alone, which stays legible at 16 px. Maskable (Android), Apple and monochrome (Android 13 themed icons) versions are each fitted to their platform's safe area. |
+| **Looks right** | A status bar that follows the in-app theme button, and a share card for WhatsApp/Telegram links. |
 
 ## Set up (once)
 
@@ -44,7 +45,7 @@ layer into the repository copy, so the file works the same when opened directly.
 | `pwa/head.html`, `pwa/body.html` | **The PWA layer.** Edit these, not the marked blocks in `index.html` |
 | `manifest.webmanifest` | Name, icons, colours, shortcuts, screenshots, launch behaviour |
 | `sw.js` | Service worker: offline copy, background refresh, update notices |
-| `icons/`, `screenshots/` | Home-screen, maskable, monochrome, shortcut and share images; install-dialog screenshots |
+| `icons/`, `screenshots/` | The logo as vector masters (`icon.svg`, `maskable.svg`, `apple-touch.svg`, `monochrome.svg`, `favicon.svg`) and the PNGs made from them; shortcut and share images; install-dialog screenshots |
 | `404.html` | Sends a mistyped address back to the app |
 | `tools/pwa.mjs` | `apply`, `check` and `build`, with no dependencies |
 | `tools/screenshots.mjs` | Regenerates `screenshots/` from the real app (needs Playwright) |

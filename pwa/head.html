@@ -61,6 +61,8 @@ html.zboot.zboot-app::before{background:radial-gradient(circle at 50% 46%,rgba(1
 <script>
 // Launch screen on; the PWA layer at the end of the page lifts it once the app has assembled.
 (function(){var d=document.documentElement;d.classList.add('zboot');
+ // The accent hue follows the app being opened, so a deep link never flashes the wrong colour.
+ var h=location.hash;d.setAttribute('data-zapp',/^#hacking/.test(h)?'hacking':/^#csat/.test(h)?'csat':'forecast');
  if(window.matchMedia&&(matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: minimal-ui)').matches)||navigator.standalone===true){
   d.classList.add('zboot-app');var m=document.createElement('meta');m.name='theme-color';m.content='#202D45';m.id='zboot-meta';document.head.prepend(m)}
  setTimeout(function(){d.classList.remove('zboot','zboot-app','zout');var m=document.getElementById('zboot-meta');if(m)m.remove()},4500); // never trap the app behind it

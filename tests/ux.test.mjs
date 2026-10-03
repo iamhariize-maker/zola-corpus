@@ -133,8 +133,30 @@ for (const theme of ['light', 'dark']) {
   });
   ok(colors.parent === colors.frame && colors.bar === colors.sheet, `${theme}: CSAT and saved browser theme match the final palette`);
 }
+// Vivid: each app owns an accent, and the tab indicators sit under the selected tab and glide to it.
+const vivid = () => studio.evaluate(() => {
+  const r = document.documentElement, pen = getComputedStyle(r).getPropertyValue('--pen').trim();
+  const at = (box, sel) => { const b = box.querySelector(sel), cs = getComputedStyle(box);
+    return { mid: +cs.getPropertyValue('--zx') + +cs.getPropertyValue('--zw') / 2, want: b.offsetLeft + b.offsetWidth / 2 }; };
+  const omr = document.querySelector('.omr'), f = document.getElementById('frC');
+  return { app: r.dataset.zapp, pen, zi: getComputedStyle(omr).getPropertyValue('--zi').trim(),
+    glide: getComputedStyle(omr, '::before').transitionDuration,
+    sub: at(document.querySelector('.sub .in'), '[aria-selected="true"]'),
+    nav: document.querySelector('#frB .b-nav-in').offsetWidth ? at(document.querySelector('#frB .b-nav-in'), '[aria-current="page"]') : null,
+    frame: (() => { try { const s = f.contentWindow.getComputedStyle(f.contentDocument.documentElement); return s.getPropertyValue('--pen').trim() === s.getPropertyValue('--za').trim(); } catch (e) { return false; } })() };
+});
+await studio.evaluate(() => { location.hash = '#forecast/evidence'; }); await studio.waitForTimeout(600);
+const va = await vivid();
+await studio.evaluate(() => { location.hash = '#hacking/review'; }); await studio.waitForTimeout(600);
+const vb = await vivid();
+ok(va.app === 'forecast' && vb.app === 'hacking' && va.pen && vb.pen && va.pen !== vb.pen, 'the accent colour follows the open app');
+ok(va.zi === '0' && vb.zi === '1' && /0\.4/.test(va.glide), 'category indicator moves to the open app and glides');
+ok(Math.abs(va.sub.mid - va.sub.want) < 1.5, 'Forecast underline sits under the selected section');
+ok(vb.nav && Math.abs(vb.nav.mid - vb.nav.want) < 1.5, 'Hacking indicator sits behind the current page');
+ok(va.frame, 'CSAT keeps its own accent inside the frame');
 await studio.emulateMedia({ reducedMotion: 'reduce' });
 ok(await studio.evaluate(() => { const s = getComputedStyle(document.querySelector('.tbtn')); return s.animationName === 'none' && s.transitionDuration === '0s'; }), 'changing Reduce motion live disables motion in the shell');
+ok(await studio.evaluate(() => getComputedStyle(document.querySelector('.omr'), '::before').transitionDuration === '0s' && getComputedStyle(document.querySelector('.zbrief-hero .read h2')).animationName === 'none'), 'Reduce motion stops the indicators and hero entrance');
 ok(await studio.frames().find(fr => fr !== studio.mainFrame()).evaluate(() => { const s = getComputedStyle(document.querySelector('.panel:not([hidden])')); return s.animationName === 'none'; }), 'Reduce motion disables CSAT panel animation');
 await ctx.close();
 

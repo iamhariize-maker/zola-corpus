@@ -43,4 +43,35 @@ function queue(){if(!scheduled){scheduled=true;requestAnimationFrame(update)}}
 top.addEventListener('click',function(){var w=target(),calm=matchMedia('(prefers-reduced-motion: reduce)').matches;w.scrollTo({top:0,behavior:calm?'auto':'smooth'});root.classList.remove('zcollapse')});
 addEventListener('scroll',queue,{passive:true});addEventListener('hashchange',function(){setTimeout(queue,100)});addEventListener('resize',queue);
 queue();
+// Vivid: the active app sets the accent hue, and tab indicators glide to the chosen tab.
+var omr=d.querySelector('.omr'),strip=d.querySelector('.sub .in'),bnav=d.querySelector('#frB .b-nav-in'),sliders=[];
+function syncApp(){if(!omr)return;var tabs=omr.querySelectorAll('[role="tab"]'),i=0,k;
+ for(k=0;k<tabs.length;k++)if(tabs[k].getAttribute('aria-selected')==='true')i=k;
+ var cat=tabs[i]&&tabs[i].getAttribute('data-cat')||'forecast';
+ if(root.getAttribute('data-zapp')!==cat)root.setAttribute('data-zapp',cat);
+ omr.style.setProperty('--zi',i);
+ if(!omr.classList.contains('zready'))requestAnimationFrame(function(){requestAnimationFrame(function(){omr.classList.add('zready')})});
+}
+function slider(box,sel,inset){if(!box)return;var shown=false;box.classList.add('zslide');
+ function place(){var a=box.querySelector(sel);
+  if(!a||!a.offsetWidth||!box.offsetWidth){shown=false;box.classList.remove('zready');return}
+  var n=typeof inset==='function'?inset():inset;
+  box.style.setProperty('--zx',a.offsetLeft+n);box.style.setProperty('--zy',a.offsetTop);
+  box.style.setProperty('--zw',Math.max(0,a.offsetWidth-2*n));box.style.setProperty('--zh',a.offsetHeight);
+  // A tab bar that has just appeared jumps into place; only later changes glide.
+  if(!shown){shown=true;box.classList.remove('zready');requestAnimationFrame(function(){requestAnimationFrame(function(){if(shown)box.classList.add('zready')})})}
+ }
+ sliders.push(place);
+ if(window.ResizeObserver)new ResizeObserver(function(){place()}).observe(box);
+}
+if(omr){omr.classList.add('zslide');syncApp()}
+slider(strip,'[aria-selected="true"]',function(){return innerWidth<=600?12:15});
+slider(bnav,'[aria-current="page"]',0);
+var placing=false;
+function placeAll(){if(placing)return;placing=true;requestAnimationFrame(function(){placing=false;syncApp();sliders.forEach(function(f){f()})})}
+if(window.MutationObserver){var watch=new MutationObserver(placeAll);
+ [omr,strip,bnav].forEach(function(el){if(el)watch.observe(el,{attributes:true,subtree:true,attributeFilter:['aria-selected','aria-current']})})}
+addEventListener('hashchange',placeAll);addEventListener('resize',placeAll);
+if(d.fonts&&d.fonts.ready)d.fonts.ready.then(placeAll);
+placeAll();
 })();

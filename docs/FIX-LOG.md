@@ -62,3 +62,16 @@ The owner requested a professional visual/animation pass and explicitly authoriz
 - Companion feed publisher safeguards remain in the supplied source bundle; this deployment publishes the PWA repository.
 
 Release checks before publishing: `npm run check` and `npm test` passed (123 assertions across four suites); all eight final axe route/theme samples passed. The publish checkout was byte-for-byte compared with the tested source.
+
+## Vivid colour and motion release · 3 October 2026
+
+The owner asked for tasteful colour and matching animation on top of the Studio release, keeping its smoothness, and authorized deployment.
+
+| Area | Change | Verification |
+|---|---|---|
+| Colour system | Each app owns one accent: violet Forecast, teal Hacking, amber CSAT. The active app sets `html[data-zapp]`, and every `--pen`/`--neo-*` token follows it, so buttons, tabs, labels, focus rings and bars change together. Head script sets the hue before first paint for deep links. | Accent hues pass WCAG AA on paper and sheet in both themes (manual ratios ≥ 5.0:1); gradient end colours used only on large display text (≥ 3.8:1). |
+| Surfaces | Soft static aurora behind the top of each app; deep-hue brand mark; colour-coded Brief and Hacking figures (four hues with small drawn tabs); app gradient on the top tier, signal bars, inbox rule and reading-progress bar; headline ink warms into the accent; CSAT cover gathers amber light. | Light/dark screenshots at phone and desktop widths; install screenshots regenerated. |
+| Motion | Category card and Forecast underline / Hacking pill glide to the selection (transform-based, 0.38–0.42 s). Brief and Hacking heroes stagger within the single entrance; figure tabs draw in once. Primary buttons lift with a coloured glow and one light sweep on hover; Hacking cards glow on hover. No perpetual motion. | New regressions: accent follows the app, indicator glides and sits under the selected tab/page, CSAT keeps its own accent, Reduce motion stops indicators and hero entrance. |
+| Accessibility | Forced-colours and print fall back to solid text. | axe-core 4.13.0 (WCAG 2 A/AA, 2.1 AA) on Brief, Tracker, Hacking library, M01 and CSAT (incl. frame), light and dark, phone and desktop: 0 violations in 20 samples. |
+
+Release checks before publishing: `npm run check` and `npm test` passed.

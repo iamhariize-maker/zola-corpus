@@ -1,35 +1,57 @@
 /* Zola Studio: editorial hierarchy, quiet colour and precise interaction. */
 :root{
  --paper:#F6F5F1;--sheet:#FFFFFF;--ink:#18263B;--muted:#606978;--rule:#DCDDDC;--rule2:#ECEDEA;
- --pen:#5444AD;--pen-soft:#EEEBF8;--onpen:#FFFFFF;--drop:#9A4D5D;--drop-soft:#F7E9ED;
+ --onpen:#FFFFFF;--drop:#9A4D5D;--drop-soft:#F7E9ED;
  --gold:#88612F;--gold-soft:#F6EEDC;--ok:#21654F;--ok-soft:#E7F2EC;--bad:#A53443;--bad-soft:#FAEBEE;
  --warn:#805D22;--warn-soft:#F7EFD9;--r1:6px;--r2:16px;--r3:22px;
  --studio-wash:#EFEDF5;--studio-deep:#202D45;--studio-on-deep:#F5F3FC;
  --studio-shadow:0 2px 4px rgba(24,38,59,.02),0 12px 36px -24px rgba(24,38,59,.22);
- --lift:var(--studio-shadow);--neo-v:#5444AD;--neo-m:#6656B8;--neo-c:#367B80;
- --neo-fill:linear-gradient(120deg,#4D419B,#6351B2);--neo-text:linear-gradient(110deg,#413580,#6D54A5);
- --neo-line:linear-gradient(90deg,#6552B5,#9D88CE);--neo-line-v:linear-gradient(180deg,#6552B5,#9D88CE);
- --neo-ring:rgba(84,68,173,.13);--neo-glow:0 5px 14px -10px rgba(64,42,122,.35);
- --z-out:cubic-bezier(.22,.8,.3,1);--z-spring:cubic-bezier(.22,.8,.3,1);
+ --lift:var(--studio-shadow);
+ /* Vivid hues: one per app (violet Forecast, teal Hacking, amber CSAT) plus rose. Text values pass AA on paper and sheet. */
+ --zv:#5B3FD0;--zv2:#B13C8C;--zv-s:#EEEAFB;--zv-f:linear-gradient(118deg,#4A2FC2,#6A3ED4);--zv-g:rgba(91,63,208,.42);
+ --zt:#0B7268;--zt2:#1A6FA3;--zt-s:#E2F2EF;--zt-f:linear-gradient(118deg,#07605A,#0C7A6C);--zt-g:rgba(11,114,104,.4);
+ --za:#A8460C;--za2:#C2365E;--za-s:#FBECE0;--za-f:linear-gradient(118deg,#9A3C0A,#B8520E);--za-g:rgba(168,70,12,.38);
+ --zr:#B4305C;--zr2:#BF5428;
+ --zv-a:rgba(110,80,230,.13);--zv-b:rgba(214,90,160,.07);--zt-a:rgba(20,160,140,.12);--zt-b:rgba(40,130,210,.07);
+ --za-a:rgba(235,140,50,.14);--za-b:rgba(220,80,110,.07);
+ --z-out:cubic-bezier(.22,.8,.3,1);--z-spring:cubic-bezier(.22,.8,.3,1);--z-glide:cubic-bezier(.3,.75,.15,1);
  color-scheme:light;
 }
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
  --paper:#101824;--sheet:#182333;--ink:#EDF0F5;--muted:#A6B1C1;--rule:#344050;--rule2:#273344;
- --pen:#C0B0F3;--pen-soft:#302C47;--drop:#E1A3B2;--drop-soft:#382A36;--gold:#D8BD83;--gold-soft:#352F25;
+ --drop:#E1A3B2;--drop-soft:#382A36;--gold:#D8BD83;--gold-soft:#352F25;
  --ok:#9CD2BB;--ok-soft:#223A34;--bad:#F0A7AE;--bad-soft:#3A2833;--warn:#E3C68B;--warn-soft:#3B3326;
  --studio-wash:#1C2336;--studio-deep:#272C47;--studio-on-deep:#F5F3FC;--studio-shadow:0 12px 34px -26px rgba(0,0,0,.6);
- --neo-v:#C0B0F3;--neo-m:#C9B7EA;--neo-c:#99C8CB;--neo-fill:linear-gradient(120deg,#5949A2,#7054A5);
- --neo-text:linear-gradient(110deg,#D2C4F7,#E9D6F1);--neo-line:linear-gradient(90deg,#B5A0EE,#D4BCD8);--neo-line-v:linear-gradient(180deg,#B5A0EE,#D4BCD8);
- --neo-ring:rgba(192,176,243,.18);--neo-glow:none;color-scheme:dark;
+ --zv:#B7A4FF;--zv2:#F0A3D0;--zv-s:#2B2750;--zv-f:linear-gradient(118deg,#5A3FD0,#7A4ED9);--zv-g:rgba(140,110,255,.5);
+ --zt:#62D3C3;--zt2:#7CC4F0;--zt-s:#173A3A;--zt-f:linear-gradient(118deg,#08665E,#0F8577);--zt-g:rgba(60,200,180,.38);
+ --za:#F3B06A;--za2:#F59AA8;--za-s:#3A2E22;--za-f:linear-gradient(118deg,#A3420C,#BA5210);--za-g:rgba(240,150,70,.38);
+ --zr:#F29AB6;--zr2:#F6B98C;
+ --zv-a:rgba(124,92,255,.2);--zv-b:rgba(230,110,190,.08);--zt-a:rgba(40,200,180,.15);--zt-b:rgba(70,150,240,.09);
+ --za-a:rgba(245,160,70,.15);--za-b:rgba(240,100,130,.08);color-scheme:dark;
 }}
 :root[data-theme="dark"]{
  --paper:#101824;--sheet:#182333;--ink:#EDF0F5;--muted:#A6B1C1;--rule:#344050;--rule2:#273344;
- --pen:#C0B0F3;--pen-soft:#302C47;--drop:#E1A3B2;--drop-soft:#382A36;--gold:#D8BD83;--gold-soft:#352F25;
+ --drop:#E1A3B2;--drop-soft:#382A36;--gold:#D8BD83;--gold-soft:#352F25;
  --ok:#9CD2BB;--ok-soft:#223A34;--bad:#F0A7AE;--bad-soft:#3A2833;--warn:#E3C68B;--warn-soft:#3B3326;
  --studio-wash:#1C2336;--studio-deep:#272C47;--studio-on-deep:#F5F3FC;--studio-shadow:0 12px 34px -26px rgba(0,0,0,.6);
- --neo-v:#C0B0F3;--neo-m:#C9B7EA;--neo-c:#99C8CB;--neo-fill:linear-gradient(120deg,#5949A2,#7054A5);
- --neo-text:linear-gradient(110deg,#D2C4F7,#E9D6F1);--neo-line:linear-gradient(90deg,#B5A0EE,#D4BCD8);--neo-line-v:linear-gradient(180deg,#B5A0EE,#D4BCD8);
- --neo-ring:rgba(192,176,243,.18);--neo-glow:none;color-scheme:dark;
+ --zv:#B7A4FF;--zv2:#F0A3D0;--zv-s:#2B2750;--zv-f:linear-gradient(118deg,#5A3FD0,#7A4ED9);--zv-g:rgba(140,110,255,.5);
+ --zt:#62D3C3;--zt2:#7CC4F0;--zt-s:#173A3A;--zt-f:linear-gradient(118deg,#08665E,#0F8577);--zt-g:rgba(60,200,180,.38);
+ --za:#F3B06A;--za2:#F59AA8;--za-s:#3A2E22;--za-f:linear-gradient(118deg,#A3420C,#BA5210);--za-g:rgba(240,150,70,.38);
+ --zr:#F29AB6;--zr2:#F6B98C;
+ --zv-a:rgba(124,92,255,.2);--zv-b:rgba(230,110,190,.08);--zt-a:rgba(40,200,180,.15);--zt-b:rgba(70,150,240,.09);
+ --za-a:rgba(245,160,70,.15);--za-b:rgba(240,100,130,.08);color-scheme:dark;
+}
+/* The active app picks the accent; everything that says "pen" or "neo" follows it. */
+:root{--z-accent:var(--zv);--z-accent2:var(--zv2);--z-soft:var(--zv-s);--z-fill:var(--zv-f);--z-glow:var(--zv-g);--z-aura-a:var(--zv-a);--z-aura-b:var(--zv-b)}
+:root[data-zapp="hacking"]{--z-accent:var(--zt);--z-accent2:var(--zt2);--z-soft:var(--zt-s);--z-fill:var(--zt-f);--z-glow:var(--zt-g);--z-aura-a:var(--zt-a);--z-aura-b:var(--zt-b)}
+:root[data-zapp="csat"]{--z-accent:var(--za);--z-accent2:var(--za2);--z-soft:var(--za-s);--z-fill:var(--za-f);--z-glow:var(--za-g);--z-aura-a:var(--za-a);--z-aura-b:var(--za-b)}
+/* Two-part selector so these outrank the older themed blocks of the base layer in both themes. */
+:root:not([data-zx]){
+ --pen:var(--z-accent);--pen-soft:var(--z-soft);--neo-v:var(--z-accent);--neo-m:var(--z-accent2);--neo-c:var(--zt);
+ --neo-fill:var(--z-fill);--neo-line:linear-gradient(90deg,var(--z-accent),var(--z-accent2));
+ --neo-line-v:linear-gradient(180deg,var(--z-accent),var(--z-accent2));
+ --neo-text:linear-gradient(105deg,var(--ink) 15%,var(--z-accent) 100%);
+ --neo-ring:color-mix(in srgb,var(--z-accent) 18%,transparent);--neo-glow:0 8px 20px -12px var(--z-glow);
 }
 /* shared-surface-end: these tokens also dress the CSAT document. */
 body{line-height:1.65;-webkit-font-smoothing:antialiased;background:var(--paper)}
@@ -223,3 +245,93 @@ html.zthemefade,html.zthemefade *,html.zthemefade *::before,html.zthemefade *::a
  .zr{opacity:1!important;transform:none!important}
 }
 @media print{.zbrief-actions,.z-top,.z-kicker{display:none}.zbrief-hero{display:block}body{background:#fff;color:#000}}
+/* ===== Vivid: colour with a job. Each app owns one hue; gradients mark only identity, progress and the primary action.
+   Motion stays on transform and opacity, plays once, and slides indicators instead of swapping them. ===== */
+html{scrollbar-color:color-mix(in srgb,var(--z-accent) 38%,var(--rule)) transparent}
+::selection{background:color-mix(in srgb,var(--z-accent) 24%,transparent);color:var(--ink)}
+body::before{background:radial-gradient(62% 560px at 92% 0,var(--z-aura-a),transparent 72%),radial-gradient(48% 420px at 4% 0,var(--z-aura-b),transparent 72%)}
+.mark.wl-mark{background:linear-gradient(140deg,var(--studio-deep) 30%,color-mix(in srgb,var(--studio-deep) 58%,var(--z-accent)));border-color:transparent;box-shadow:0 6px 16px -10px var(--z-glow)}
+.clock .num{background:var(--neo-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+.zprog{height:2px;background:var(--neo-line);opacity:1;box-shadow:0 0 10px -1px var(--z-glow)}
+/* Category switcher: every app shows its colour; the selected one is filled and a single card glides between them. */
+#tab-forecast{--zc:var(--zv);--zcf:var(--zv-f);--zcg:var(--zv-g)}
+#tab-hacking{--zc:var(--zt);--zcf:var(--zt-f);--zcg:var(--zt-g)}
+#tab-csat{--zc:var(--za);--zcf:var(--za-f);--zcg:var(--za-g)}
+.omr .bub{color:var(--zc);border-color:color-mix(in srgb,var(--zc) 32%,var(--rule))}
+.omr button[aria-selected="true"] .bub{background:var(--zcf);border-color:transparent;color:#fff;box-shadow:0 5px 12px -6px var(--zcg)}
+.omr{position:relative}
+.omr.zslide::before{content:"";position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 20px)/3);border:1px solid var(--rule);border-radius:10px;background:var(--sheet);box-shadow:0 2px 6px rgba(20,30,50,.04),0 10px 22px -16px var(--z-glow);transform:translateX(calc(var(--zi,0)*(100% + 6px)));pointer-events:none}
+.omr.zslide button{position:relative;z-index:1}
+.omr.zslide button[aria-selected="true"]{background:transparent;border-color:transparent;box-shadow:none}
+/* Section tabs: one gradient underline (Forecast) and one card (Hacking) travel to the chosen tab. */
+.zslide{position:relative}
+.sub .in.zslide button::after{display:none}
+.sub .in.zslide::after{content:"";position:absolute;left:0;bottom:0;width:100px;height:2px;border-radius:2px;background:var(--neo-line);transform-origin:0 0;transform:translateX(calc(var(--zx,0)*1px)) scaleX(calc(var(--zw,0)/100));pointer-events:none}
+#frB .b-nav-in.zslide::before{content:"";position:absolute;left:0;top:0;width:calc(var(--zw,0)*1px);height:calc(var(--zh,0)*1px);border-radius:9px;background:var(--sheet);box-shadow:inset 0 0 0 1px var(--rule),0 8px 18px -14px var(--z-glow);transform:translate(calc(var(--zx,0)*1px),calc(var(--zy,0)*1px));pointer-events:none}
+#frB .b-nav-in.zslide a{position:relative;z-index:1}
+#frB .b-nav-in.zslide a[aria-current="page"]{background:transparent;box-shadow:none}
+/* Headings: ink that warms into the app colour; labels and rules carry the hue. */
+.z-kicker,#frB .b-eyebrow{color:var(--pen)}
+.z-kicker::before{width:26px;height:2px;border-radius:2px;background:var(--neo-line)}
+h2.sec{width:fit-content;background:var(--neo-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+#frB .b-hero h1 span:last-child{width:fit-content;background:linear-gradient(100deg,var(--z-accent),var(--z-accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.spine{border-left:2px solid var(--pen);border-image:var(--neo-line-v) 1}
+/* Ledgers: four figures, four hues, each with a small tab that draws in. */
+#briefStats .stat:nth-child(4n+1),#frB .b-ledger div:nth-child(4n+2){--zs:var(--zv);--zs2:var(--zv2)}
+#briefStats .stat:nth-child(4n+2),#frB .b-ledger div:nth-child(4n+1){--zs:var(--zt);--zs2:var(--zt2)}
+#briefStats .stat:nth-child(4n+3),#frB .b-ledger div:nth-child(4n+3){--zs:var(--za);--zs2:var(--za2)}
+#briefStats .stat:nth-child(4n+4),#frB .b-ledger div:nth-child(4n+4){--zs:var(--zr);--zs2:var(--zr2)}
+#briefStats .stat .num,#frB .b-ledger b{background:linear-gradient(100deg,var(--zs),var(--zs2));-webkit-background-clip:text;background-clip:text;color:transparent}
+#briefStats .stat::before,#frB .b-ledger div::before{display:block;content:"";position:absolute;left:22px;top:18px;width:20px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--zs),var(--zs2));transform-origin:0 50%}
+#briefStats .stat{padding-top:36px}
+#frB .b-ledger div{position:relative;padding-top:34px}#frB .b-ledger div::before{left:20px}
+/* Tracker: the top tier is filled with the app gradient; its score takes the hue. Signal bars share it. */
+.tier.S{background:var(--neo-fill);color:#fff;border-color:transparent;box-shadow:0 6px 14px -8px var(--z-glow)}
+.tier.A{color:var(--pen);background:var(--pen-soft);border-color:color-mix(in srgb,var(--pen) 35%,transparent)}
+details.item:has(.tier.S) .score{color:var(--pen)}
+.bar i,.hbar .tr i{background:var(--neo-line)}
+.zl-inbox{position:relative;overflow:hidden;border-top:1px solid var(--rule)}
+.zl-inbox::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--neo-line)}
+/* Primary actions: the app gradient, a coloured glow and one light sweep on hover. */
+.btn:not(.ghost),#frB .b-btn:not(.b-btn-ghost):not(.b-btn-quiet){position:relative;overflow:hidden}
+#frB .b-continue{background:var(--studio-deep);background:linear-gradient(125deg,var(--studio-deep) 35%,color-mix(in srgb,var(--studio-deep) 72%,var(--z-accent)));box-shadow:0 18px 36px -26px var(--z-glow)}
+#frB .b-card .b-id{color:var(--pen)}
+#frB a.b-card{isolation:isolate}
+#frB a.b-card::before{display:block;content:"";position:absolute;inset:0;width:auto;z-index:-1;background:radial-gradient(110% 75% at 100% 0,var(--pen-soft),transparent 62%);opacity:0;pointer-events:none}
+#frB a.b-card::after{background:var(--neo-line)}
+dialog[open]{background-image:linear-gradient(90deg,var(--z-accent),var(--z-accent2));background-size:100% 3px;background-repeat:no-repeat}
+@media(max-width:860px){#briefStats .stat::before{left:15px}}
+@media(max-width:600px){
+ .omr.zslide::before{top:3px;bottom:3px;left:3px;width:calc((100% - 12px)/3);border-radius:9px;transform:translateX(calc(var(--zi,0)*(100% + 3px)))}
+ #briefStats .stat::before{left:20px;top:16px}#briefStats .stat{padding-top:32px}#frB .b-ledger div{padding-top:32px}
+}
+@media(prefers-reduced-motion:no-preference){
+ .omr.zslide.zready::before{transition:transform .42s var(--z-glide),box-shadow .3s}
+ .zslide.zready::after,.zslide.zready::before{transition:transform .38s var(--z-glide),width .38s var(--z-glide),height .38s var(--z-glide)}
+ .omr .bub{transition:color .25s,border-color .25s,box-shadow .3s}
+ .zbrief-hero .read>*,#frB .b-hero>div>*,#frB .b-hero>.b-ledger{animation:z-rise .5s var(--z-glide) backwards}
+ .zbrief-hero .read>:nth-child(2),#frB .b-hero>div>:nth-child(2){animation-delay:.05s}
+ .zbrief-hero .read>:nth-child(3),#frB .b-hero>div>:nth-child(3){animation-delay:.1s}
+ .zbrief-hero .read>:nth-child(4){animation-delay:.14s}.zbrief-hero .read>:nth-child(n+5){animation-delay:.18s}
+ #briefStats,#frB .b-hero>.b-ledger{animation:z-rise .55s var(--z-glide) .12s backwards}
+ #briefStats .stat::before,#frB .b-ledger div::before{animation:z-tab .5s var(--z-glide) .3s backwards}
+ #briefStats .stat:nth-child(2)::before,#frB .b-ledger div:nth-child(2)::before{animation-delay:.36s}
+ #briefStats .stat:nth-child(3)::before,#frB .b-ledger div:nth-child(3)::before{animation-delay:.42s}
+ #briefStats .stat:nth-child(4)::before,#frB .b-ledger div:nth-child(4)::before{animation-delay:.48s}
+ .btn:not(.ghost)::after,#frB .b-btn:not(.b-btn-ghost):not(.b-btn-quiet)::after{display:block;content:"";position:absolute;top:0;bottom:0;left:0;width:55%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.26),transparent);transform:translateX(-120%) skewX(-18deg);animation:none;pointer-events:none}
+ #frB a.b-card::before{transition:opacity .35s ease}
+ @media(hover:hover){
+  .btn:not(.ghost):hover,#frB .b-btn:not(.b-btn-ghost):not(.b-btn-quiet):hover{transform:translateY(-1px);box-shadow:0 12px 24px -12px var(--z-glow)}
+  .btn:not(.ghost):hover::after,#frB .b-btn:not(.b-btn-ghost):not(.b-btn-quiet):hover::after{transform:translateX(260%) skewX(-18deg);transition:transform .75s var(--z-glide)}
+  .btn:not(.ghost):active,#frB .b-btn:not(.b-btn-ghost):not(.b-btn-quiet):active{transform:translateY(1px)}
+  .btn.ghost:hover,#frB .b-btn-ghost:hover{color:var(--pen)}
+  #frB a.b-card:hover{box-shadow:0 20px 36px -26px var(--z-glow)}
+  #frB a.b-card:hover::before{opacity:1}
+  details.item>summary:hover{background:color-mix(in srgb,var(--pen-soft) 45%,transparent)}
+  .z-top:hover{color:var(--pen);border-color:color-mix(in srgb,var(--pen) 45%,var(--rule))}
+ }
+}
+@keyframes z-rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes z-tab{from{transform:scaleX(0)}to{transform:none}}
+@media(forced-colors:active){h2.sec,.clock .num,#briefStats .stat .num,#frB .b-ledger b,#frB .b-hero h1 span{background:none;color:CanvasText}}
+@media print{h2.sec,.clock .num,#briefStats .stat .num,#frB .b-ledger b,#frB .b-hero h1 span{background:none;color:#000}body::before{display:none}}

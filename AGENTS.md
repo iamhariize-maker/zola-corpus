@@ -97,12 +97,17 @@ published go in `SITE_FILES` in `tools/pwa.mjs`.
 
 - Final tokens and component rules live in `pwa/studio.css`; shared palette tokens before the
   `shared-surface-end` comment also enter the CSAT frame, followed by `pwa/studio-frame.css`.
-- Light surfaces are ivory/white with navy ink; dark surfaces are navy with pale ink. Violet is a restrained
-  interaction accent. Keep strong text contrast, visible focus and generous spacing. The older `#zneo` rules
+- Light surfaces are ivory/white with navy ink; dark surfaces are navy with pale ink. **Vivid accents:** each app
+  owns one hue (violet Forecast, teal Hacking, amber CSAT; rose is the fourth figure colour). `studio.js` sets
+  `html[data-zapp]` from the selected category (`head.html` sets it early from the hash), and `--pen`/`--neo-*` derive
+  from `--z-accent`. Add colour by using those tokens, not new literals. Gradients mark identity, progress and the primary
+  action only. Text hues pass AA on paper and sheet; gradient text is reserved for large display type. Keep strong text contrast, visible focus and generous spacing. The older `#zneo` rules
   supply baseline typography and components; the Studio layer owns the final visual choices.
 - Space Grotesk: interface/headlines/figures. Newsreader: reading. JetBrains Mono: compact labels.
   Fonts are bundled WOFF2 (OFL); no third-party runtime scripts or fonts.
-- Use one short section entrance, subtle press feedback and transitions on specific properties. No perpetual
+- Use one short section entrance (the Brief and Hacking heroes stagger within it), subtle press feedback and transitions
+  on specific properties. Category and section indicators glide on `transform`; a bar that has just appeared jumps
+  into place instead of sliding. No perpetual
   decoration, hidden lists or moving static cards. Reduced motion disables animation in both documents.
 - Header controls and key actions have at least 44 px touch targets. Forecast overflow utilities remain ordinary
   buttons, not tabs: the layer repairs the owner's broad `.sub button` ARIA update after each route change.

@@ -38,4 +38,22 @@ input,select{min-height:44px;border-radius:10px}
  .cover h1{font-size:37px}.cover .sub,.cover .deck{font-size:16px}.spine{font-size:18px}
  .cta{gap:8px}.cta .btn{font-size:12px;padding:0 13px}.stem{font-size:18px}.tab{font-size:12px;padding:0 13px}
 }
+/* Vivid: CSAT is the amber app. Warm light gathers at the cover; the series code and headline take the hue. */
+:root{--z-accent:var(--za);--z-accent2:var(--za2);--z-soft:var(--za-s);--z-fill:var(--za-f);--z-glow:var(--za-g);--z-aura-a:var(--za-a);--z-aura-b:var(--za-b)}
+html{scrollbar-color:color-mix(in srgb,var(--z-accent) 38%,var(--rule)) transparent}
+::selection{background:color-mix(in srgb,var(--z-accent) 24%,transparent)}
+body{background:radial-gradient(62% 520px at 92% 0,var(--z-aura-a),transparent 72%) no-repeat,radial-gradient(48% 400px at 4% 0,var(--z-aura-b),transparent 72%) no-repeat,var(--paper)}
+.cover{background:radial-gradient(85% 70% at 100% 0,color-mix(in srgb,var(--z-soft) 80%,transparent),transparent 68%),var(--sheet);box-shadow:0 2px 4px rgba(24,38,59,.02),0 22px 44px -32px var(--z-glow)}
+.cover h1{width:fit-content;background:var(--neo-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+.series .code{width:fit-content;background:linear-gradient(100deg,var(--z-accent),var(--z-accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.spine{border-left:2px solid var(--pen);border-image:var(--neo-line-v) 1}
+.btn.primary{background:var(--neo-fill)!important;border-color:transparent!important;color:#fff!important}
+.tab[aria-selected="true"]{border-bottom-color:var(--pen)}
+@media(prefers-reduced-motion:no-preference){
+ .cover>*{animation:z-frame-rise .5s cubic-bezier(.3,.75,.15,1) backwards}
+ .cover>:nth-child(2){animation-delay:.06s}.cover>:nth-child(n+3){animation-delay:.12s}
+ @media(hover:hover){.btn.primary:hover{transform:translateY(-1px);box-shadow:0 12px 24px -12px var(--z-glow)!important}.btn.primary:active{transform:translateY(1px)}}
+}
+@keyframes z-frame-rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(forced-colors:active){.cover h1,.series .code{background:none;color:CanvasText}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

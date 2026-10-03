@@ -21,7 +21,7 @@ Live data (exam dates, news inbox, notices) comes from the companion repo
 ## The one rule that matters most
 
 `index.html` is the owner's study content (about 1.9 MB: questions, machines, evidence, the CSAT app). **Do not
-hand-edit it.** Everything this repo adds (install, offline, design, motion, UX) lives in two files and is
+hand-edit it.** Everything this repo adds (install, offline, design, motion, UX) lives in the `pwa/` source files and is
 written into `index.html` between markers by a tool:
 
 ```
@@ -29,9 +29,14 @@ pwa/head.html  →  between <!-- zola-pwa:head --> … <!-- /zola-pwa:head -->  
 pwa/body.html  →  between <!-- zola-pwa:body --> … <!-- /zola-pwa:body -->   (before </body>)
 ```
 
-Edit `pwa/*.html`, then run `node tools/pwa.mjs apply`. The deploy re-applies the layer anyway, so a fresh
+Edit `pwa/*.html`, `pwa/*.css` or `pwa/*.js`, then run `node tools/pwa.mjs apply`. The deploy re-applies the layer anyway, so a fresh
 `index.html` uploaded by the owner automatically gets it. If a task truly needs a change to the app's own content
 or logic, stop and ask the owner. Their builds come from elsewhere and would overwrite yours.
+
+The owner authorized the import and strict-feed safeguards on 3 October 2026. These narrow logic changes live
+in `tools/app-fixes.mjs` and are reapplied by the build tool, rather than hand-edited into the owner document.
+Changed upstream entry points fail the build and need review. `pwa/data.js` is inlined into the managed head
+and supplies their validators plus the complete backup validator. See `docs/FIX-LOG.md`.
 
 ### What is in the layer
 
@@ -47,6 +52,7 @@ a tiny script that adds `html.zboot`).
 | `style#zneo` | **Boardroom Neon** design tokens and component styles; type rules |
 | `style#zneo-motion` + script | Count-up figures (once a day), scroll reveal, bar growth, ripple, theme cross-fade, reading-progress bar, CSAT frame dressing |
 | `style#zux` + script | Scroll memory per section, collapsing header, exam-dates sheet and `.ics` export |
+| `pwa/studio.css`, `pwa/studio-frame.css`, `pwa/studio.js` | Final Studio design overrides, Brief actions, return-to-top and CSAT palette; inlined at `<!-- zola-studio -->` |
 
 Plain ES5-style JavaScript (no modules, no build step, no runtime dependencies). Keep it that way.
 
@@ -57,11 +63,11 @@ npm run check        # manifest, icons, screenshots, service worker, layer fresh
 npm run apply        # write pwa/*.html into index.html
 npm run build        # _site/ = deployable site, layer applied, cache version stamped from content hash
 npm run serve        # build + serve _site at http://localhost:8080 (service worker works on localhost)
-npm test             # build + browser suites (tests/pwa.test.mjs, tests/ux.test.mjs), 34 checks
+npm test             # build + contract/browser suites, contract and browser checks
 npm run screenshots  # regenerate screenshots/ for the install dialog (do this after visual changes)
 ```
 
-Browser tests need Playwright once: `npm i -D playwright && npx playwright install chromium`.
+Browser tests need Playwright once: `npm ci && npx playwright install chromium`.
 
 **Before every push: `npm run check` and `npm test` must pass.** Add a check to `tests/ux.test.mjs` (or
 `tests/pwa.test.mjs`) for any new behaviour.
@@ -87,31 +93,38 @@ Files the service worker precaches are listed in `SHELL` in `sw.js`. If you add 
 add it there too (`npm run check` fails if a listed file is missing). New top-level folders that must be
 published go in `SITE_FILES` in `tools/pwa.mjs`.
 
-## Design system (Boardroom Neon)
+## Design system (Zola Studio)
 
-- **Tokens** (in `#zneo`, light and dark): `--neo-v` violet, `--neo-m` magenta, `--neo-c` cyan, `--neo-line`
-  (hairlines), `--neo-fill` (filled controls), `--neo-text` (gradient figures), `--neo-glow`, `--neo-ring`.
-  The app's own tokens (`--paper`, `--sheet`, `--ink`, `--muted`, `--pen`, `--rule`, …) stay the base.
-- **Rules:** neon is an accent, not a background. Text never sits on cyan; anything filled that carries text uses
-  `--neo-fill` (deep violet → magenta) with white text. Tier S is the only place that glows by default.
-- **Type:** `--display` and `--sans` = Space Grotesk (headlines, interface, figures); `--serif` = Newsreader (long
-  reading); `--mono` = JetBrains Mono, small print only (labels, tags, captions, tier letters). Fonts are subset
-  WOFF2 in `fonts/` (OFL). If new characters appear in content, re-subset (see `fonts/README.md`).
-- **Motion:** every animation says something (selected, revealed, saved, live) and ends within about 1 s.
-  Everything is off under `prefers-reduced-motion`. Never hide content that starts on screen. No reveal on long
-  lists.
-- **Accessibility:** keep the axe audit clean (one known moderate "region" item; see roadmap), 44 px touch targets,
-  visible focus (`:focus-visible`), real buttons/links, `aria` on custom controls.
+- Final tokens and component rules live in `pwa/studio.css`; shared palette tokens before the
+  `shared-surface-end` comment also enter the CSAT frame, followed by `pwa/studio-frame.css`.
+- Light surfaces are ivory/white with navy ink; dark surfaces are navy with pale ink. Violet is a restrained
+  interaction accent. Keep strong text contrast, visible focus and generous spacing. The older `#zneo` rules
+  supply baseline typography and components; the Studio layer owns the final visual choices.
+- Space Grotesk: interface/headlines/figures. Newsreader: reading. JetBrains Mono: compact labels.
+  Fonts are bundled WOFF2 (OFL); no third-party runtime scripts or fonts.
+- Use one short section entrance, subtle press feedback and transitions on specific properties. No perpetual
+  decoration, hidden lists or moving static cards. Reduced motion disables animation in both documents.
+- Header controls and key actions have at least 44 px touch targets. Forecast overflow utilities remain ordinary
+  buttons, not tabs: the layer repairs the owner's broad `.sub button` ARIA update after each route change.
+- Scroll restoration suppresses only restoration frames, not user scrolling during a fixed delay. Back to top
+  targets the active document. Check shell and CSAT at 320, 412, 432, 768 and 1440 px.
+- WCAG A/AA axe checks found no violations on Brief, Tracker, Hacking library and CSAT in either theme during
+  this release. This is sampled automated coverage, not a full accessibility certification.
 
 ## Storage keys (do not rename without migrating)
 
 | Key | Owner | Holds |
 |---|---|---|
-| `zolaV2.*` | app (Hacking) | review progress, settings: **the learner's data** |
+| `zolaV2.*` | app (Forecast) | theme, weights, tracker settings |
+| `zolaB.v22` | app (Hacking) | trap histories, walkthroughs, review preferences: **the learner's data** |
+| `zolaCsatForge.v1` | app (CSAT) | practice ledger, mock history, unfinished paper: **the learner's data** |
 | `zola.live.v1` | app (Zola Live) | last good copy of the feed |
 | `zola.pwa.*` | PWA layer | install snooze, visits, update-check time, ready notice |
 | `zola.neo.countedOn` | design layer | date figures last counted up |
 | `sessionStorage['zola.ux.pos']` | UX layer | scroll position per section |
+
+Full backups include both learner-progress keys and every `zolaV2.*`/`zola.*` localStorage key. Backup/restore
+is available from Brief; do not revert to prefix-only exports. Feed checks follow `docs/FEED-CONTRACT.md`.
 
 ## Voice and honesty
 

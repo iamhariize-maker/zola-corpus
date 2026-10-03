@@ -4,7 +4,7 @@
 <link rel="icon" href="icons/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#181225" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#182333" media="(prefers-color-scheme: dark)">
 <meta name="application-name" content="Zola Corpus">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -37,24 +37,24 @@
 /* Launch screen: covers the app from the first frame while it assembles, then zooms out into it. */
 html.zboot{overflow:hidden}
 html.zboot::before,html.zboot::after{content:"";position:fixed;z-index:2147483000;pointer-events:none}
-html.zboot::before{inset:0;background:#F3F1F7;transition:opacity .3s cubic-bezier(.4,0,.2,1)}
+html.zboot::before{inset:0;background:#F6F5F1;transition:opacity .3s cubic-bezier(.4,0,.2,1)}
 html.zboot::after{left:50%;top:46%;width:112px;height:112px;margin:-56px 0 0 -56px;border-radius:26px;
  background:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22%3E%3Cdefs%3E%3Cmask id=%22cut%22 maskUnits=%22userSpaceOnUse%22 x=%22-2000%22 y=%22-2000%22 width=%227000%22 height=%225000%22%3E%3Crect x=%22-2000%22 y=%22-2000%22 width=%227000%22 height=%225000%22 fill=%22%23fff%22/%3E%3Cpolygon points=%221735,800 1465,206 1708,206 1681,-190 1951,404 1708,404%22 fill=%22%23000%22 stroke=%22%23000%22 stroke-width=%2258%22 stroke-linejoin=%22round%22/%3E%3C/mask%3E%3C/defs%3E%3Cdefs%3E%0A%3ClinearGradient id=%22bg%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%236B47EC%22/%3E%3Cstop offset=%22.55%22 stop-color=%22%234A2BB0%22/%3E%3Cstop offset=%221%22 stop-color=%22%2328156F%22/%3E%3C/linearGradient%3E%0A%3CradialGradient id=%22sheen%22 cx=%22.22%22 cy=%22.12%22 r=%22.75%22%3E%3Cstop offset=%220%22 stop-color=%22%23fff%22 stop-opacity=%22.28%22/%3E%3Cstop offset=%22.6%22 stop-color=%22%23fff%22 stop-opacity=%220%22/%3E%3C/radialGradient%3E%0A%3ClinearGradient id=%22bolt%22 x1=%220%22 y1=%221%22 x2=%220%22 y2=%220%22%3E%3Cstop offset=%220%22 stop-color=%22%23FF7A1A%22/%3E%3Cstop offset=%22.5%22 stop-color=%22%23FFB22E%22/%3E%3Cstop offset=%221%22 stop-color=%22%23FFE07A%22/%3E%3C/linearGradient%3E%0A%3Cfilter id=%22glow%22 x=%22-50%25%22 y=%22-50%25%22 width=%22200%25%22 height=%22200%25%22%3E%3CfeGaussianBlur stdDeviation=%227%22 result=%22b%22/%3E%3CfeFlood flood-color=%22%23FFB22E%22 flood-opacity=%22.6%22/%3E%3CfeComposite in2=%22b%22 operator=%22in%22/%3E%3CfeMerge%3E%3CfeMergeNode/%3E%3CfeMergeNode in=%22SourceGraphic%22/%3E%3C/feMerge%3E%3C/filter%3E%0A%3Cfilter id=%22lift%22 x=%22-20%25%22 y=%22-20%25%22 width=%22140%25%22 height=%22160%25%22%3E%3CfeDropShadow dx=%220%22 dy=%226%22 stdDeviation=%227%22 flood-color=%22%2314093F%22 flood-opacity=%22.45%22/%3E%3C/filter%3E%0A%3C/defs%3E%3Crect width=%22512%22 height=%22512%22 rx=%22112%22 fill=%22url(%23bg)%22/%3E%3Crect width=%22512%22 height=%22512%22 rx=%22112%22 fill=%22url(%23sheen)%22/%3E%3Cg filter=%22url(%23lift)%22%3E%3Cg transform=%22translate(51.00 293.02) scale(0.16728 -0.16728)%22%3E%3Cg fill=%22%23fff%22 mask=%22url(%23cut)%22%3E%3Cpath transform=%22translate(0 0)%22 d=%22M140 0 12 528H180L245 126H265L346 528H537L621 126H642L704 528H869L741 0H519L446 398H427L359 0Z%22/%3E%3Cpath transform=%22translate(843 0)%22 d=%22M499 0V660H660V0ZM69 0V660H230V0ZM167 268V398H564V268Z%22/%3E%3Cpath transform=%22translate(1837 0)%22 d=%22M62 -169V258V528H194L196 378L214 376Q223 432 246.0 469.0Q269 506 305.5 524.0Q342 542 389 542Q459 542 509.5 508.0Q560 474 587.0 411.0Q614 348 614 260Q614 182 590.5 120.0Q567 58 519.5 22.0Q472 -14 399 -14Q350 -14 316.0 3.5Q282 21 258.5 55.0Q235 89 219 140H200Q206 113 211.0 85.0Q216 57 219.5 31.0Q223 5 223 -19V-169ZM340 113Q373 113 396.5 131.0Q420 149 433.0 182.0Q446 215 446 259Q446 306 432.5 339.5Q419 373 394.0 391.5Q369 410 336 410Q305 410 283.5 396.5Q262 383 248.5 361.5Q235 340 229.0 316.0Q223 292 223 271V249Q223 230 228.0 211.0Q233 192 243.0 174.5Q253 157 267.0 143.0Q281 129 299.5 121.0Q318 113 340 113Z%22/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg filter=%22url(%23glow)%22%3E%3Cg transform=%22translate(51.00 293.02) scale(0.16728 -0.16728)%22%3E%3Cpolygon fill=%22url(%23bolt)%22 points=%221735,800 1465,206 1708,206 1681,-190 1951,404 1708,404%22/%3E%3C/g%3E%3C/g%3E%3Crect x=%22210%22 y=%22350.8%22 width=%2292%22 height=%2216%22 rx=%228%22 fill=%22%23FF4D6A%22/%3E%3C/svg%3E") center/contain no-repeat;
  box-shadow:0 22px 44px -18px rgba(46,26,110,.55);
- animation:zbreathe 1.6s ease-in-out .5s infinite;transition:opacity .22s ease-out,transform .34s cubic-bezier(.2,.8,.2,1)}
-@media (prefers-color-scheme:dark){html.zboot:not([data-theme="light"])::before{background:#0F0B19}}
-html.zboot[data-theme="dark"]::before{background:#0F0B19}
-html.zboot.zboot-app::before{background:#2A1673}
+ animation:zboot-arrive .3s ease-out both;transition:opacity .22s ease-out,transform .34s cubic-bezier(.2,.8,.2,1)}
+@media (prefers-color-scheme:dark){html.zboot:not([data-theme="light"])::before{background:#101824}}
+html.zboot[data-theme="dark"]::before{background:#101824}
+html.zboot.zboot-app::before{background:#202D45}
 html.zboot.zboot-app::after{box-shadow:0 26px 50px -16px rgba(0,0,0,.55)}
 html.zboot.zout::before{opacity:0}
-html.zboot.zout::after{opacity:0;transform:scale(1.5);animation:none}
+html.zboot.zout::after{opacity:0;transform:scale(1.06);animation:none}
 /* neon glow behind the logo */
-html.zboot::before{background:radial-gradient(circle at 50% 46%,rgba(181,23,158,.16),transparent 30%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(14,159,194,.10),transparent 60%),#F3F1F7}
-@media (prefers-color-scheme:dark){html.zboot:not([data-theme="light"])::before{background:radial-gradient(circle at 50% 46%,rgba(255,79,195,.22),transparent 32%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(45,220,242,.16),transparent 60%),#0F0B19}}
-html.zboot[data-theme="dark"]::before{background:radial-gradient(circle at 50% 46%,rgba(255,79,195,.22),transparent 32%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(45,220,242,.16),transparent 60%),#0F0B19}
-html.zboot.zboot-app::before{background:radial-gradient(circle at 50% 46%,rgba(255,79,195,.38),transparent 34%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(45,220,242,.30),transparent 60%),#2A1673}
+html.zboot::before{background:radial-gradient(circle at 50% 46%,rgba(84,68,173,.06),transparent 30%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(84,68,173,.03),transparent 60%),#F6F5F1}
+@media (prefers-color-scheme:dark){html.zboot:not([data-theme="light"])::before{background:radial-gradient(circle at 50% 46%,rgba(192,176,243,.07),transparent 32%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(153,200,203,.03),transparent 60%),#101824}}
+html.zboot[data-theme="dark"]::before{background:radial-gradient(circle at 50% 46%,rgba(192,176,243,.07),transparent 32%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(153,200,203,.03),transparent 60%),#101824}
+html.zboot.zboot-app::before{background:radial-gradient(circle at 50% 46%,rgba(192,176,243,.09),transparent 34%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(153,200,203,.04),transparent 60%),#202D45}
 
-@keyframes zbreathe{50%{transform:scale(1.045)}}
+@keyframes zboot-arrive{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){html.zboot::after{animation:none}html.zboot.zout::after{transform:none}html.zboot::before,html.zboot::after{transition-duration:.15s}}
 @media print{html.zboot::before,html.zboot::after{display:none}}
 </style>
@@ -62,8 +62,9 @@ html.zboot.zboot-app::before{background:radial-gradient(circle at 50% 46%,rgba(2
 // Launch screen on; the PWA layer at the end of the page lifts it once the app has assembled.
 (function(){var d=document.documentElement;d.classList.add('zboot');
  if(window.matchMedia&&(matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: minimal-ui)').matches)||navigator.standalone===true){
-  d.classList.add('zboot-app');var m=document.createElement('meta');m.name='theme-color';m.content='#2A1673';m.id='zboot-meta';document.head.prepend(m)}
+  d.classList.add('zboot-app');var m=document.createElement('meta');m.name='theme-color';m.content='#202D45';m.id='zboot-meta';document.head.prepend(m)}
  setTimeout(function(){d.classList.remove('zboot','zboot-app','zout');var m=document.getElementById('zboot-meta');if(m)m.remove()},4500); // never trap the app behind it
 })();
 </script>
+<!-- zola-data -->
 <!-- /zola-pwa:head -->

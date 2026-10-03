@@ -12,6 +12,7 @@ import path from 'node:path';
 import vm from 'node:vm';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { applyAppFixes } from './app-fixes.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SITE_FILES = ['index.html', 'manifest.webmanifest', 'sw.js', '404.html', '.nojekyll', 'icons', 'screenshots', 'fonts'];
@@ -38,7 +39,10 @@ function outsideCode(html, fn) {
 }
 
 export function applyLayer(html) {
-  const head = read('pwa/head.html').trim() + '\n', body = read('pwa/body.html').trim() + '\n';
+  html = applyAppFixes(html);
+  const head = read('pwa/head.html').trim().replace('<!-- zola-data -->', '<script id="zola-data">\n' + read('pwa/data.js').trim() + '\n</script>') + '\n';
+  const studio = '<style id="zstudio">\n' + read('pwa/studio.css') + '\n</style>\n<style id="zstudio-frame-source" media="not all">\n' + read('pwa/studio-frame.css') + '\n</style>\n<script>\n' + read('pwa/studio.js') + '\n</script>';
+  const body = read('pwa/body.html').trim().replace('<!-- zola-studio -->', studio) + '\n';
   const h = html.search(/<\/head>/i);
   if (h < 0) throw new Error('no </head> in the page');
   let top = html.slice(0, h).replace(HEAD_RX, '');

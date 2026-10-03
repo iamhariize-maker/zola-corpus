@@ -18,6 +18,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Install browser test dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Check source and run regressions
+        run: |
+          npm run check
+          npm test
       - name: Check and build (re-applies the install/offline layer, stamps the cache version)
         run: node tools/pwa.mjs build _site
       - if: github.event_name != 'pull_request'

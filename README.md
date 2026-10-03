@@ -31,17 +31,18 @@ with the link and the install steps (deliberately no QR code, so people can read
 | | |
 |---|---|
 | **Installs everywhere** | Android and desktop Chrome/Edge get an Install button. iPhone and iPad get a one-time "Share → Add to Home Screen" hint. The offer waits for a return visit (or 30 seconds on a first visit), and "Not now" keeps it quiet for two weeks. |
-| **Opens smoothly** | A launch screen in the brand violet picks up where Android's own splash leaves off. It holds while the app assembles itself, then the logo zooms out into the finished page, so nobody sees half-built screens. Tabs, sections and Hacking pages glide in; tabs, pills and buttons respond to touch. "Reduce motion" on the phone is respected (quick fades only), and the launch screen can never trap the app: it clears itself after 4.5 s whatever happens. |
-| **Boardroom Neon design** | The violet-ink app keeps its formal type and layout; a violet → magenta → cyan neon is added only as accents: a neon hairline under the header that fills as you read, chapter marks on section titles, gradient key figures, glowing tier S events, gradient buttons, chips and active tabs. Dark mode becomes a night-city boardroom with soft neon washes and a faint synthwave horizon grid. Text never sits on cyan, so contrast holds. The CSAT Question Forge wears the same layer. |
+| **Opens smoothly** | A navy launch screen gives way to short section transitions and quiet touch feedback. Reduced motion disables animation throughout the shell and CSAT. The launch screen clears itself after 4.5 seconds even if startup fails. |
+| **Studio design** | Warm ivory and white surfaces, navy dark mode and restrained violet accents. An editorial Brief with direct tracker/review shortcuts, clearer navigation, consistent cards, generous touch targets and matching CSAT surfaces. |
 | **Type** | Space Grotesk for headlines, interface and figures; Newsreader stays for long reading; JetBrains Mono for the small print (labels, tags, captions, tier letters, the countdown caption), like a spec sheet. Both new fonts are open-licensed, subset to the characters the app uses (about 57 KB together) and saved for offline use. See `fonts/`. |
-| **Fun that does a job** | Figures count up when they come into view; cards and charts rise in as you scroll (anything already on screen is never hidden); signal bars and chart bars grow when opened; selected tabs and answer bubbles pop; buttons and chips ripple under your finger; the live dot pings while the feed is connected; the theme button cross-fades. |
-| **Reads comfortably** | Switching between Forecast, Hacking and CSAT opens each at its top, and coming back returns you to where you were. While you read down, the header steps aside (48 px more reading space) and returns the moment you scroll up. |
+| **Purposeful motion** | Short entrances, count-up figures, growing signal bars and touch ripples. No looping neon effects or hidden long lists. Theme changes transition only the relevant surfaces. |
+| **Reads comfortably** | Forecast and Hacking sections remember their scroll position. The header steps aside while reading and returns on an upward scroll. Back to top works across all three apps, including the CSAT frame. |
 | **Exam dates in your calendar** | Tap the countdown (or the button under the Watch list) to see every exam date and add them to your phone's calendar, with reminders a week and a day before. |
 | **Rich install dialog** | Real app screenshots for phone and desktop, so the install sheet looks like a store listing. |
 | **Works offline** | The whole app is saved on the device on the first visit ("Ready to work offline"). Going offline shows a short reassurance, not an error. |
 | **Updates itself** | Publish a new `index.html` and open copies show **New build ready · Reload**. Copies left open for a while check again when you return to them. |
 | **Home-screen shortcuts** | Long-press the icon to jump to Forecast, Hacking or CSAT. When the app is already open, a shortcut reuses that window instead of opening a second one. |
-| **Keeps your progress** | Once installed, the app asks the browser to keep its storage, so a storage clean-up can't wipe your review progress. |
+| **Keeps your progress** | The app requests persistent browser storage to reduce automatic eviction. Back up your progress before clearing browser data or moving devices. |
+| **Back up and restore** | Brief has Back up and Restore buttons for Forecast settings, Hacking progress, CSAT history and unfinished papers together. Restore previews the file and asks before replacing progress. Invalid imports preserve existing data. |
 | **The wH⚡PLA5h mark** | The header, footer and CSAT section carry the same bolt in place of the "!", as inline vector so it looks identical on every device. The app icon is the wH⚡p wordmark: extra-bold letters from the app's own typeface, cut through by a marigold bolt, over the seal-red bar, on a violet-ink gradient. Browser tabs get the bolt alone, which stays legible at 16 px. Maskable (Android), Apple and monochrome (Android 13 themed icons) versions are each fitted to their platform's safe area. |
 | **Looks right** | A status bar that follows the in-app theme button, and a share card for WhatsApp/Telegram links. |
 
@@ -67,7 +68,10 @@ layer into the repository copy, so the file works the same when opened directly.
 | Path | Job |
 |---|---|
 | `index.html` | The whole app (Zola Corpus 2.4), with the PWA layer between `zola-pwa` markers |
-| `pwa/head.html`, `pwa/body.html` | **The PWA layer.** Edit these, not the marked blocks in `index.html` |
+| `pwa/head.html`, `pwa/body.html`, `pwa/data.js` | **The PWA layer and data checks.** Edit these, not the marked blocks in `index.html` |
+| `pwa/studio.css`, `pwa/studio-frame.css`, `pwa/studio.js` | Studio surfaces, motion and navigation enhancements; inlined by the build for offline use |
+| `tools/app-fixes.mjs` | Reapplies the owner-authorized import and feed safeguards to fresh owner builds |
+| `docs/FIX-LOG.md` | Fixes, regression coverage and verification results |
 | `manifest.webmanifest` | Name, icons, colours, shortcuts, screenshots, launch behaviour |
 | `sw.js` | Service worker: offline copy, background refresh, update notices |
 | `icons/`, `screenshots/` | The logo as vector masters (`icon.svg`, `maskable.svg`, `apple-touch.svg`, `monochrome.svg`, `favicon.svg`) and the PNGs made from them; shortcut and share images; install-dialog screenshots |
@@ -81,7 +85,7 @@ layer into the repository copy, so the file works the same when opened directly.
 ## For developers and coding agents
 
 Read [`AGENTS.md`](AGENTS.md) (rules, architecture, commands) and [`docs/ROADMAP.md`](docs/ROADMAP.md) (next tasks with
-acceptance checks). `npm test` runs 34 browser checks.
+acceptance checks). `npm test` runs contract and browser checks across data contracts, PWA behavior, everyday UX and data/navigation regressions.
 
 ## On a computer
 

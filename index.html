@@ -353,6 +353,7 @@ function src(s){s=s&&typeof s==='object'?s:{};return {title:str(s.title,160),url
 function arr(v,max){return Array.isArray(v)?v.slice(0,max):[]}
 function mids(v){return arr(v,6).filter(function(x){return typeof x==='string'&&/^M\d{2}$/.test(x)})}
 function validate(f){
+ window.ZOLA_DATA.feed(f); // zola-app-fix: strict feed contract
  if(!f||typeof f!=='object')throw new Error('The feed is not a JSON object.');
  if(f.schema!==SCHEMA)throw new Error('The feed says schema "'+str(String(f.schema),40)+'"; this edition reads '+SCHEMA+'.');
  var updated=str(f.updated,40);if(!updated||isNaN(Date.parse(updated)))throw new Error('The feed has no valid "updated" time.');
@@ -457,7 +458,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <link rel="icon" href="icons/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#181225" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#182333" media="(prefers-color-scheme: dark)">
 <meta name="application-name" content="Zola Corpus">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -490,24 +491,24 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 /* Launch screen: covers the app from the first frame while it assembles, then zooms out into it. */
 html.zboot{overflow:hidden}
 html.zboot::before,html.zboot::after{content:"";position:fixed;z-index:2147483000;pointer-events:none}
-html.zboot::before{inset:0;background:#F3F1F7;transition:opacity .3s cubic-bezier(.4,0,.2,1)}
+html.zboot::before{inset:0;background:#F6F5F1;transition:opacity .3s cubic-bezier(.4,0,.2,1)}
 html.zboot::after{left:50%;top:46%;width:112px;height:112px;margin:-56px 0 0 -56px;border-radius:26px;
  background:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22%3E%3Cdefs%3E%3Cmask id=%22cut%22 maskUnits=%22userSpaceOnUse%22 x=%22-2000%22 y=%22-2000%22 width=%227000%22 height=%225000%22%3E%3Crect x=%22-2000%22 y=%22-2000%22 width=%227000%22 height=%225000%22 fill=%22%23fff%22/%3E%3Cpolygon points=%221735,800 1465,206 1708,206 1681,-190 1951,404 1708,404%22 fill=%22%23000%22 stroke=%22%23000%22 stroke-width=%2258%22 stroke-linejoin=%22round%22/%3E%3C/mask%3E%3C/defs%3E%3Cdefs%3E%0A%3ClinearGradient id=%22bg%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%236B47EC%22/%3E%3Cstop offset=%22.55%22 stop-color=%22%234A2BB0%22/%3E%3Cstop offset=%221%22 stop-color=%22%2328156F%22/%3E%3C/linearGradient%3E%0A%3CradialGradient id=%22sheen%22 cx=%22.22%22 cy=%22.12%22 r=%22.75%22%3E%3Cstop offset=%220%22 stop-color=%22%23fff%22 stop-opacity=%22.28%22/%3E%3Cstop offset=%22.6%22 stop-color=%22%23fff%22 stop-opacity=%220%22/%3E%3C/radialGradient%3E%0A%3ClinearGradient id=%22bolt%22 x1=%220%22 y1=%221%22 x2=%220%22 y2=%220%22%3E%3Cstop offset=%220%22 stop-color=%22%23FF7A1A%22/%3E%3Cstop offset=%22.5%22 stop-color=%22%23FFB22E%22/%3E%3Cstop offset=%221%22 stop-color=%22%23FFE07A%22/%3E%3C/linearGradient%3E%0A%3Cfilter id=%22glow%22 x=%22-50%25%22 y=%22-50%25%22 width=%22200%25%22 height=%22200%25%22%3E%3CfeGaussianBlur stdDeviation=%227%22 result=%22b%22/%3E%3CfeFlood flood-color=%22%23FFB22E%22 flood-opacity=%22.6%22/%3E%3CfeComposite in2=%22b%22 operator=%22in%22/%3E%3CfeMerge%3E%3CfeMergeNode/%3E%3CfeMergeNode in=%22SourceGraphic%22/%3E%3C/feMerge%3E%3C/filter%3E%0A%3Cfilter id=%22lift%22 x=%22-20%25%22 y=%22-20%25%22 width=%22140%25%22 height=%22160%25%22%3E%3CfeDropShadow dx=%220%22 dy=%226%22 stdDeviation=%227%22 flood-color=%22%2314093F%22 flood-opacity=%22.45%22/%3E%3C/filter%3E%0A%3C/defs%3E%3Crect width=%22512%22 height=%22512%22 rx=%22112%22 fill=%22url(%23bg)%22/%3E%3Crect width=%22512%22 height=%22512%22 rx=%22112%22 fill=%22url(%23sheen)%22/%3E%3Cg filter=%22url(%23lift)%22%3E%3Cg transform=%22translate(51.00 293.02) scale(0.16728 -0.16728)%22%3E%3Cg fill=%22%23fff%22 mask=%22url(%23cut)%22%3E%3Cpath transform=%22translate(0 0)%22 d=%22M140 0 12 528H180L245 126H265L346 528H537L621 126H642L704 528H869L741 0H519L446 398H427L359 0Z%22/%3E%3Cpath transform=%22translate(843 0)%22 d=%22M499 0V660H660V0ZM69 0V660H230V0ZM167 268V398H564V268Z%22/%3E%3Cpath transform=%22translate(1837 0)%22 d=%22M62 -169V258V528H194L196 378L214 376Q223 432 246.0 469.0Q269 506 305.5 524.0Q342 542 389 542Q459 542 509.5 508.0Q560 474 587.0 411.0Q614 348 614 260Q614 182 590.5 120.0Q567 58 519.5 22.0Q472 -14 399 -14Q350 -14 316.0 3.5Q282 21 258.5 55.0Q235 89 219 140H200Q206 113 211.0 85.0Q216 57 219.5 31.0Q223 5 223 -19V-169ZM340 113Q373 113 396.5 131.0Q420 149 433.0 182.0Q446 215 446 259Q446 306 432.5 339.5Q419 373 394.0 391.5Q369 410 336 410Q305 410 283.5 396.5Q262 383 248.5 361.5Q235 340 229.0 316.0Q223 292 223 271V249Q223 230 228.0 211.0Q233 192 243.0 174.5Q253 157 267.0 143.0Q281 129 299.5 121.0Q318 113 340 113Z%22/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg filter=%22url(%23glow)%22%3E%3Cg transform=%22translate(51.00 293.02) scale(0.16728 -0.16728)%22%3E%3Cpolygon fill=%22url(%23bolt)%22 points=%221735,800 1465,206 1708,206 1681,-190 1951,404 1708,404%22/%3E%3C/g%3E%3C/g%3E%3Crect x=%22210%22 y=%22350.8%22 width=%2292%22 height=%2216%22 rx=%228%22 fill=%22%23FF4D6A%22/%3E%3C/svg%3E") center/contain no-repeat;
  box-shadow:0 22px 44px -18px rgba(46,26,110,.55);
- animation:zbreathe 1.6s ease-in-out .5s infinite;transition:opacity .22s ease-out,transform .34s cubic-bezier(.2,.8,.2,1)}
-@media (prefers-color-scheme:dark){html.zboot:not([data-theme="light"])::before{background:#0F0B19}}
-html.zboot[data-theme="dark"]::before{background:#0F0B19}
-html.zboot.zboot-app::before{background:#2A1673}
+ animation:zboot-arrive .3s ease-out both;transition:opacity .22s ease-out,transform .34s cubic-bezier(.2,.8,.2,1)}
+@media (prefers-color-scheme:dark){html.zboot:not([data-theme="light"])::before{background:#101824}}
+html.zboot[data-theme="dark"]::before{background:#101824}
+html.zboot.zboot-app::before{background:#202D45}
 html.zboot.zboot-app::after{box-shadow:0 26px 50px -16px rgba(0,0,0,.55)}
 html.zboot.zout::before{opacity:0}
-html.zboot.zout::after{opacity:0;transform:scale(1.5);animation:none}
+html.zboot.zout::after{opacity:0;transform:scale(1.06);animation:none}
 /* neon glow behind the logo */
-html.zboot::before{background:radial-gradient(circle at 50% 46%,rgba(181,23,158,.16),transparent 30%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(14,159,194,.10),transparent 60%),#F3F1F7}
-@media (prefers-color-scheme:dark){html.zboot:not([data-theme="light"])::before{background:radial-gradient(circle at 50% 46%,rgba(255,79,195,.22),transparent 32%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(45,220,242,.16),transparent 60%),#0F0B19}}
-html.zboot[data-theme="dark"]::before{background:radial-gradient(circle at 50% 46%,rgba(255,79,195,.22),transparent 32%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(45,220,242,.16),transparent 60%),#0F0B19}
-html.zboot.zboot-app::before{background:radial-gradient(circle at 50% 46%,rgba(255,79,195,.38),transparent 34%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(45,220,242,.30),transparent 60%),#2A1673}
+html.zboot::before{background:radial-gradient(circle at 50% 46%,rgba(84,68,173,.06),transparent 30%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(84,68,173,.03),transparent 60%),#F6F5F1}
+@media (prefers-color-scheme:dark){html.zboot:not([data-theme="light"])::before{background:radial-gradient(circle at 50% 46%,rgba(192,176,243,.07),transparent 32%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(153,200,203,.03),transparent 60%),#101824}}
+html.zboot[data-theme="dark"]::before{background:radial-gradient(circle at 50% 46%,rgba(192,176,243,.07),transparent 32%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(153,200,203,.03),transparent 60%),#101824}
+html.zboot.zboot-app::before{background:radial-gradient(circle at 50% 46%,rgba(192,176,243,.09),transparent 34%),radial-gradient(90vmax 60vmax at 50% 120%,rgba(153,200,203,.04),transparent 60%),#202D45}
 
-@keyframes zbreathe{50%{transform:scale(1.045)}}
+@keyframes zboot-arrive{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){html.zboot::after{animation:none}html.zboot.zout::after{transform:none}html.zboot::before,html.zboot::after{transition-duration:.15s}}
 @media print{html.zboot::before,html.zboot::after{display:none}}
 </style>
@@ -515,8 +516,71 @@ html.zboot.zboot-app::before{background:radial-gradient(circle at 50% 46%,rgba(2
 // Launch screen on; the PWA layer at the end of the page lifts it once the app has assembled.
 (function(){var d=document.documentElement;d.classList.add('zboot');
  if(window.matchMedia&&(matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: minimal-ui)').matches)||navigator.standalone===true){
-  d.classList.add('zboot-app');var m=document.createElement('meta');m.name='theme-color';m.content='#2A1673';m.id='zboot-meta';document.head.prepend(m)}
+  d.classList.add('zboot-app');var m=document.createElement('meta');m.name='theme-color';m.content='#202D45';m.id='zboot-meta';document.head.prepend(m)}
  setTimeout(function(){d.classList.remove('zboot','zboot-app','zout');var m=document.getElementById('zboot-meta');if(m)m.remove()},4500); // never trap the app behind it
+})();
+</script>
+<script id="zola-data">
+// Shared data checks for imports, backups and the live feed. Inlined by tools/pwa.mjs.
+(function(){
+'use strict';
+function need(ok,msg){if(!ok)throw new Error(msg)}
+function obj(v){return !!v&&typeof v==='object'&&!Array.isArray(v)}
+function num(v){return typeof v==='number'&&isFinite(v)}
+function text(v,max){return typeof v==='string'&&v.trim().length>0&&v.length<=max}
+function date(v){if(typeof v!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(v)||+v.slice(0,4)<1)return false;var d=new Date(v+'T00:00:00Z');return !isNaN(+d)&&d.toISOString().slice(0,10)===v}
+function time(v){return typeof v==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|\+00:00)$/.test(v)&&date(v.slice(0,10))&&!isNaN(Date.parse(v))&&+v.slice(11,13)<24&&+v.slice(14,16)<60&&+v.slice(17,19)<60}
+function url(v){return typeof v==='string'&&/^https:\/\/[^\s"'<>]+$/.test(v)&&v.length<=600&&!!(function(){try{return new URL(v).hostname}catch(e){return ''}})()}
+function optional(v,max){return v===undefined||v===''||text(v,max)}
+function safe(v){if(!v||typeof v!=='object')return;Object.keys(v).forEach(function(k){need(k!=='__proto__'&&k!=='constructor'&&k!=='prototype','Unsupported data field: '+k);safe(v[k])})}
+function source(s){need(s===undefined||obj(s),'Invalid source');if(s){need(optional(s.title,160),'Invalid source title');need(s.url===undefined||s.url===''||url(s.url),'Source links must use https://')}}
+function tags(v,values,label,max){need(v===undefined||(Array.isArray(v)&&v.length<=max&&v.every(function(x){return values.indexOf(x)>=0})&&new Set(v).size===v.length),'Invalid '+label)}
+var machines=[],subjects=['Polity','Economy','Environment','S&T','IR','History'];for(var i=1;i<=23;i++)machines.push('M'+('0'+i).slice(-2));
+function feed(f){
+ need(obj(f)&&f.schema==='zola-feed/1','Invalid feed schema');safe(f);need(time(f.updated),'Feed updated must be a UTC ISO timestamp');
+ [['exams',30],['watch',120],['events',250],['inbox',250],['notices',20]].forEach(function(rule){var k=rule[0],a=f[k];need(Array.isArray(a)&&a.length<=rule[1],'Invalid '+k+' list');var seen={};
+  a.forEach(function(e){need(obj(e),'Invalid '+k+' record');if(k!=='watch'){need(text(e.id,k==='inbox'?80:60),'Missing '+k+' id');need(!Object.prototype.hasOwnProperty.call(seen,e.id),'Duplicate '+k+' id');seen[e.id]=true}
+   if(k==='exams'){need(text(e.label,140)&&date(e.date),'Invalid exam label or date');need(e.primary===undefined||typeof e.primary==='boolean','Invalid primary flag');need(e.status===undefined||['scheduled','tentative','postponed','held'].indexOf(e.status)>=0,'Invalid exam status');need(e.checked===undefined||e.checked===''||date(e.checked),'Invalid checked date');source(e.source)}
+   if(k==='watch'||k==='events'){need(text(e.title,k==='watch'?200:220)&&date(e.date),'Invalid '+k+' title or date');need(optional(e.hook,k==='watch'?400:500),'Invalid hook');source(e.source)}
+   if(k==='watch')need(optional(e.kind,24),'Invalid watch kind');
+   if(k==='events'){need(e.status===undefined||['UNVERIFIED','VERIFIED'].indexOf(e.status)>=0,'Invalid event status');need(e.subject===undefined||e.subject===''||subjects.indexOf(e.subject)>=0,'Invalid event subject');tags(e.machines,machines,'machine tags',6)}
+   if(k==='inbox'){need(text(e.title,300)&&url(e.url),'Invalid inbox title or URL');need(e.published===undefined||e.published===''||time(e.published),'Invalid published time');need(optional(e.source,40),'Invalid inbox source');tags(e.machines,machines,'machine tags',6);tags(e.subjects,subjects,'subject tags',5)}
+   if(k==='notices'){need(text(e.text,500),'Invalid notice text');need(e.date===undefined||e.date===''||date(e.date),'Invalid notice date');need(e.level===undefined||['info','correction','warning'].indexOf(e.level)>=0,'Invalid notice level');need(e.url===undefined||e.url===''||url(e.url),'Invalid notice URL')}
+  })});
+ need(f.exams.filter(function(e){return e.primary===true}).length<=1,'More than one primary exam');
+ if(f.edition!==undefined&&f.edition!==null){need(obj(f.edition),'Invalid edition');need(optional(f.edition.latest,12)&&optional(f.edition.note,200),'Invalid edition text');need(f.edition.url===undefined||f.edition.url===''||url(f.edition.url),'Invalid edition URL')}
+ need(JSON.stringify(f).length<1400000,'Feed too large');return f;
+}
+function hacking(v){
+ need(obj(v)&&obj(v.traps),'Not a Zola Hacking progress file');safe(v);
+ need(v.walks===undefined||obj(v.walks),'Invalid walkthroughs');need(v.prefs===undefined||obj(v.prefs),'Invalid preferences');
+ var p=Object.assign({prompts:'on',cap:12},v.prefs||{});need(['on','quiet'].indexOf(p.prompts)>=0&&num(p.cap)&&p.cap%1===0&&p.cap>=3&&p.cap<=60,'Invalid review preferences');
+ Object.keys(v.traps).forEach(function(id){var t=v.traps[id];need(text(id,160)&&obj(t)&&num(t.box)&&t.box%1===0&&t.box>=0&&t.box<=6&&num(t.due)&&t.due>=0&&Array.isArray(t.hist),'Invalid trap record: '+id);
+  t.hist.forEach(function(h){need(obj(h)&&num(h.at)&&h.at>=0&&['right','wrong','peek','pass'].indexOf(h.r)>=0&&(h.c===undefined||h.c===null||['sure','think','guess'].indexOf(h.c)>=0),'Invalid trap history: '+id)})});
+ Object.keys(v.walks||{}).forEach(function(id){var w=v.walks[id];need(obj(w)&&Array.isArray(w.found)&&w.found.every(function(x){return text(x,160)}),'Invalid walkthrough: '+id)});
+ need(v.last===undefined||machines.indexOf(v.last)>=0,'Invalid last machine');return Object.assign({},v,{walks:v.walks||{},prefs:p});
+}
+function csat(v){
+ need(obj(v),'Invalid CSAT progress');safe(v);need(v.ledger===undefined||Array.isArray(v.ledger),'Invalid CSAT ledger');need(v.mocks===undefined||Array.isArray(v.mocks),'Invalid mock history');need(v.set===undefined||obj(v.set),'Invalid CSAT settings');
+ (v.ledger||[]).forEach(function(r){need(obj(r)&&text(r.id,160)&&(r.ok===null||typeof r.ok==='boolean')&&num(r.t)&&r.t>=0&&num(r.ts)&&r.ts>=0&&(r.par===undefined||num(r.par))&&(r.conf===null||['sure','half','hunch'].indexOf(r.conf)>=0),'Invalid CSAT ledger record')});
+ (v.mocks||[]).forEach(function(m){need(obj(m)&&text(m.bp,160)&&text(m.code,6)&&typeof m.pass==='boolean'&&['ts','score','max','need','att','n'].every(function(k){return num(m[k])}),'Invalid mock result')});
+ if(v.live!==undefined&&v.live!==null){var m=v.live;need(obj(m)&&Array.isArray(m.qs)&&m.qs.length>0&&num(m.cur)&&m.cur%1===0&&m.cur>=0&&m.cur<m.qs.length&&num(m.end)&&text(m.bpName,160)&&text(m.code,6),'Invalid unfinished paper');
+  ['ans','flag','spent'].forEach(function(k){need(Array.isArray(m[k])&&m[k].length===m.qs.length,'Invalid unfinished paper '+k)});
+  m.qs.forEach(function(q,i){need(obj(q)&&text(q.id,160)&&text(q.name,300)&&text(q.stem,30000)&&obj(q.o)&&Array.isArray(q.o.opts)&&q.o.opts.length===4&&q.o.opts.every(function(x){return typeof x==='string'})&&num(q.o.ans)&&q.o.ans%1===0&&q.o.ans>=0&&q.o.ans<4&&Array.isArray(q.o.traps)&&Array.isArray(q.sol)&&q.sol.every(function(x){return typeof x==='string'})&&(q.refs===undefined||Array.isArray(q.refs))&&(m.ans[i]===null||num(m.ans[i])&&m.ans[i]%1===0&&m.ans[i]>=0&&m.ans[i]<4)&&typeof m.flag[i]==='boolean'&&num(m.spent[i])&&m.spent[i]>=0,'Invalid unfinished question')})}
+ if(v.theme!==undefined)need(['auto','light','dark'].indexOf(v.theme)>=0,'Invalid CSAT theme');return v;
+}
+function storageKey(k){return /^(?:zolaV2\.|zola\.)/.test(k)||k==='zolaB.v22'||k==='zolaCsatForge.v1'}
+function storageValue(k,value){
+ need(typeof value==='string','Backup values must be strings');var v;
+ if(k==='zolaB.v22')hacking(JSON.parse(value));
+ if(k==='zolaCsatForge.v1')csat(JSON.parse(value));
+ if(k==='zolaV2.theme')need(['auto','light','dark'].indexOf(JSON.parse(value))>=0,'Invalid theme');
+ if(k==='zolaV2.w'){v=JSON.parse(value);need(obj(v)&&['hook','stage','persist','pyq','first','scale','recency','bg'].every(function(n){return num(v[n])&&v[n]>=0&&v[n]<=100}),'Invalid tracker weights')}
+ if(k==='zolaV2.open'){v=JSON.parse(value);need(obj(v),'Invalid open tracker records');safe(v)}
+ if(k==='zolaV2.abs')need(typeof JSON.parse(value)==='boolean','Invalid tracker threshold setting');
+ if(k==='zola.live.v1'){v=JSON.parse(value);need(obj(v)&&(v.url===''||url(v.url)),'Invalid saved feed settings');if(v.feed)feed(Object.assign({schema:'zola-feed/1'},v.feed))}
+}
+window.ZOLA_DATA={feed:feed,hacking:hacking,csat:csat,storageKey:storageKey,storageValue:storageValue,time:time,safe:safe};
 })();
 </script>
 <!-- /zola-pwa:head -->
@@ -2781,7 +2845,16 @@ V.review=()=>{const due=dueList().slice(0,mem.prefs.cap);const all=Object.entrie
  return h};
 function wireReview(){const p=$('#b-prompts');if(!p)return;p.onchange=()=>{mem.prefs.prompts=p.value;save()};$('#b-cap').onchange=e=>{mem.prefs.cap=Math.max(3,Math.min(60,+e.target.value||12));save();updateDue()};
  $('#b-export').onclick=()=>{const blob=new Blob([JSON.stringify({app:'Zola Corpus 2.2 B',exported:new Date().toISOString(),data:mem},null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='zola-b-progress.json';document.body.appendChild(a);a.click();a.remove();$('#b-io').textContent='Exported.'};
- $('#b-import').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{const d=JSON.parse(t);if(!d.data||!d.data.traps)throw new Error('not a Zola B progress file');mem=Object.assign(load(),d.data);save();render('review');$('#b-io').textContent='Imported.'}).catch(err=>{$('#b-io').textContent='Import failed: '+err.message})};
+ $('#b-import').onchange=e=>{ // zola-app-fix: validate before replacing progress
+ const f=e.target.files[0];if(!f)return;e.target.value='';
+ if(f.size>20000000){$('#b-io').textContent='Import failed: file exceeds 20 MB.';return}
+ f.text().then(t=>{const d=JSON.parse(t);const candidate=window.ZOLA_DATA.hacking(d.data);
+ if(!confirm('Replace all Hacking progress on this device with '+Object.keys(candidate.traps).length+' imported trap records?'))return;
+ const previous=localStorage.getItem(KEY),priorMem=mem;
+ localStorage.setItem(KEY,JSON.stringify(candidate));mem=candidate;
+ try{render('review');updateDue()}catch(err){if(previous===null)localStorage.removeItem(KEY);else localStorage.setItem(KEY,previous);mem=priorMem;render('review');throw err}
+ $('#b-io').textContent='Imported. Hacking progress replaced.';
+ }).catch(err=>{$('#b-io').textContent='Import failed: '+err.message})};
  $('#b-wipe').onclick=()=>{if(confirm('Clear all Category B progress on this device?')){mem={traps:{},walks:{},prefs:mem.prefs};save();render('review')}}}
 
 /* powers and tracks */
@@ -3210,7 +3283,7 @@ addEventListener('resize',prog);addEventListener('hashchange',function(){setTime
 function countUp(el){
  var t=(el.textContent||'').trim();if(el.dataset.zc||!/^\d{1,5}$/.test(t))return;el.dataset.zc='1';
  var n=+t;if(calm||!countToday||n<3)return;
- var dur=Math.min(1500,650+n*3),t0=0,last='0';el.textContent='0';
+ var dur=Math.min(850,420+n),t0=0,last='0';el.textContent='0';
  (function step(ts){if(!el.isConnected||el.textContent!==last)return;   // the app re-rendered it: leave it alone
   if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/dur),v=k<1?String(Math.round(n*(1-Math.pow(1-k,3)))):t;
   el.textContent=v;last=v;if(k<1)requestAnimationFrame(step)})(performance.now());
@@ -3220,7 +3293,7 @@ var COUNT_DAY='zola.neo.countedOn',today=new Date().toDateString(),countToday=tr
 try{countToday=localStorage.getItem(COUNT_DAY)!==today;localStorage.setItem(COUNT_DAY,today)}catch(e){}
 
 // ---- Scroll reveal: only content that starts below the fold, once ---------------------
-var REVEAL='.stat,#frB a.b-card,#frB .b-ledger,.box,.callout,.chart,.hbar,.tscroll,li.exam,#frB .b-item,#frB .b-how>*';
+var REVEAL='.stat,#frB .b-ledger,.chart,.hbar';
 var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){
  var shown=es.filter(function(e){return e.isIntersecting}).sort(function(a,b){return a.boundingClientRect.top-b.boundingClientRect.top});
  shown.forEach(function(e,i){var el=e.target;io.unobserve(el);
@@ -3323,12 +3396,15 @@ html.zcollapse:not(.zframed) .sub,html.zcollapse:not(.zframed) #frB .b-nav{top:c
 var d=document.documentElement,se=function(){return document.scrollingElement||d};
 
 // ---- Every section opens at its top, or where you last left it -----------------------
-var pos={},quietUntil=0,key=function(){return location.hash||'#'};
+var pos={},quietUntil=0,restoring=false,nav=0,key=function(){return location.hash||'#'};
 try{pos=JSON.parse(sessionStorage.getItem('zola.ux.pos')||'{}')}catch(e){}
-addEventListener('scroll',function(){if(Date.now()<quietUntil)return;pos[key()]=Math.round(se().scrollTop)},{passive:true});
+addEventListener('scroll',function(){if(restoring)return;pos[key()]=Math.round(se().scrollTop)},{passive:true});
 addEventListener('hashchange',function(){
- var target=pos[key()]||0;quietUntil=Date.now()+450;
- requestAnimationFrame(function(){requestAnimationFrame(function(){window.scrollTo(0,target);d.classList.remove('zcollapse')})});
+ var target=pos[key()]||0,turn=++nav;restoring=true;quietUntil=Date.now()+450;
+ requestAnimationFrame(function(){requestAnimationFrame(function(){if(turn!==nav)return;
+  window.scrollTo({top:target,behavior:'instant'});d.classList.remove('zcollapse');
+  requestAnimationFrame(function(){if(turn===nav)restoring=false})
+ })});
  try{sessionStorage.setItem('zola.ux.pos',JSON.stringify(pos))}catch(e){}
 });
 
@@ -3345,14 +3421,11 @@ if(hdr&&top){measure();addEventListener('resize',measure);
  if(window.MutationObserver)new MutationObserver(framed).observe(document.body,{attributes:true,attributeFilter:['class']});framed()}
 
 // ---- Exam dates → calendar ----------------------------------------------------------------
-var FEED='https://raw.githubusercontent.com/iamhariize-maker/zola-feed/main/zola-feed.json';
-function cachedExams(){try{var v=JSON.parse(localStorage.getItem('zola.live.v1')||'{}');return v.feed&&Array.isArray(v.feed.exams)?v.feed.exams:null}catch(e){return null}}
-function getExams(){var c=cachedExams();if(c&&c.length)return Promise.resolve(c);
- return fetch(FEED,{cache:'no-cache'}).then(function(r){return r.json()}).then(function(f){return f.exams||[]})}
+function getExams(){return Promise.resolve(window.ZOLA_LIVE&&ZOLA_LIVE.exams?ZOLA_LIVE.exams():[])}
 var ymd=function(s){return /^\d{4}-\d{2}-\d{2}$/.test(s||'')};
 function daysTo(s){var t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(s+'T00:00:00')-t)/864e5)}
 function fmt(s){try{return new Date(s+'T00:00:00').toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}catch(e){return s}}
-function esc(t){return String(t||'').replace(/[\;,]/g,function(c){return '\\'+c}).replace(/\n/g,'\\n')}
+function esc(t){return String(t||'').replace(/\\/g,'\\\\').replace(/[;,]/g,function(c){return '\\'+c}).replace(/\r\n|\r|\n/g,'\\n')}
 function ics(list){
  var stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
  var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Zola Corpus//Exam dates//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Zola Corpus exam dates'];
@@ -3404,6 +3477,435 @@ function addButtons(){[].forEach.call(document.querySelectorAll('li.exam'),funct
 if(window.MutationObserver){var t=0;new MutationObserver(function(){clearTimeout(t);t=setTimeout(addButtons,120)}).observe(document.getElementById('catA')||document.body,{childList:true,subtree:true})}
 addButtons();
 })();
+</script>
+<style id="zdata-ui">
+.zbackup-tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0;max-width:760px}
+.zbackup-tools p{flex:1 1 200px;margin:0;font:15px/1.45 var(--sans)}
+.zbackup-tools small{display:block;color:var(--muted)}
+.zbackup-tools .btn,#zbackup .btn{min-height:44px}
+#zbackup{width:min(560px,94vw);max-height:86vh;overflow:auto;border:1px solid var(--rule);border-radius:22px;background:var(--sheet);color:var(--ink);padding:18px;box-sizing:border-box}
+#zbackup::backdrop{background:rgba(15,10,30,.55)}
+#zbackup h2{margin:0 0 12px;font:700 22px/1.25 var(--display)}
+#zbackup .zbackup-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+#zbackup-error{color:var(--bad);min-height:1.5em}
+.sub::after{display:none}
+.sub .in{padding-right:18px}
+.sub .zsections{position:absolute;right:6px;top:1px;width:44px;min-height:44px;padding:0;border:1px solid var(--rule);border-radius:10px;background:var(--sheet);color:var(--pen);font:700 24px/1 var(--sans);cursor:pointer;z-index:1}
+.zsections[hidden]{display:none}
+.sub.zoverflow .in{padding-right:58px}
+#zsections-menu{position:absolute;right:6px;top:100%;z-index:31;max-height:70vh;overflow:auto;min-width:210px;padding:8px;border:1px solid var(--rule);border-radius:12px;background:var(--sheet);box-shadow:0 12px 28px rgba(20,10,50,.18)}
+#zsections-menu[hidden]{display:none}
+#zsections-menu button{display:block;width:100%;text-align:left;min-height:44px;background:var(--sheet);border:0;border-radius:6px;color:var(--ink);font:500 15px var(--sans);cursor:pointer}
+#zsections-menu button[aria-current="page"]{background:var(--pen-soft);color:var(--pen);font-weight:700}
+.zsections:focus-visible,#zsections-menu button:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
+@media print{.zbackup-tools,#zbackup,.zsections,#zsections-menu{display:none!important}}
+</style>
+<script>// Complete backups and one-tap section access. No requests or third-party code.
+(function(){
+'use strict';
+var data=window.ZOLA_DATA,MAX=20000000,DAY=864e5,REM='zola.pwa.backupReminderAt',LAST='zola.pwa.lastBackupAt';
+function keys(){return Object.keys(localStorage).filter(data.storageKey).sort()}
+function snapshot(){var values={};keys().forEach(function(k){values[k]=localStorage.getItem(k)});return {schema:'zola-backup/1',exported:new Date().toISOString(),edition:window.ZOLA_LIVE?ZOLA_LIVE.info().app:'2.4',storage:values}}
+function validate(v){
+ if(!v||v.schema!=='zola-backup/1'||!data.time(v.exported)||typeof v.edition!=='string'||!v.storage||typeof v.storage!=='object'||Array.isArray(v.storage))throw new Error('Not a valid Zola backup file.');
+ data.safe(v);var ks=Object.keys(v.storage);if(ks.length>1000||JSON.stringify(v).length>MAX)throw new Error('Backup is too large.');
+ ks.forEach(function(k){if(!data.storageKey(k))throw new Error('Unsupported storage key: '+k);data.storageValue(k,v.storage[k])});return v;
+}
+function restore(v){ // Storage is replaced only after all values pass validation.
+ validate(v);var before={},current=keys(),incoming=Object.keys(v.storage);
+ current.forEach(function(k){before[k]=localStorage.getItem(k)});
+ var written=[],removed=[];
+ try{incoming.forEach(function(k){localStorage.setItem(k,v.storage[k]);written.push(k)});current.forEach(function(k){if(!Object.prototype.hasOwnProperty.call(v.storage,k)){localStorage.removeItem(k);removed.push(k)}})}
+ catch(e){ // Do not clear existing data before finding out whether writes are allowed.
+  written.forEach(function(k){if(!Object.prototype.hasOwnProperty.call(before,k))localStorage.removeItem(k)});
+  written.concat(removed).forEach(function(k){if(Object.prototype.hasOwnProperty.call(before,k)&&localStorage.getItem(k)!==before[k])localStorage.setItem(k,before[k])});
+  throw new Error('Restore could not be saved. Your previous data was restored. '+e.message)}
+}
+function counts(v){var b={},c={};try{b=JSON.parse(v.storage['zolaB.v22']||'{}');c=JSON.parse(v.storage['zolaCsatForge.v1']||'{}')}catch(e){}
+ return {traps:Object.keys(b.traps||{}).length,walks:Object.keys(b.walks||{}).length,questions:(c.ledger||[]).length,mocks:(c.mocks||[]).length,unfinished:!!c.live,keys:Object.keys(v.storage).length};
+}
+window.ZOLA_BACKUP={snapshot:snapshot,validate:validate,restore:restore};
+var brief=document.getElementById('p-brief'),tools=document.createElement('section');tools.className='box zbackup-tools';tools.setAttribute('aria-label','Back up and restore progress');
+tools.innerHTML='<p><b>Your progress</b><small>Save Hacking, CSAT and Forecast data together.</small></p><button type="button" class="btn" id="zbackup-save">Back up</button><button type="button" class="btn ghost" id="zbackup-open">Restore</button><span id="zbackup-status" role="status"></span>';
+if(brief){var intro=brief.querySelector('.read');if(intro)intro.insertAdjacentElement('afterend',tools);else brief.prepend(tools)}
+var input=document.createElement('input');input.type='file';input.accept='.json,application/json';input.hidden=true;input.id='zbackup-file';document.body.appendChild(input);
+var dlg=document.createElement('dialog');dlg.id='zbackup';dlg.setAttribute('aria-labelledby','zbackup-title');
+dlg.innerHTML='<h2 id="zbackup-title">Restore your backup</h2><p id="zbackup-summary"></p><p>This replaces all Zola progress and settings on this device. The app will reload. Back up your current progress first if you want to keep it.</p><p id="zbackup-error" role="alert"></p><div class="zbackup-acts"><button type="button" class="btn ghost" id="zbackup-cancel">Cancel</button><button type="button" class="btn" id="zbackup-confirm">Replace and reload</button></div>';
+document.body.appendChild(dlg);var pending=null,reading=false;
+function status(s){document.getElementById('zbackup-status').textContent=s}
+function backUp(){try{
+ var v=snapshot(),blob=new Blob([JSON.stringify(v,null,2)],{type:'application/json'}),u=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=u;a.download='zola-backup-'+v.exported.slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000);
+ localStorage.setItem(LAST,String(Date.now()));var n=document.getElementById('zbackup-reminder');if(n)n.remove();status('Backup downloaded.');
+}catch(e){status('Backup failed: '+e.message)}}
+document.getElementById('zbackup-save').addEventListener('click',backUp);
+document.getElementById('zbackup-open').addEventListener('click',function(){if(!reading)input.click()});
+input.addEventListener('change',function(){var f=input.files[0];input.value='';pending=null;if(!f)return;
+ if(f.size>MAX){status('Restore refused: file exceeds 20 MB.');return}
+ reading=true;document.getElementById('zbackup-open').disabled=true;
+ f.text().then(function(t){var v=validate(JSON.parse(t)),c=counts(v);pending=v;
+  document.getElementById('zbackup-summary').textContent='Saved '+new Date(v.exported).toLocaleString()+', edition '+v.edition+'. '+c.traps+' trap records, '+c.walks+' walkthroughs, '+c.questions+' CSAT answers, '+c.mocks+' mock results'+(c.unfinished?', one unfinished paper':'')+'; '+c.keys+' saved keys.';
+  document.getElementById('zbackup-error').textContent='';dlg.showModal();
+ }).catch(function(e){status('Restore refused: '+e.message)}).then(function(){reading=false;document.getElementById('zbackup-open').disabled=false});
+});
+document.getElementById('zbackup-cancel').addEventListener('click',function(){dlg.close()});
+dlg.addEventListener('close',function(){pending=null});
+document.getElementById('zbackup-confirm').addEventListener('click',function(){if(!pending)return;try{restore(pending);location.reload()}catch(e){document.getElementById('zbackup-error').textContent=e.message}});
+function reminder(){try{
+ var s=snapshot(),c=counts(s);if(!c.traps&&!c.questions&&!c.mocks&&!c.walks&&!c.unfinished)return;
+ var last=+(localStorage.getItem(LAST)||0),rem=+(localStorage.getItem(REM)||0),first=+(localStorage.getItem('zola.pwa.progressSince')||0);
+ if(!first){first=Date.now();var b=JSON.parse(s.storage['zolaB.v22']||'{}'),f=JSON.parse(s.storage['zolaCsatForge.v1']||'{}');Object.keys(b.traps||{}).forEach(function(k){(b.traps[k].hist||[]).forEach(function(h){if(h.at>0)first=Math.min(first,h.at)})});(f.ledger||[]).concat(f.mocks||[]).forEach(function(r){if(r.ts>0)first=Math.min(first,r.ts)});localStorage.setItem('zola.pwa.progressSince',String(first))}
+ if(Date.now()-Math.max(last,first)<14*DAY||Date.now()-rem<14*DAY)return;
+ var notice=document.createElement('p');notice.id='zbackup-reminder';notice.setAttribute('role','status');notice.textContent='Keep a copy of your progress: it has been at least two weeks since your last backup.';tools.appendChild(notice);localStorage.setItem(REM,String(Date.now()));
+}catch(e){}}
+setTimeout(reminder,3000);
+
+// A real overflow button opens all seven sections in one tap, including the hidden ones.
+var bar=document.querySelector('.sub'),strip=bar&&bar.querySelector('.in');
+if(!bar||!strip)return;
+var tabs=[].slice.call(strip.querySelectorAll('button')),more=document.createElement('button'),menu=document.createElement('div');
+more.type='button';more.className='zsections';more.textContent='›';more.setAttribute('aria-label','Show all Forecast sections');more.setAttribute('aria-expanded','false');more.setAttribute('aria-controls','zsections-menu');
+menu.id='zsections-menu';menu.hidden=true;menu.setAttribute('role','group');menu.setAttribute('aria-label','Forecast sections');
+function closeMenu(focus){menu.hidden=true;more.setAttribute('aria-expanded','false');if(focus)more.focus({preventScroll:true})}
+tabs.forEach(function(tab){var b=document.createElement('button');b.type='button';b.textContent=tab.textContent;
+ b.addEventListener('click',function(){closeMenu(false);tab.click();tab.focus({preventScroll:true});reveal(tab)});menu.appendChild(b)});
+function reveal(tab){var left=tab.offsetLeft,right=left+tab.offsetWidth;if(left<strip.scrollLeft)strip.scrollLeft=left;else if(right>strip.scrollLeft+strip.clientWidth-58)strip.scrollLeft=right-strip.clientWidth+58}
+function update(){var overflow=strip.scrollWidth>strip.clientWidth+2;bar.classList.toggle('zoverflow',overflow);more.hidden=!overflow;
+ // The owner router treats all .sub buttons as tabs; these utility buttons are not tabs.
+ more.removeAttribute('aria-selected');more.tabIndex=0;
+ more.textContent=strip.scrollLeft+strip.clientWidth>=strip.scrollWidth-2?'⋯':'›';
+ tabs.forEach(function(t,i){var b=menu.children[i];b.removeAttribute('aria-selected');b.tabIndex=0;if(t.getAttribute('aria-selected')==='true')b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});if(!overflow)closeMenu(false)}
+more.addEventListener('click',function(){if(!menu.hidden){closeMenu(true);return}update();menu.hidden=false;more.setAttribute('aria-expanded','true');menu.querySelector('[aria-current]')&&menu.querySelector('[aria-current]').focus()});
+menu.addEventListener('keydown',function(e){var bs=[].slice.call(menu.children),i=bs.indexOf(document.activeElement),j;
+ if(e.key==='Escape'){e.preventDefault();closeMenu(true)}
+ if(e.key==='ArrowDown'||e.key==='ArrowUp'||e.key==='Home'||e.key==='End'){e.preventDefault();j=e.key==='Home'?0:e.key==='End'?bs.length-1:(i+(e.key==='ArrowDown'?1:-1)+bs.length)%bs.length;bs[j].focus()}});
+document.addEventListener('click',function(e){if(!bar.contains(e.target))closeMenu(false)});
+bar.addEventListener('focusout',function(){setTimeout(function(){if(!bar.contains(document.activeElement))closeMenu(false)},0)});
+bar.appendChild(more);bar.appendChild(menu);strip.addEventListener('scroll',update,{passive:true});
+addEventListener('resize',update);addEventListener('hashchange',function(){closeMenu(false);update();var t=strip.querySelector('[aria-selected="true"]');if(t)reveal(t)});
+if(window.ResizeObserver)new ResizeObserver(update).observe(strip);update();
+})();
+</script>
+<style id="zstudio">
+/* Zola Studio: editorial hierarchy, quiet colour and precise interaction. */
+:root{
+ --paper:#F6F5F1;--sheet:#FFFFFF;--ink:#18263B;--muted:#606978;--rule:#DCDDDC;--rule2:#ECEDEA;
+ --pen:#5444AD;--pen-soft:#EEEBF8;--onpen:#FFFFFF;--drop:#9A4D5D;--drop-soft:#F7E9ED;
+ --gold:#88612F;--gold-soft:#F6EEDC;--ok:#21654F;--ok-soft:#E7F2EC;--bad:#A53443;--bad-soft:#FAEBEE;
+ --warn:#805D22;--warn-soft:#F7EFD9;--r1:6px;--r2:16px;--r3:22px;
+ --studio-wash:#EFEDF5;--studio-deep:#202D45;--studio-on-deep:#F5F3FC;
+ --studio-shadow:0 2px 4px rgba(24,38,59,.02),0 12px 36px -24px rgba(24,38,59,.22);
+ --lift:var(--studio-shadow);--neo-v:#5444AD;--neo-m:#6656B8;--neo-c:#367B80;
+ --neo-fill:linear-gradient(120deg,#4D419B,#6351B2);--neo-text:linear-gradient(110deg,#413580,#6D54A5);
+ --neo-line:linear-gradient(90deg,#6552B5,#9D88CE);--neo-line-v:linear-gradient(180deg,#6552B5,#9D88CE);
+ --neo-ring:rgba(84,68,173,.13);--neo-glow:0 5px 14px -10px rgba(64,42,122,.35);
+ --z-out:cubic-bezier(.22,.8,.3,1);--z-spring:cubic-bezier(.22,.8,.3,1);
+ color-scheme:light;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --paper:#101824;--sheet:#182333;--ink:#EDF0F5;--muted:#A6B1C1;--rule:#344050;--rule2:#273344;
+ --pen:#C0B0F3;--pen-soft:#302C47;--drop:#E1A3B2;--drop-soft:#382A36;--gold:#D8BD83;--gold-soft:#352F25;
+ --ok:#9CD2BB;--ok-soft:#223A34;--bad:#F0A7AE;--bad-soft:#3A2833;--warn:#E3C68B;--warn-soft:#3B3326;
+ --studio-wash:#1C2336;--studio-deep:#272C47;--studio-on-deep:#F5F3FC;--studio-shadow:0 12px 34px -26px rgba(0,0,0,.6);
+ --neo-v:#C0B0F3;--neo-m:#C9B7EA;--neo-c:#99C8CB;--neo-fill:linear-gradient(120deg,#5949A2,#7054A5);
+ --neo-text:linear-gradient(110deg,#D2C4F7,#E9D6F1);--neo-line:linear-gradient(90deg,#B5A0EE,#D4BCD8);--neo-line-v:linear-gradient(180deg,#B5A0EE,#D4BCD8);
+ --neo-ring:rgba(192,176,243,.18);--neo-glow:none;color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+ --paper:#101824;--sheet:#182333;--ink:#EDF0F5;--muted:#A6B1C1;--rule:#344050;--rule2:#273344;
+ --pen:#C0B0F3;--pen-soft:#302C47;--drop:#E1A3B2;--drop-soft:#382A36;--gold:#D8BD83;--gold-soft:#352F25;
+ --ok:#9CD2BB;--ok-soft:#223A34;--bad:#F0A7AE;--bad-soft:#3A2833;--warn:#E3C68B;--warn-soft:#3B3326;
+ --studio-wash:#1C2336;--studio-deep:#272C47;--studio-on-deep:#F5F3FC;--studio-shadow:0 12px 34px -26px rgba(0,0,0,.6);
+ --neo-v:#C0B0F3;--neo-m:#C9B7EA;--neo-c:#99C8CB;--neo-fill:linear-gradient(120deg,#5949A2,#7054A5);
+ --neo-text:linear-gradient(110deg,#D2C4F7,#E9D6F1);--neo-line:linear-gradient(90deg,#B5A0EE,#D4BCD8);--neo-line-v:linear-gradient(180deg,#B5A0EE,#D4BCD8);
+ --neo-ring:rgba(192,176,243,.18);--neo-glow:none;color-scheme:dark;
+}
+/* shared-surface-end: these tokens also dress the CSAT document. */
+body{line-height:1.65;-webkit-font-smoothing:antialiased;background:var(--paper)}
+body::before{background:radial-gradient(ellipse at 85% 0,var(--studio-wash),transparent 54%);position:absolute;height:760px;bottom:auto}
+body::after{display:none}
+::selection{background:var(--pen-soft);color:var(--ink)}
+:focus-visible{outline:3px solid var(--pen);outline-offset:4px}
+.hdr{background:var(--sheet);border-bottom:1px solid var(--rule);box-shadow:0 4px 20px -18px rgba(20,30,50,.3)}
+.hdr::before,.hdr::after{display:none}
+.hin{max-width:1240px;padding:0 28px 10px}
+.top{min-height:72px;gap:16px}
+.mark.wl-mark{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 10px;border:1px solid var(--rule);border-radius:10px;background:var(--studio-deep);color:var(--studio-on-deep);font-size:12px;letter-spacing:-.025em;box-shadow:none}
+.mark.wl-mark::after{display:none}
+.ttl{font:600 21px/1.15 var(--display);letter-spacing:-.045em}
+.ttl small{font:400 11px/1.4 var(--sans);letter-spacing:0;margin-top:4px}
+.clock{font:500 10px/1.3 var(--sans);letter-spacing:.01em;text-transform:none;padding:4px 9px!important;margin:0 0 0 auto!important;min-height:44px;min-width:76px}
+.clock .num{font:600 25px/1 var(--display);letter-spacing:-.04em;color:var(--ink);background:none}
+.tbtn{min-height:44px;min-width:44px;padding:0 13px;background:var(--sheet);border-color:var(--rule);border-radius:12px;font-weight:500;font-size:12px}
+[data-state="live"] .zl-dot{background:var(--ok);box-shadow:0 0 0 3px var(--ok-soft)}
+[data-state="live"] .zl-dot::after{display:none}
+.omr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:0;background:var(--paper);padding:4px;border:1px solid var(--rule2);border-radius:14px;overflow:visible}
+.omr button{justify-content:center;border:1px solid transparent;border-radius:10px;padding:9px 14px;min-height:48px;background:none;gap:11px;white-space:normal;color:var(--muted);transition:background-color .18s,color .18s,border-color .18s}
+.omr .lbl{font-size:14px;line-height:1.2;font-weight:600}
+.omr .lbl .sb{font-size:11px;margin-top:3px;font-weight:400}
+.omr .bub{width:26px;height:26px;border:1px solid var(--rule);border-radius:8px;font:500 11px var(--mono);color:var(--muted);background:var(--sheet);transform:none}
+.omr button[aria-selected="true"]{background:var(--sheet);border-color:var(--rule);color:var(--ink);box-shadow:0 2px 6px rgba(20,30,50,.04)}
+.omr button[aria-selected="true"] .bub{background:var(--pen-soft);border-color:transparent;color:var(--pen);box-shadow:none;transform:none;animation:none}
+.sub,#frB .b-nav{background:var(--paper);backdrop-filter:none;-webkit-backdrop-filter:none;border-color:var(--rule)}
+.sub .in{max-width:1240px;padding-left:28px;gap:6px;scrollbar-width:none}
+.sub button{min-height:52px;padding:0 15px;border:0;border-radius:0;font:500 13px var(--sans);background:none;color:var(--muted);position:relative}
+.sub .in button::after{content:"";position:absolute;left:15px;right:15px;bottom:0;height:2px;background:var(--pen);transform:scaleX(0);transition:transform .2s var(--z-out)}
+.sub .in button[aria-selected="true"]{color:var(--pen);background:none;border:0}
+.sub .in button[aria-selected="true"]::after{transform:scaleX(1)}
+.sub .zsections{top:4px;background:var(--sheet);box-shadow:-8px 0 12px var(--paper);font-size:23px;border-radius:11px}
+#zsections-menu{padding:8px;border-radius:16px;box-shadow:0 12px 35px rgba(20,30,50,.16)}
+#zsections-menu button{border-radius:9px;padding:0 12px;font-size:14px}
+.wrap,#frB .b-main{max-width:1240px;padding:38px 28px 90px}
+.z-kicker{display:flex;align-items:center;gap:10px;margin:0 0 20px;font:500 10px/1.4 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.z-kicker::before{content:"";width:22px;height:1px;background:var(--pen)}
+h2.sec{font:500 clamp(30px,4.2vw,48px)/1.08 var(--display);letter-spacing:-.055em;margin:0 0 22px;max-width:22ch;text-wrap:balance}
+h2.sec::before{display:none}
+.lede{font:400 19px/1.65 var(--serif);color:var(--muted);max-width:61ch}
+.spine{border-image:none;border-left:2px solid var(--pen);font:400 italic 20px/1.45 var(--serif);color:var(--ink);max-width:48ch;padding:3px 0 3px 16px;margin:24px 0 0}
+.zbrief-hero{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.9fr);gap:56px;align-items:center;padding:10px 0 36px}
+.zbrief-hero .read{min-width:0}
+#briefStats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border:1px solid var(--rule);border-radius:20px;overflow:hidden;background:var(--sheet);box-shadow:var(--studio-shadow);align-self:center;position:relative}
+#briefStats .stat{border:0;border-radius:0;box-shadow:none;padding:26px 22px;background:transparent;min-height:150px}
+#briefStats .stat:nth-child(odd){border-right:1px solid var(--rule2)}
+#briefStats .stat:nth-child(-n+2){border-bottom:1px solid var(--rule2)}
+#briefStats .stat::before{display:none}
+#briefStats .stat .num{font:500 clamp(32px,3.5vw,46px)/1 var(--display);letter-spacing:-.06em;color:var(--ink);background:none;margin-bottom:14px}
+#briefStats .stat span{display:block;font:400 12px/1.5 var(--sans);max-width:20ch;color:var(--muted)}
+.zbrief-actions{display:flex;gap:10px;flex-wrap:wrap;margin:25px 0 0}
+.zbrief-actions a{text-decoration:none}
+.box,.stat,.chart,.tscroll,details.fold{box-shadow:var(--studio-shadow);border-color:var(--rule)}
+.box{padding:23px 25px;margin:22px 0}
+.box.pen,.box.drop,.box.warn{border-color:var(--rule);box-shadow:inset 3px 0 0 var(--pen),var(--studio-shadow)}
+.zbackup-tools{max-width:none;margin:0 0 34px;padding:15px 20px;gap:12px;background:transparent;border:1px solid var(--rule);box-shadow:none;border-radius:14px}
+.zbackup-tools p{font-size:13px;flex:1 1 250px;line-height:1.5}
+.zbackup-tools p b{font-weight:600}
+.zbackup-tools small{font-size:12px}
+.zbackup-tools .btn{font-size:12px;min-height:44px;padding:0 15px}
+#zbackup-save{background:var(--sheet);color:var(--ink);border-color:var(--rule);box-shadow:none}
+#zbackup-status:empty{display:none}
+.btn,#frB .b-btn,.pwa-b{min-height:44px;border-radius:11px;font-size:13px;font-weight:600;padding-left:18px;padding-right:18px;letter-spacing:0}
+.btn:not(.ghost),#frB .b-btn:not(.b-btn-ghost):not(.b-btn-quiet){box-shadow:var(--neo-glow)}
+.btn.ghost,#frB .b-btn-ghost{background:var(--sheet);border-color:var(--rule);color:var(--ink)}
+.btn::after,#frB .b-btn::after,.pwa-b::after{display:none}
+.chip{min-height:44px;border-radius:9px;font-size:12px;padding:0 13px}
+.chip[aria-pressed="true"]{background:var(--pen-soft);border-color:var(--pen);color:var(--pen);box-shadow:none;animation:none}
+.tag{font-size:10px;letter-spacing:.025em;border-radius:5px;padding:5px 7px}
+.search,#frB .b-search,input[type=number],select{border-radius:12px}
+.search,#frB .b-search{min-height:50px;box-shadow:none;border-width:1px}
+input[type=range]{min-height:44px}
+.tools{gap:12px;margin:22px 0}.summary{font-size:13px}
+.list{gap:12px}
+details.item{box-shadow:none;border-radius:14px}
+details.item>summary{padding:18px;gap:16px;min-height:88px}
+.it-t{font:500 18px/1.35 var(--serif)}
+.it-m{font-size:11px;gap:7px;margin-top:7px}
+.tier{border-radius:10px;font:500 12px var(--mono);width:36px;height:40px}
+.tier.S{background:var(--pen-soft);color:var(--pen);border:1px solid var(--pen);box-shadow:none}
+details.item:has(.tier.S){box-shadow:inset 3px 0 0 var(--pen)}
+details.item:has(.tier.A){box-shadow:none}
+details.item:has(.tier.S) .score{color:var(--ink);background:none}
+.score{font:500 24px/1 var(--display);letter-spacing:-.04em}.score small{letter-spacing:.04em;font-size:9px}
+.it-b{padding:6px 22px 24px}.it-b dd{font-family:var(--serif);font-size:17px;line-height:1.65}
+.bar i,.hbar .tr i{background:var(--pen)}
+.zl-inbox{border-color:var(--rule);border-radius:16px;background:var(--sheet);box-shadow:none}
+.zl-t{font-family:var(--serif);font-size:17px}.zl-date{font-size:10px}
+#frB .b-nav-in{max-width:1240px;padding:6px 28px;gap:6px}
+#frB .b-nav a{min-height:44px;border-radius:9px;font-size:13px;font-weight:500}
+#frB .b-nav a[aria-current="page"]{background:var(--sheet);box-shadow:inset 0 0 0 1px var(--rule);color:var(--pen)}
+#frB .b-hero{gap:32px 64px;padding:12px 0 32px;margin-bottom:30px}
+#frB .b-hero h1{font-size:clamp(42px,5.4vw,68px);font-weight:500;line-height:1.02;letter-spacing:-.06em}
+#frB h1{font-weight:500;line-height:1.05;font-size:clamp(36px,5vw,60px)}
+#frB h2{font-weight:500;letter-spacing:-.045em}
+#frB .b-eyebrow{font:500 10px/1.5 var(--mono);letter-spacing:.12em;background:none;color:var(--muted);margin-bottom:18px;text-transform:uppercase}
+#frB .b-hero h1 span:first-child{background:none;color:var(--ink)}
+#frB .b-lede{color:var(--muted);font-size:19px}
+#frB .b-ledger{box-shadow:var(--studio-shadow);border-radius:18px}
+#frB .b-ledger div{padding:24px 20px}
+#frB .b-ledger b{font-weight:500;background:none;color:var(--ink);font-size:37px}
+#frB .b-ledger span{font:400 11px/1.5 var(--sans);letter-spacing:0;text-transform:none}
+#frB .b-how{padding-top:25px;gap:20px}
+#frB .b-how div{padding-left:34px;font-size:13px}
+#frB .b-how div::before{width:auto;height:auto;top:0;border:0;border-radius:0;display:block;font:500 11px/1.8 var(--mono);content:"0" counter(how);color:var(--pen)}
+#frB .b-how b{font-size:14px;font-weight:600}
+#frB .b-group{margin-top:44px}
+#frB .b-group>h2{border-bottom:1px solid var(--rule);padding-bottom:17px;font-size:25px}
+#frB .b-group>h2 small{font-size:14px}
+#frB a.b-card{padding:25px;min-height:230px;border-radius:16px;gap:12px;box-shadow:var(--studio-shadow)}
+#frB .b-card::before{display:none}
+#frB a.b-card::after{top:auto;bottom:0;height:2px;left:25px;right:25px;width:auto;background:var(--pen);transform:scaleX(0)}
+#frB .b-card .b-id{font:500 13px/1.5 var(--mono);letter-spacing:.02em;background:none;color:var(--pen)}
+#frB .b-card h3{font-size:21px;font-weight:500;letter-spacing:-.025em}
+#frB .b-card p{font-size:16px;line-height:1.5}
+#frB .b-meta{font:400 10px/1.5 var(--sans);border-top:1px solid var(--rule2);padding-top:14px}
+#frB .b-continue{background:var(--studio-deep);color:var(--studio-on-deep);border-radius:16px;padding:21px 24px}
+#frB .b-continue .b-muted{color:#CDCFE0}
+#frB .b-continue .b-btn{background:#F5F3FC;color:#202D45}
+#frB .b-tag{min-height:44px}
+.pwa-toast{border:1px solid var(--rule);border-radius:16px;box-shadow:0 12px 45px rgba(20,30,50,.17);padding:16px}
+.pwa-toast::before{display:none}
+.pwa-ico{background:var(--pen-soft);border-radius:12px}
+dialog,#zcal,#zbackup,#b-dialog,#zl-dlg{border-radius:20px;border-color:var(--rule);box-shadow:0 28px 90px -25px rgba(0,0,0,.4)}
+dialog::backdrop{background:rgba(15,24,39,.48);backdrop-filter:blur(3px)}
+.zprog{height:2px;background:var(--pen);box-shadow:none;opacity:.7}
+.z-top{position:fixed;bottom:24px;right:max(20px,env(safe-area-inset-right));z-index:45;display:flex;align-items:center;gap:7px;min-height:44px;min-width:44px;padding:0 13px;border:1px solid var(--rule);border-radius:12px;background:var(--sheet);color:var(--ink);font:500 12px var(--sans);box-shadow:var(--studio-shadow)}
+.z-top svg{width:16px;height:16px}.z-top[hidden]{display:none}body:has(.pwa-toast) .z-top{bottom:160px}
+.foot{max-width:1184px;font-size:12px;padding-top:25px}
+/* Motion has a single owner. Static figures and lists stay in place. */
+.stat:hover{transform:none;box-shadow:var(--studio-shadow)}
+#catA:not([hidden])>main,#frB:not([hidden]) .b-main,html.zreveal .hdr,html.zreveal #catA:not([hidden]),html.zreveal #frB:not([hidden]){animation:none}
+#catA section[id^="p-"]:not([hidden]),#b-content>*,#frC:not([hidden]){animation:none}
+.zr{opacity:1;transform:none}.zr.zr-in{transition:none}
+html.zthemefade,html.zthemefade *,html.zthemefade *::before,html.zthemefade *::after{transition:none!important}
+@media(prefers-reduced-motion:no-preference){
+ #catA section[id^="p-"]:not([hidden]),#b-content{animation:z-studio-enter .24s var(--z-out)}
+ #frC:not([hidden]){animation:z-fade .2s linear}
+ details[open]>:not(summary){animation:z-fade .2s linear}
+ #zsections-menu:not([hidden]),dialog[open],.z-top:not([hidden]){animation:z-studio-enter .18s var(--z-out)}
+ .btn,.chip,.tbtn,#frB .b-btn{transition:background-color .18s,border-color .18s,box-shadow .18s,transform .15s}
+ .btn:active,.chip:active,.tbtn:active,#frB .b-btn:active{transform:translateY(1px)}
+ .hdr{transition:transform .24s var(--z-out)}.sub,#frB .b-nav{transition:top .24s var(--z-out)}
+ html.zthemefade body,html.zthemefade .hdr,html.zthemefade .sub,html.zthemefade .box,html.zthemefade .stat,html.zthemefade .b-card{transition:background-color .22s,color .22s,border-color .22s!important}
+ @media(hover:hover){.btn:hover,.tbtn:hover{border-color:var(--pen)}#frB a.b-card:hover{transform:translateY(-2px);border-color:var(--pen);box-shadow:0 16px 30px -24px rgba(24,38,59,.4)}}
+}
+@keyframes z-studio-enter{from{opacity:.35;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(max-width:860px){
+ .hin{padding:0 18px 9px}.top{min-height:64px;gap:10px}.ttl small{display:none}
+ .omr .lbl .sb{display:none}.omr button{min-height:44px;padding:8px 9px}.omr .lbl{font-size:13px}
+ .wrap,#frB .b-main{padding:28px 20px 75px}.sub .in{padding-left:14px}
+ .zbrief-hero{grid-template-columns:1fr;gap:28px;padding:0 0 26px}
+ #briefStats{width:100%;grid-template-columns:repeat(4,minmax(0,1fr));border-radius:16px}
+ #briefStats .stat{padding:20px 15px;min-height:135px}#briefStats .stat:nth-child(-n+2){border-bottom:0}#briefStats .stat:not(:last-child){border-right:1px solid var(--rule2)}
+ #frB .b-hero{gap:28px}.z-kicker{margin-bottom:16px}
+}
+@media(max-width:600px){
+ .hin{padding:0 12px 9px}.top{gap:8px;min-height:64px;flex-wrap:nowrap}
+ .mark.wl-mark{width:44px;min-width:44px;padding:0;font-size:0;letter-spacing:0;background:var(--studio-deep)}
+ .mark.wl-mark .zbolt{width:18px;height:27px;margin:0!important}
+ .ttl{font-size:19px;letter-spacing:-.045em;white-space:nowrap}.clock{min-width:54px;padding:4px 2px!important;font-size:9px}.clock .num{font-size:22px}
+ .tbtn{padding:0 9px;min-width:44px;font-size:11px}.top #liveBtn{width:44px;padding:0;justify-content:center}.top #liveBtn .zl-txt{display:none}
+ .omr{gap:3px;padding:3px;border-radius:12px}.omr button{padding:8px 5px;gap:7px;border-radius:9px}
+ .omr .lbl{font-size:12px;letter-spacing:-.01em}.omr .bub{width:22px;height:22px;border-radius:6px;font-size:10px}
+ .sub button{font-size:12px;min-height:50px;padding:0 12px}.sub .in{gap:3px;padding-left:8px}
+ .sub .in button::after{left:12px;right:12px}
+ .wrap,#frB .b-main{padding:25px 20px 72px}
+ h2.sec{font-size:34px;letter-spacing:-.055em;margin-bottom:18px;max-width:20ch}
+ .lede{font-size:17px;line-height:1.6}.spine{font-size:18px;line-height:1.4;margin-top:22px}
+ .zbrief-actions{margin-top:22px}.zbrief-actions .btn{font-size:12px;padding:0 14px}
+ #briefStats{grid-template-columns:repeat(2,minmax(0,1fr))}#briefStats .stat{min-height:126px;padding:20px}
+ #briefStats .stat:nth-child(-n+2){border-bottom:1px solid var(--rule2)}#briefStats .stat:nth-child(even){border-right:0}
+ #briefStats .stat .num{font-size:35px;margin-bottom:10px}#briefStats .stat span{font-size:11px}
+ .zbackup-tools{padding:15px;gap:8px;margin-bottom:30px}.zbackup-tools p{flex-basis:100%;margin-bottom:4px}.zbackup-tools .btn{flex:1;justify-content:center}
+ .box{padding:20px}.tag{font-size:9px}.it-t{font-size:17px}.it-m{font-size:10px}
+ details.item>summary{grid-template-columns:32px 1fr auto;gap:11px;padding:16px 13px}.tier{width:31px;height:36px;font-size:11px}.score{font-size:22px}
+ .it-b{padding:5px 16px 20px}.it-b dd{font-size:16px}
+ #frB .b-nav-in{padding:5px 12px}#frB .b-nav a{padding:0 12px;font-size:12px}
+ #frB .b-hero{padding-top:0;gap:24px}#frB .b-hero h1{font-size:46px;letter-spacing:-.065em}
+ #frB .b-lede{font-size:17px}#frB .b-ledger div{padding:20px}#frB .b-ledger b{font-size:34px}
+ #frB .b-how{gap:18px}#frB .b-how div{padding-left:32px;font-size:13px}
+ #frB .b-group>h2{display:block;font-size:25px}#frB .b-group>h2 small{display:block;margin-top:7px}
+ #frB a.b-card{padding:22px;min-height:205px}#frB .b-card h3{font-size:21px}
+ .z-top{bottom:18px;right:16px}.z-top span{display:none}
+}
+@media(max-width:360px){.ttl{font-size:17px}.clock{display:none}.top #liveBtn{margin-left:auto}.omr .bub{display:none}}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+ .zr{opacity:1!important;transform:none!important}
+}
+@media print{.zbrief-actions,.z-top,.z-kicker{display:none}.zbrief-hero{display:block}body{background:#fff;color:#000}}
+
+</style>
+<style id="zstudio-frame-source" media="not all">
+/* CSAT uses the same typography, surfaces and interaction timing as the outer app. */
+body{background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased}
+body::before{display:none}
+:root{--line:var(--rule)}
+.wl-bar{max-width:1184px;padding:17px 0 10px;margin:auto;color:var(--muted);font-size:12px}
+.wl-bar::after{display:none}.wl-bar .wl-mark{font-size:13px;color:var(--ink)}
+.wrap{max-width:1240px;padding:0 28px 65px}
+.cover{background:var(--sheet);border:1px solid var(--rule);border-radius:20px;padding:38px;box-shadow:var(--studio-shadow)}
+.cover::before{display:none}
+.cover-top{grid-template-columns:minmax(0,1fr) 180px;gap:32px}
+.cover h1{font:500 clamp(34px,4.5vw,55px)/1.08 var(--display);letter-spacing:-.055em;max-width:18ch;margin:14px 0 20px}
+.cover .sub,.cover .deck{color:var(--muted);font-size:18px;line-height:1.6}
+.series{border:1px solid var(--rule);border-radius:12px;padding:15px 20px;background:var(--paper);font-size:10px}
+.series .code{font:500 34px/1.1 var(--display);letter-spacing:.06em;margin-top:7px}
+.spine{border-left:2px solid var(--pen);font-weight:400;font-size:20px;line-height:1.45}
+.tabs{background:var(--paper);border-color:var(--rule);backdrop-filter:none}
+.tab{font:500 13px var(--sans);min-height:50px;padding:0 16px;background:none}
+.tab[aria-selected="true"]{color:var(--pen);border-bottom:2px solid var(--pen);background:none}
+.btn,.theme-btn{border-radius:11px;min-height:44px;font-size:13px;font-weight:600}
+.btn.primary{box-shadow:var(--neo-glow)!important}
+.card,.sheet,.controls,.stat{border-color:var(--rule);border-radius:16px;box-shadow:var(--studio-shadow)}
+.opt{border-radius:12px;padding:16px;min-height:48px}.opt .bub{border-radius:8px}
+.opt[aria-checked="true"]{box-shadow:0 0 0 2px var(--neo-ring);background:var(--pen-soft)}
+.opt[aria-checked="true"] .bub{animation:none}
+.qmeta{font-size:10px}.stem{font-size:20px;line-height:1.65}.note{color:var(--muted)}
+.timer{color:var(--muted);font-size:11px}.seg button{min-height:44px}
+input,select{min-height:44px;border-radius:10px}
+@media(prefers-reduced-motion:no-preference){.panel:not([hidden]){animation:z-frame-in .22s ease-out}.btn:active,.opt:active{transform:translateY(1px)}}
+@keyframes z-frame-in{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media(max-width:760px){
+ .cover-top{grid-template-columns:minmax(0,1fr);gap:20px}
+ .series{display:flex;align-items:center;justify-content:space-between;gap:20px;justify-self:stretch;padding:12px 16px}
+ .series small{font-size:10px;text-align:left}.series .code{font-size:25px;margin:0}
+ .cover-top>div>.sub:first-child{font:500 11px/1.6 var(--mono);letter-spacing:.035em}
+}
+@media(max-width:600px){
+ .wrap{padding:0 20px 55px}.wl-bar{padding:16px 0 12px}.cover{padding:25px 22px;border-radius:18px}
+ .cover h1{font-size:37px}.cover .sub,.cover .deck{font-size:16px}.spine{font-size:18px}
+ .cta{gap:8px}.cta .btn{font-size:12px;padding:0 13px}.stem{font-size:18px}.tab{font-size:12px;padding:0 13px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+</style>
+<script>
+(function(){
+'use strict';
+var d=document,root=d.documentElement,brief=d.getElementById('p-brief'),stats=d.getElementById('briefStats');
+// Refresh a saved explicit theme after the final surface tokens have been applied.
+if(root.getAttribute('data-theme')==='dark'||root.getAttribute('data-theme')==='light'){
+ var sheet=getComputedStyle(root).getPropertyValue('--sheet').trim();
+ [].forEach.call(d.querySelectorAll('meta[name="theme-color"]:not(#zboot-meta)'),function(m){m.content=sheet});
+}
+if(brief&&stats&&!d.querySelector('.zbrief-hero')){
+ var intro=brief.querySelector('.read'),hero=d.createElement('div');hero.className='zbrief-hero';
+ if(intro){brief.insertBefore(hero,intro);hero.appendChild(intro);hero.appendChild(stats);
+  var kicker=d.createElement('p');kicker.className='z-kicker';kicker.textContent='The daily brief · Prelims 2027';intro.insertBefore(kicker,intro.firstChild);
+  var actions=d.createElement('div');actions.className='zbrief-actions';
+  actions.innerHTML='<a class="btn" href="#forecast/tracker">Open the tracker <span aria-hidden="true">↗</span></a><a class="btn ghost" href="#hacking/review">Review progress <span aria-hidden="true">→</span></a>';
+  intro.appendChild(actions);
+ }
+}
+// Small section labels give long documents a consistent orientation cue.
+var names={tracker:'Forecast / Current affairs',watch:'Forecast / Dates to watch',evidence:'Forecast / Evidence',papers:'Forecast / Past papers',lab:'Forecast / Model lab',sources:'Forecast / Sources'};
+Object.keys(names).forEach(function(k){var panel=d.getElementById('p-'+k);if(!panel)return;var p=d.createElement('p');p.className='z-kicker';p.textContent=names[k];panel.insertBefore(p,panel.firstChild)});
+
+// Apply the studio tokens inside the independent CSAT document after its existing dress layer.
+var frame=d.getElementById('frC'),frameBound=null;
+function dress(){try{
+ var fd=frame.contentDocument;if(!fd||!fd.head)return;
+ var st=fd.getElementById('zstudio-frame');if(!st){st=fd.createElement('style');st.id='zstudio-frame';fd.head.appendChild(st)}
+ var tokens=d.getElementById('zstudio').textContent.split('/* shared-surface-end:')[0];
+ st.textContent=tokens+'\n'+d.getElementById('zstudio-frame-source').textContent;
+ if(frameBound!==fd){frameBound=fd;frame.contentWindow.addEventListener('scroll',queue,{passive:true});frame.contentWindow.addEventListener('resize',queue)}
+ queue();
+}catch(e){}}
+if(frame){frame.addEventListener('load',dress);dress()}
+
+// A return-to-top control works in every section, including the scrollable CSAT frame.
+var top=d.createElement('button');top.type='button';top.className='z-top';top.hidden=true;top.setAttribute('aria-label','Back to top');
+top.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 12 6-6 6 6M12 6v13"/></svg><span>Back to top</span>';d.body.appendChild(top);
+function target(){try{if(frame&&!frame.hidden&&frame.contentDocument)return frame.contentWindow}catch(e){}return window}
+var scheduled=false;
+function update(){scheduled=false;var w=target(),s=w.document.scrollingElement||w.document.documentElement,y=s.scrollTop;top.hidden=y<650;
+ if(w!==window){var h=d.querySelector('.hdr'),max=s.scrollHeight-w.innerHeight;if(h)h.style.setProperty('--zprog',max>60?Math.min(1,y/max).toFixed(4):'0')}
+}
+function queue(){if(!scheduled){scheduled=true;requestAnimationFrame(update)}}
+top.addEventListener('click',function(){var w=target(),calm=matchMedia('(prefers-reduced-motion: reduce)').matches;w.scrollTo({top:0,behavior:calm?'auto':'smooth'});root.classList.remove('zcollapse')});
+addEventListener('scroll',queue,{passive:true});addEventListener('hashchange',function(){setTimeout(queue,100)});addEventListener('resize',queue);
+queue();
+})();
+
 </script>
 <!-- /zola-pwa:body -->
 </body>

@@ -1,0 +1,791 @@
+{
+  "base": {
+    "schema": "zola-feed/1",
+    "updated": "2026-10-03T06:19:51Z",
+    "exams": [
+      {
+        "id": "prelims",
+        "label": "Prelims",
+        "date": "2027-05-23",
+        "primary": true,
+        "status": "scheduled",
+        "source": {
+          "title": "Calendar",
+          "url": "https://upsc.gov.in/examinations/exam-calendar"
+        }
+      }
+    ],
+    "watch": [
+      {
+        "date": "2027-01-13",
+        "title": "Notification"
+      }
+    ],
+    "events": [
+      {
+        "id": "event",
+        "title": "GST council meets",
+        "date": "2026-10-03",
+        "subject": "Economy",
+        "machines": [
+          "M13"
+        ],
+        "status": "UNVERIFIED"
+      }
+    ],
+    "inbox": [
+      {
+        "id": "release",
+        "title": "Monetary policy committee",
+        "url": "https://pib.gov.in/release",
+        "published": "2026-10-03T06:00:00Z",
+        "subjects": [
+          "Economy"
+        ],
+        "machines": [
+          "M14"
+        ]
+      }
+    ],
+    "notices": [
+      {
+        "id": "note",
+        "level": "correction",
+        "text": "Check the source"
+      }
+    ],
+    "edition": null
+  },
+  "cases": [
+    {
+      "name": "valid full feed",
+      "valid": true,
+      "changes": []
+    },
+    {
+      "name": "empty optional lists",
+      "valid": true,
+      "changes": [
+        {
+          "path": [
+            "exams"
+          ],
+          "value": []
+        },
+        {
+          "path": [
+            "watch"
+          ],
+          "value": []
+        },
+        {
+          "path": [
+            "events"
+          ],
+          "value": []
+        },
+        {
+          "path": [
+            "inbox"
+          ],
+          "value": []
+        },
+        {
+          "path": [
+            "notices"
+          ],
+          "value": []
+        }
+      ]
+    },
+    {
+      "name": "UTC offset timestamp",
+      "valid": true,
+      "changes": [
+        {
+          "path": [
+            "updated"
+          ],
+          "value": "2026-10-03T06:19:51+00:00"
+        }
+      ]
+    },
+    {
+      "name": "unknown machine",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "inbox",
+            0,
+            "machines"
+          ],
+          "value": [
+            "M99"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "unknown subject",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "inbox",
+            0,
+            "subjects"
+          ],
+          "value": [
+            "Other"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "invalid event date",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "events",
+            0,
+            "date"
+          ],
+          "value": "not a date"
+        }
+      ]
+    },
+    {
+      "name": "impossible date",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "exams",
+            0,
+            "date"
+          ],
+          "value": "2027-02-30"
+        }
+      ]
+    },
+    {
+      "name": "non leap date",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "watch",
+            0,
+            "date"
+          ],
+          "value": "2027-02-29"
+        }
+      ]
+    },
+    {
+      "name": "zero year",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "exams",
+            0,
+            "date"
+          ],
+          "value": "0000-01-01"
+        }
+      ]
+    },
+    {
+      "name": "bad timestamp",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "updated"
+          ],
+          "value": "2026-02-30T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "name": "local timestamp",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "updated"
+          ],
+          "value": "2026-10-03T06:19:51"
+        }
+      ]
+    },
+    {
+      "name": "non UTC timestamp",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "updated"
+          ],
+          "value": "2026-10-03T06:19:51+05:30"
+        }
+      ]
+    },
+    {
+      "name": "invalid clock",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "updated"
+          ],
+          "value": "2026-10-03T25:00:00Z"
+        }
+      ]
+    },
+    {
+      "name": "inbox date only",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "inbox",
+            0,
+            "published"
+          ],
+          "value": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "name": "http inbox",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "inbox",
+            0,
+            "url"
+          ],
+          "value": "http://pib.gov.in/release"
+        }
+      ]
+    },
+    {
+      "name": "empty URL host",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "inbox",
+            0,
+            "url"
+          ],
+          "value": "https://"
+        }
+      ]
+    },
+    {
+      "name": "null source",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "exams",
+            0,
+            "source"
+          ],
+          "value": null
+        }
+      ]
+    },
+    {
+      "name": "invalid source URL",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "exams",
+            0,
+            "source",
+            "url"
+          ],
+          "value": "javascript:alert(1)"
+        }
+      ]
+    },
+    {
+      "name": "unknown event subject",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "events",
+            0,
+            "subject"
+          ],
+          "value": "Other"
+        }
+      ]
+    },
+    {
+      "name": "unknown event machine",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "events",
+            0,
+            "machines"
+          ],
+          "value": [
+            "M00"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "duplicate tags",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "inbox",
+            0,
+            "machines"
+          ],
+          "value": [
+            "M14",
+            "M14"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "tag scalar",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "inbox",
+            0,
+            "subjects"
+          ],
+          "value": "Economy"
+        }
+      ]
+    },
+    {
+      "name": "invalid primary type",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "exams",
+            0,
+            "primary"
+          ],
+          "value": 1
+        }
+      ]
+    },
+    {
+      "name": "exam status",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "exams",
+            0,
+            "status"
+          ],
+          "value": "predicted"
+        }
+      ]
+    },
+    {
+      "name": "blank title",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "inbox",
+            0,
+            "title"
+          ],
+          "value": " "
+        }
+      ]
+    },
+    {
+      "name": "event status",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "events",
+            0,
+            "status"
+          ],
+          "value": "TRUE"
+        }
+      ]
+    },
+    {
+      "name": "notice level",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "notices",
+            0,
+            "level"
+          ],
+          "value": "urgent"
+        }
+      ]
+    },
+    {
+      "name": "edition URL",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "edition"
+          ],
+          "value": {
+            "latest": "2.5",
+            "url": "http://example.com"
+          }
+        }
+      ]
+    },
+    {
+      "name": "array record",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "events",
+            0
+          ],
+          "value": []
+        }
+      ]
+    },
+    {
+      "name": "oversized label",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "exams",
+            0,
+            "label"
+          ],
+          "value": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        }
+      ]
+    },
+    {
+      "name": "wrong schema",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "schema"
+          ],
+          "value": "zola-feed/2"
+        }
+      ]
+    },
+    {
+      "name": "prototype field",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "__proto__"
+          ],
+          "value": {}
+        }
+      ]
+    },
+    {
+      "name": "too many exams",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "exams"
+          ],
+          "value": [
+            {
+              "id": "0",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "1",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "2",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "3",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "4",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "5",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "6",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "7",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "8",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "9",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "10",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "11",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "12",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "13",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "14",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "15",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "16",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "17",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "18",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "19",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "20",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "21",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "22",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "23",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "24",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "25",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "26",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "27",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "28",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "29",
+              "label": "Exam",
+              "date": "2027-05-23"
+            },
+            {
+              "id": "30",
+              "label": "Exam",
+              "date": "2027-05-23"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "missing exam label",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "exams",
+            0,
+            "label"
+          ],
+          "remove": true
+        }
+      ]
+    },
+    {
+      "name": "missing inbox id",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "inbox",
+            0,
+            "id"
+          ],
+          "remove": true
+        }
+      ]
+    },
+    {
+      "name": "missing list",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "notices"
+          ],
+          "remove": true
+        }
+      ]
+    },
+    {
+      "name": "duplicate exam IDs",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "exams"
+          ],
+          "value": [
+            {
+              "id": "prelims",
+              "label": "Prelims",
+              "date": "2027-05-23",
+              "primary": true,
+              "status": "scheduled",
+              "source": {
+                "title": "Calendar",
+                "url": "https://upsc.gov.in/examinations/exam-calendar"
+              }
+            },
+            {
+              "id": "prelims",
+              "label": "Prelims",
+              "date": "2027-05-23",
+              "primary": true,
+              "status": "scheduled",
+              "source": {
+                "title": "Calendar",
+                "url": "https://upsc.gov.in/examinations/exam-calendar"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "two primary exams",
+      "valid": false,
+      "changes": [
+        {
+          "path": [
+            "exams"
+          ],
+          "value": [
+            {
+              "id": "prelims",
+              "label": "Prelims",
+              "date": "2027-05-23",
+              "primary": true,
+              "status": "scheduled",
+              "source": {
+                "title": "Calendar",
+                "url": "https://upsc.gov.in/examinations/exam-calendar"
+              }
+            },
+            {
+              "id": "second",
+              "label": "Second",
+              "date": "2027-05-24",
+              "primary": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

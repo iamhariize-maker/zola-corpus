@@ -77,6 +77,67 @@ const q = await ctx.newPage(); await q.goto(base); await q.waitForTimeout(2000);
 ok(await q.evaluate(() => document.querySelectorAll('.zr').length) === 0, 'reduce motion: nothing is hidden for reveal');
 await ctx.close();
 
+// Studio: responsive surfaces, useful shortcuts and accessible, restrained motion.
+ctx = await phone(browser, devices);
+const studio = await ctx.newPage(); studio.on('pageerror', e => errs.push(e.message));
+await studio.goto(base + '#forecast/brief'); await studio.waitForTimeout(1200);
+for (const width of [320, 412, 432, 768, 1440]) {
+  await studio.setViewportSize({ width, height: 900 });
+  const overflow = [];
+  for (const route of ['#forecast/brief', '#forecast/tracker', '#hacking', '#csat']) {
+    await studio.evaluate(h => { location.hash = h; }, route); await studio.waitForTimeout(350);
+    const fits = await studio.evaluate(() => {
+      const frame = document.getElementById('frC');
+      const shell = document.documentElement.scrollWidth <= innerWidth + 1;
+      const controls = [...document.querySelectorAll('.top button,.omr button')].every(b => {
+        const r = b.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth + 1 && r.height >= 44;
+      });
+      const frameFits = frame.hidden || (frame.contentDocument.documentElement.scrollWidth <= frame.clientWidth + 1 &&
+        (innerWidth > 600 || frame.contentDocument.querySelector('.cover h1').getBoundingClientRect().width >= frame.clientWidth - 130));
+      return shell && controls && frameFits;
+    });
+    if (!fits) overflow.push(route);
+  }
+  ok(!overflow.length, `Studio fits ${width}px: all three apps and header controls (${overflow.join(',') || 'no overflow'})`);
+}
+await studio.setViewportSize({ width: 412, height: 900 });
+await studio.evaluate(() => { location.hash = '#forecast/brief'; }); await studio.waitForTimeout(350);
+await studio.locator('.zbrief-actions a').first().click(); await studio.waitForTimeout(180);
+ok(await studio.evaluate(() => location.hash === '#forecast/tracker' && !document.getElementById('p-tracker').hidden), 'Brief shortcut opens the tracker');
+ok(await studio.evaluate(() => { const b = document.querySelector('.zsections'); return b.tabIndex === 0 && !b.hasAttribute('aria-selected'); }), 'section chooser remains keyboard reachable after navigation with valid ARIA');
+// A real scroll soon after navigation must be remembered, not discarded by a fixed debounce window.
+await studio.evaluate(() => scrollTo(0, 850)); await studio.waitForTimeout(60);
+await studio.evaluate(() => { location.hash = '#hacking'; }); await studio.waitForTimeout(180);
+await studio.evaluate(() => { location.hash = '#forecast/tracker'; }); await studio.waitForTimeout(180);
+ok(await studio.evaluate(() => Math.abs(scrollY - 850) < 5), 'early scrolling after navigation is restored accurately');
+ok(await studio.locator('.z-top').isVisible(), 'Back to top appears on long pages');
+await studio.locator('.z-top').click(); await studio.waitForFunction(() => scrollY < 2);
+ok(await studio.locator('.z-top').isHidden(), 'Back to top returns the page and hides');
+await studio.evaluate(() => { location.hash = '#forecast/brief'; }); await studio.waitForTimeout(250);
+await studio.locator('.zbrief-actions a').nth(1).click(); await studio.waitForTimeout(250);
+ok(await studio.evaluate(() => location.hash === '#hacking/review'), 'Brief shortcut opens review progress');
+await studio.evaluate(() => { location.hash = '#csat'; }); await studio.waitForTimeout(350);
+const sf = studio.frames().find(fr => fr !== studio.mainFrame());
+await sf.evaluate(() => scrollTo(0, 850)); await studio.waitForTimeout(150);
+ok(await studio.locator('.z-top').isVisible(), 'Back to top follows CSAT frame scrolling');
+await studio.locator('.z-top').click(); await sf.waitForFunction(() => scrollY < 2);
+ok(await studio.locator('.z-top').isHidden(), 'Back to top returns CSAT to its cover');
+for (const theme of ['light', 'dark']) {
+  await studio.evaluate(t => { localStorage.setItem('zolaV2.theme', JSON.stringify(t)); }, theme);
+  await studio.reload(); await studio.waitForTimeout(650);
+  const colors = await studio.evaluate(() => {
+    const f = document.getElementById('frC'), parent = getComputedStyle(document.body).backgroundColor;
+    return { parent, frame: f.contentWindow.getComputedStyle(f.contentDocument.body).backgroundColor,
+      bar: document.querySelector('meta[name="theme-color"]:not(#zboot-meta)').content,
+      sheet: getComputedStyle(document.documentElement).getPropertyValue('--sheet').trim() };
+  });
+  ok(colors.parent === colors.frame && colors.bar === colors.sheet, `${theme}: CSAT and saved browser theme match the final palette`);
+}
+await studio.emulateMedia({ reducedMotion: 'reduce' });
+ok(await studio.evaluate(() => { const s = getComputedStyle(document.querySelector('.tbtn')); return s.animationName === 'none' && s.transitionDuration === '0s'; }), 'changing Reduce motion live disables motion in the shell');
+ok(await studio.frames().find(fr => fr !== studio.mainFrame()).evaluate(() => { const s = getComputedStyle(document.querySelector('.panel:not([hidden])')); return s.animationName === 'none'; }), 'Reduce motion disables CSAT panel animation');
+await ctx.close();
+
 ok(errs.length === 0, 'no page errors' + (errs.length ? ': ' + errs.join(' | ') : ''));
 await browser.close(); close();
 process.exit(failures() ? 1 : 0);

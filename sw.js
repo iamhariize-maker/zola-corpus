@@ -10,7 +10,8 @@ const SHELL = [INDEX,
   './manifest.webmanifest',
   './icons/icon.svg', './icons/favicon.svg', './icons/icon-192.png', './icons/icon-512.png',
   './icons/maskable-192.png', './icons/maskable-512.png',
-  './icons/apple-touch-icon.png', './icons/favicon-32.png'
+  './icons/apple-touch-icon.png', './icons/favicon-32.png',
+  './fonts/space-grotesk.woff2', './fonts/jetbrains-mono.woff2'
 ].map(p => new URL(p, SCOPE).href);
 
 const tell = async msg => (await self.clients.matchAll({type: 'window'})).forEach(c => c.postMessage(msg));

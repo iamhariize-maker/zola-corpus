@@ -21,6 +21,18 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Zola Corpus: UPSC and APSC Prelims 2027, works offline">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="fonts/space-grotesk.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+<style id="zfonts-neo">
+/* Boardroom Neon type: Space Grotesk speaks (headlines, interface, figures), Newsreader reads (long text),
+   JetBrains Mono annotates (labels, tags, captions). */
+@font-face{font-family:"Space Grotesk Z";src:url(fonts/space-grotesk.woff2) format("woff2");font-weight:300 700;font-style:normal;font-display:swap}
+@font-face{font-family:"JetBrains Mono Z";src:url(fonts/jetbrains-mono.woff2) format("woff2");font-weight:100 800;font-style:normal;font-display:swap}
+:root{
+ --display:"Space Grotesk Z",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+ --sans:"Space Grotesk Z",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+ --mono:"JetBrains Mono Z",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+</style>
 <style id="zboot">
 /* Launch screen: covers the app from the first frame while it assembles, then zooms out into it. */
 html.zboot{overflow:hidden}

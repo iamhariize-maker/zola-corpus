@@ -33,6 +33,7 @@ with the link and the install steps (deliberately no QR code, so people can read
 | **Installs everywhere** | Android and desktop Chrome/Edge get an Install button. iPhone and iPad get a one-time "Share → Add to Home Screen" hint. The offer waits for a return visit (or 30 seconds on a first visit), and "Not now" keeps it quiet for two weeks. |
 | **Opens smoothly** | A launch screen in the brand violet picks up where Android's own splash leaves off. It holds while the app assembles itself, then the logo zooms out into the finished page, so nobody sees half-built screens. Tabs, sections and Hacking pages glide in; tabs, pills and buttons respond to touch. "Reduce motion" on the phone is respected (quick fades only), and the launch screen can never trap the app: it clears itself after 4.5 s whatever happens. |
 | **Boardroom Neon design** | The violet-ink app keeps its formal type and layout; a violet → magenta → cyan neon is added only as accents: a neon hairline under the header that fills as you read, chapter marks on section titles, gradient key figures, glowing tier S events, gradient buttons, chips and active tabs. Dark mode becomes a night-city boardroom with soft neon washes and a faint synthwave horizon grid. Text never sits on cyan, so contrast holds. The CSAT Question Forge wears the same layer. |
+| **Type** | Space Grotesk for headlines, interface and figures; Newsreader stays for long reading; JetBrains Mono for the small print (labels, tags, captions, tier letters, the countdown caption), like a spec sheet. Both new fonts are open-licensed, subset to the characters the app uses (about 57 KB together) and saved for offline use. See `fonts/`. |
 | **Fun that does a job** | Figures count up when they come into view; cards and charts rise in as you scroll (anything already on screen is never hidden); signal bars and chart bars grow when opened; selected tabs and answer bubbles pop; buttons and chips ripple under your finger; the live dot pings while the feed is connected; the theme button cross-fades. |
 | **Rich install dialog** | Real app screenshots for phone and desktop, so the install sheet looks like a store listing. |
 | **Works offline** | The whole app is saved on the device on the first visit ("Ready to work offline"). Going offline shows a short reassurance, not an error. |
@@ -69,6 +70,7 @@ layer into the repository copy, so the file works the same when opened directly.
 | `sw.js` | Service worker: offline copy, background refresh, update notices |
 | `icons/`, `screenshots/` | The logo as vector masters (`icon.svg`, `maskable.svg`, `apple-touch.svg`, `monochrome.svg`, `favicon.svg`) and the PNGs made from them; shortcut and share images; install-dialog screenshots |
 | `share/` | The WhatsApp/Telegram share card (not published with the site) |
+| `fonts/` | Space Grotesk and JetBrains Mono (subset WOFF2) with their OFL licences |
 | `404.html` | Sends a mistyped address back to the app |
 | `tools/pwa.mjs` | `apply`, `check` and `build`, with no dependencies |
 | `tools/screenshots.mjs` | Regenerates `screenshots/` from the real app (needs Playwright) |

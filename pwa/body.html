@@ -220,6 +220,22 @@ syncBar();
  --neo-wash-a:rgba(139,107,255,.20);--neo-wash-b:rgba(45,220,242,.10);--neo-wash-c:rgba(255,79,195,.13);
  --neo-grid:rgba(255,79,195,.30);--neo-grid-o:.9}
 
+/* type: Space Grotesk headlines sit a touch tighter; JetBrains Mono carries the small print like a spec sheet */
+h2.sec,#frB .b-hero h1,#frB h1,#frB h2{letter-spacing:-.03em}
+body{font-feature-settings:"kern","liga","ss04"}
+.stat .num,.clock .num,.score,#frB .b-id,#frB .b-ledger b{font-feature-settings:"tnum","ss04"}
+.clock{font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;text-transform:uppercase}
+.ttl small{font-family:var(--mono);font-size:11px;letter-spacing:.01em}
+.tag{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.tier{font-family:var(--mono);font-weight:700}
+.score small{font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase}
+details.item dt,.b-kv dt,#frB .b-kv dt{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+th{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+#frB .b-eyebrow{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+#frB .b-pill,#frB .b-meta,.zl-date{font-family:var(--mono);font-size:11px;letter-spacing:.02em}
+#frB .b-ledger span{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+.stat span{letter-spacing:.005em}
+
 /* atmosphere: soft neon washes, and a synthwave horizon grid that only peeks between cards */
 body::before,body::after{content:"";position:fixed;z-index:-1;pointer-events:none}
 body::before{inset:0;background:
@@ -407,7 +423,13 @@ if(window.MutationObserver)new MutationObserver(function(){if(booting()||calm)re
  .observe(d,{attributes:true,attributeFilter:['data-theme']});
 
 // ---- The same neon inside the CSAT Question Forge --------------------------------------
-var FRAME_CSS=[].map.call(document.querySelectorAll('#zneo'),function(s){return s.textContent.split('/* atmosphere')[0]}).join('')+
+var FONT_URL=function(f){return new URL('fonts/'+f,location.href).href};
+var FRAME_CSS='@font-face{font-family:"Space Grotesk Z";src:url('+FONT_URL('space-grotesk.woff2')+') format("woff2");font-weight:300 700;font-display:swap}'+
+ '@font-face{font-family:"JetBrains Mono Z";src:url('+FONT_URL('jetbrains-mono.woff2')+') format("woff2");font-weight:100 800;font-display:swap}'+
+ ':root{--display:"Space Grotesk Z",system-ui,sans-serif;--sans:"Space Grotesk Z",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:"JetBrains Mono Z",ui-monospace,Menlo,Consolas,monospace}'+
+ 'body{font-feature-settings:"kern","liga","ss04"}h1,h2,h3{letter-spacing:-.025em}'+
+ '.series,.qno,.qmeta,.timer,.tag,th{font-family:var(--mono)}.series,.qno,th{letter-spacing:.06em;text-transform:uppercase;font-size:11px}.timer{font-feature-settings:"zero"}'+
+ [].map.call(document.querySelectorAll('#zneo'),function(s){return s.textContent.split('/* type:')[0]}).join('')+
  'body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(70vmax 55vmax at -10% -10%,var(--neo-wash-a),transparent 62%),radial-gradient(70vmax 55vmax at 85% 110%,var(--neo-wash-c),transparent 62%)}'+
  '.btn.primary{background:var(--neo-fill)!important;border-color:transparent!important;color:#fff!important;box-shadow:var(--neo-glow)}'+
  '.tab{background:var(--neo-line) 50% 100%/0% 3px no-repeat;transition:background-size .45s cubic-bezier(.2,.8,.2,1),color .2s}'+

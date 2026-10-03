@@ -184,4 +184,247 @@ if(window.MutationObserver)new MutationObserver(syncBar).observe(document.docume
 syncBar();
 })();
 </script>
+<style id="zneo">
+/* ── Boardroom Neon: the Zola design layer ───────────────────────────────────────────────────
+   Violet ink stays the suit. Magenta and cyan are the pocket square: hairlines, active states,
+   key figures. Fills that carry text use the deep violet→magenta pair only, never cyan. */
+:root{
+ --neo-v:#4A2BB0;--neo-m:#B5179E;--neo-c:#0E9FC2;
+ --neo-line:linear-gradient(100deg,#4A2BB0 0%,#B5179E 52%,#0E9FC2 100%);
+ --neo-line-v:linear-gradient(180deg,#4A2BB0 0%,#B5179E 60%,#0E9FC2 100%);
+ --neo-fill:linear-gradient(110deg,#4A2BB0 0%,#7A22B4 48%,#A3168E 100%);
+ --neo-text:linear-gradient(100deg,#4A2BB0 10%,#A3168E 90%);
+ --neo-glow:0 10px 26px -14px rgba(163,22,142,.55);
+ --neo-ring:rgba(181,23,158,.16);
+ --neo-wash-a:rgba(110,72,255,.11);--neo-wash-b:rgba(14,159,194,.08);--neo-wash-c:rgba(181,23,158,.07);
+ --neo-grid:rgba(74,43,176,.09);--neo-grid-o:.55;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --neo-v:#A98BFF;--neo-m:#FF5CCB;--neo-c:#38E1F5;
+ --neo-line:linear-gradient(100deg,#8B6BFF 0%,#FF4FC3 52%,#2DDCF2 100%);
+ --neo-line-v:linear-gradient(180deg,#8B6BFF 0%,#FF4FC3 60%,#2DDCF2 100%);
+ --neo-fill:linear-gradient(110deg,#5B3BE0 0%,#8E2BD0 48%,#C2189B 100%);
+ --neo-text:linear-gradient(100deg,#C9B8FF 0%,#FF8AD8 55%,#86ECF8 100%);
+ --neo-glow:0 0 26px -6px rgba(255,79,195,.55);
+ --neo-ring:rgba(255,79,195,.22);
+ --neo-wash-a:rgba(139,107,255,.20);--neo-wash-b:rgba(45,220,242,.10);--neo-wash-c:rgba(255,79,195,.13);
+ --neo-grid:rgba(255,79,195,.30);--neo-grid-o:.9}}
+:root[data-theme="dark"]{
+ --neo-v:#A98BFF;--neo-m:#FF5CCB;--neo-c:#38E1F5;
+ --neo-line:linear-gradient(100deg,#8B6BFF 0%,#FF4FC3 52%,#2DDCF2 100%);
+ --neo-line-v:linear-gradient(180deg,#8B6BFF 0%,#FF4FC3 60%,#2DDCF2 100%);
+ --neo-fill:linear-gradient(110deg,#5B3BE0 0%,#8E2BD0 48%,#C2189B 100%);
+ --neo-text:linear-gradient(100deg,#C9B8FF 0%,#FF8AD8 55%,#86ECF8 100%);
+ --neo-glow:0 0 26px -6px rgba(255,79,195,.55);
+ --neo-ring:rgba(255,79,195,.22);
+ --neo-wash-a:rgba(139,107,255,.20);--neo-wash-b:rgba(45,220,242,.10);--neo-wash-c:rgba(255,79,195,.13);
+ --neo-grid:rgba(255,79,195,.30);--neo-grid-o:.9}
+
+/* atmosphere: soft neon washes, and a synthwave horizon grid that only peeks between cards */
+body::before,body::after{content:"";position:fixed;z-index:-1;pointer-events:none}
+body::before{inset:0;background:
+ radial-gradient(70vmax 55vmax at -10% -10%,var(--neo-wash-a),transparent 62%),
+ radial-gradient(55vmax 45vmax at 110% 8%,var(--neo-wash-b),transparent 60%),
+ radial-gradient(70vmax 55vmax at 85% 110%,var(--neo-wash-c),transparent 62%)}
+body::after{left:-60%;right:-60%;bottom:-2px;height:42vh;opacity:var(--neo-grid-o);
+ background:repeating-linear-gradient(90deg,var(--neo-grid) 0 1px,transparent 1px 72px),repeating-linear-gradient(0deg,var(--neo-grid) 0 1px,transparent 1px 72px);
+ transform:perspective(320px) rotateX(64deg);transform-origin:50% 100%;
+ -webkit-mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.5) 40%,transparent 92%);mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.5) 40%,transparent 92%)}
+::selection{background:var(--neo-m);color:#fff}
+:focus-visible{outline-color:var(--neo-c)}
+html{scrollbar-color:color-mix(in srgb,var(--neo-v) 50%,transparent) transparent;scrollbar-width:thin}
+
+/* header: neon hairline that doubles as the reading-progress bar */
+.hdr{border-bottom-color:transparent}
+.hdr::before{background:var(--neo-line-v)}
+.hdr::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;pointer-events:none;background:var(--neo-line);opacity:.45}
+.zprog{position:absolute;left:0;right:0;bottom:-1px;height:2px;pointer-events:none;background:var(--neo-line);transform-origin:0 50%;transform:scaleX(var(--zprog,0));box-shadow:0 0 12px -2px var(--neo-m);transition:transform .12s linear}
+.clock .num{background:var(--neo-text);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
+.mark.wl-mark{position:relative;overflow:hidden;background:linear-gradient(110deg,#C42A42,#B21E63);border-color:transparent}
+.mark.wl-mark::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;pointer-events:none;
+ background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-18deg);opacity:0}
+
+/* category tabs: neon underline draws in from the centre; the bubble fills with the deep gradient */
+.omr button{background:var(--neo-line) 50% 100%/0% 3px no-repeat}
+.omr button[aria-selected="true"]{border-bottom-color:transparent;background-size:100% 3px}
+.omr button[aria-selected="true"] .bub{background:var(--neo-fill);border-color:transparent;color:#fff;box-shadow:0 0 0 4px var(--neo-ring),var(--neo-glow)}
+.sub button{background:var(--neo-line) 50% 100%/0% 3px no-repeat}
+.sub button[aria-selected="true"]{border-bottom-color:transparent;background-size:100% 3px}
+#frB .b-nav a[aria-current="page"],.b-nav a[aria-current="page"]{background:var(--neo-fill);color:#fff;box-shadow:var(--neo-glow)}
+#frB .b-tabs button[aria-pressed="true"]{box-shadow:0 1px 4px rgba(0,0,0,.12),inset 0 -2px 0 var(--neo-m)}
+
+/* type: a chapter mark above section titles, neon on the figures that matter */
+h2.sec::before{content:"";display:block;width:46px;height:4px;border-radius:4px;background:var(--neo-line);margin:0 0 .45em}
+.spine{border-left-color:var(--neo-v);border-image:var(--neo-line-v) 1}
+#frB .b-eyebrow{background:var(--neo-text);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+#frB .b-card .b-id,#frB .b-hero h1 span:first-child{background:var(--neo-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* stat tiles */
+.stat{position:relative;overflow:hidden}
+.stat::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--neo-line)}
+.stat .num,#frB .b-ledger b,#frB .b-ledger strong{background:var(--neo-text);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
+
+/* tracker: tier S carries the neon, A the violet, B stays quiet */
+.tier.S{background:var(--neo-fill);border-color:transparent;color:#fff;box-shadow:var(--neo-glow)}
+details.item:has(.tier.S){box-shadow:inset 3px 0 0 var(--neo-m),var(--lift,none)}
+details.item:has(.tier.A){box-shadow:inset 3px 0 0 color-mix(in srgb,var(--neo-v) 70%,transparent),var(--lift,none)}
+details.item:has(.tier.S) .score{background:var(--neo-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+details.item[open]{border-color:color-mix(in srgb,var(--neo-v) 45%,var(--rule))}
+.bar i,.hbar .tr i{background:var(--neo-fill)}
+.chip[aria-pressed="true"]{background:var(--neo-fill);border-color:transparent;color:#fff;box-shadow:var(--neo-glow)}
+
+/* buttons: the deep gradient, a quiet sheen on hover */
+.btn:not(.ghost),#frB .b-btn:not(.b-btn-ghost):not(.b-btn-quiet){background:var(--neo-fill);border-color:transparent;color:#fff;box-shadow:var(--neo-glow);position:relative;overflow:hidden}
+#frB .b-continue .b-btn{background:var(--paper);color:var(--ink);box-shadow:none}
+.btn.ghost,#frB .b-btn-ghost{border-color:color-mix(in srgb,var(--neo-v) 60%,var(--neo-m))}
+
+/* cards */
+#frB a.b-card{position:relative;overflow:hidden}
+#frB a.b-card::after{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--neo-line);transform:scaleX(0);transform-origin:0 50%;transition:transform .45s var(--z-out,ease)}
+#frB a.b-card:hover::after,#frB a.b-card:focus-visible::after{transform:scaleX(1)}
+@media (hover:hover){
+ .stat,details.item,#frB a.b-card{transition:transform .25s var(--z-out,ease),box-shadow .25s,border-color .25s}
+ .stat:hover{transform:translateY(-3px);box-shadow:0 18px 34px -22px rgba(74,43,176,.55)}
+ #frB a.b-card:hover{border-color:color-mix(in srgb,var(--neo-m) 55%,var(--rule));box-shadow:0 20px 40px -24px rgba(163,22,142,.55)}
+}
+
+/* live dot: cyan with a radar ping while connected */
+[data-state="live"] .zl-dot{background:var(--neo-c);box-shadow:0 0 0 3px color-mix(in srgb,var(--neo-c) 22%,transparent),0 0 10px var(--neo-c);position:relative}
+[data-state="live"] .zl-dot::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:2px solid var(--neo-c);opacity:0}
+
+/* notices pick up the neon edge */
+.pwa-toast{border-left-color:transparent;overflow:hidden}
+.pwa-toast::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--neo-line-v)}
+.pwa-b:not(.q){background:var(--neo-fill);border-color:transparent;color:#fff}
+
+@media print{.zprog,body::before,body::after,.hdr::after,h2.sec::before{display:none}.stat .num,.clock .num{color:#000;background:none}}
+</style>
+<style id="zneo-motion">
+/* Boardroom Neon motion: every movement says something (selected, revealed, saved, live) and is over in under a second. */
+.btn:not(.ghost)::after,#frB .b-btn:not(.b-btn-ghost):not(.b-btn-quiet)::after,.pwa-b:not(.q)::after{content:"";position:absolute;top:0;bottom:0;left:-70%;width:45%;pointer-events:none;
+ background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-18deg);opacity:0}
+.chip,.pwa-b{position:relative;overflow:hidden}
+.zrip{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.5),rgba(255,255,255,0) 68%);transform:scale(0)}
+.btn.ghost .zrip,.chip:not([aria-pressed="true"]) .zrip,#frB .b-btn-ghost .zrip{background:radial-gradient(circle,var(--neo-ring),transparent 68%)}
+.bar i,.hbar .tr i{transform-origin:0 50%}
+@media (prefers-reduced-motion:no-preference){
+ .omr button,.sub button{transition:background-size .45s var(--z-out),border-color .25s,color .2s}
+ .omr button[aria-selected="true"] .bub{animation:neo-pop .55s var(--z-spring)}
+ .chip[aria-pressed="true"]{animation:neo-press .4s var(--z-spring)}
+ html.zreveal .mark.wl-mark::after{animation:neo-sheen 1.1s .5s ease-out}
+ @media (hover:hover){
+  .mark.wl-mark:hover::after{animation:neo-sheen .9s ease-out}
+  .btn:not(.ghost):hover::after,#frB .b-btn:not(.b-btn-ghost):not(.b-btn-quiet):hover::after,.pwa-b:not(.q):hover::after{animation:neo-sheen .8s ease-out}
+ }
+ .zrip{animation:neo-rip .62s var(--z-out) forwards}
+ [data-state="live"] .zl-dot::after{animation:neo-ping 2.8s cubic-bezier(0,0,.2,1) infinite}
+ details.item[open] .bar i{animation:neo-grow .75s var(--z-out) backwards}
+ details.item[open] .sig:nth-child(2) .bar i{animation-delay:.06s}details.item[open] .sig:nth-child(3) .bar i{animation-delay:.12s}
+ details.item[open] .sig:nth-child(4) .bar i{animation-delay:.18s}details.item[open] .sig:nth-child(5) .bar i{animation-delay:.24s}
+ details.item[open] .sig:nth-child(n+6) .bar i{animation-delay:.3s}
+ details.item>summary .tier{transition:transform .35s var(--z-spring)}
+ details.item[open]>summary .tier{transform:scale(1.08)}
+ /* scroll reveal (only things that start below the fold are ever hidden) */
+ .zr{opacity:0;transform:translate3d(0,22px,0)}
+ .zr.zr-in{opacity:1;transform:none;transition:opacity .55s var(--z-out) var(--zd,0s),transform .7s var(--z-out) var(--zd,0s)}
+ .hbar.zr-in .tr i,.chart.zr-in .tr i{animation:neo-grow .9s var(--z-out) calc(var(--zd,0s) + .15s) backwards}
+}
+html.zthemefade,html.zthemefade *,html.zthemefade *::before,html.zthemefade *::after{transition:background-color .45s ease,color .45s ease,border-color .45s ease,box-shadow .45s ease!important}
+@keyframes neo-pop{0%{transform:scale(.72)}55%{transform:scale(1.16)}100%{transform:scale(1.04)}}
+@keyframes neo-press{0%{transform:scale(.92)}100%{transform:scale(1)}}
+@keyframes neo-sheen{0%{left:-70%;opacity:1}100%{left:135%;opacity:1}}
+@keyframes neo-rip{0%{transform:scale(0);opacity:.9}100%{transform:scale(1);opacity:0}}
+@keyframes neo-ping{0%{transform:scale(1);opacity:.75}80%,100%{transform:scale(2.8);opacity:0}}
+@keyframes neo-grow{from{transform:scaleX(0)}}
+@media print{.zr{opacity:1!important;transform:none!important}}
+</style>
+<script>// Boardroom Neon interactions: reading progress, scroll reveal, counting figures, touch ripple,
+// a soft cross-fade when the theme changes, and the same neon inside the CSAT Question Forge.
+(function(){
+'use strict';
+var d=document.documentElement,mq=function(q){return !!(window.matchMedia&&matchMedia(q).matches)};
+var calm=mq('(prefers-reduced-motion: reduce)');
+var booting=function(){return d.classList.contains('zboot')};
+
+// ---- Reading progress in the header hairline ------------------------------------------
+var hdr=document.querySelector('.hdr'),tick=false;
+if(hdr){var pb=document.createElement('div');pb.className='zprog';pb.setAttribute('aria-hidden','true');hdr.appendChild(pb)}
+function prog(){tick=false;if(!hdr)return;var se=document.scrollingElement||d,max=se.scrollHeight-innerHeight;
+ hdr.style.setProperty('--zprog',max>60?Math.min(1,Math.max(0,se.scrollTop/max)).toFixed(4):'0')}
+addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(prog)}},{passive:true});
+addEventListener('resize',prog);addEventListener('hashchange',function(){setTimeout(prog,80)});prog();
+
+// ---- Counting figures (57, 600, 232 days...) ------------------------------------------
+function countUp(el){
+ var t=(el.textContent||'').trim();if(el.dataset.zc||!/^\d{1,5}$/.test(t))return;el.dataset.zc='1';
+ var n=+t;if(calm||n<3)return;
+ var dur=Math.min(1500,650+n*3),t0=0,last='0';el.textContent='0';
+ (function step(ts){if(!el.isConnected||el.textContent!==last)return;   // the app re-rendered it: leave it alone
+  if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/dur),v=k<1?String(Math.round(n*(1-Math.pow(1-k,3)))):t;
+  el.textContent=v;last=v;if(k<1)requestAnimationFrame(step)})(performance.now());
+}
+var COUNT='.stat .num,#clock .num,#frB .b-ledger b';
+
+// ---- Scroll reveal: only content that starts below the fold, once ---------------------
+var REVEAL='.stat,details.item,#frB a.b-card,#frB .b-ledger,.box,.callout,.chart,.hbar,.tscroll,li.exam,#frB .b-item,#frB .b-how>*';
+var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){
+ var shown=es.filter(function(e){return e.isIntersecting}).sort(function(a,b){return a.boundingClientRect.top-b.boundingClientRect.top});
+ shown.forEach(function(e,i){var el=e.target;io.unobserve(el);
+  if(el.classList.contains('zr')){el.style.setProperty('--zd',Math.min(i,6)*.06+'s');el.classList.add('zr-in');
+   setTimeout(function(){el.classList.remove('zr','zr-in');el.style.removeProperty('--zd')},1100+i*60)}
+  el.querySelectorAll&&[].forEach.call(el.matches(COUNT)?[el]:el.querySelectorAll(COUNT),countUp)});
+},{rootMargin:'0px 0px -8% 0px',threshold:.08}):null;
+
+function scan(){
+ if(booting()){setTimeout(scan,250);return}
+ var vh=innerHeight;
+ [].forEach.call(document.querySelectorAll(REVEAL),function(el){
+  if(el.dataset.zr)return;var r=el.getClientRects();if(!r.length)return;   // in a hidden panel: later
+  el.dataset.zr='1';
+  if(io&&!calm&&r[0].top>vh*.92){el.classList.add('zr');io.observe(el)}
+  else if(io&&r[0].top<=vh){[].forEach.call(el.matches(COUNT)?[el]:el.querySelectorAll(COUNT),countUp)}
+ });
+ // figures that sit outside revealable blocks (the header countdown)
+ [].forEach.call(document.querySelectorAll('#clock .num'),countUp);
+}
+var pend=0;function soon(){clearTimeout(pend);pend=setTimeout(scan,90)}
+if(window.MutationObserver)['catA','frB','clock'].forEach(function(id){var n=document.getElementById(id);if(n)new MutationObserver(soon).observe(n,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','open']})});
+addEventListener('hashchange',soon);
+if(document.readyState==='complete')setTimeout(scan,350);else addEventListener('load',function(){setTimeout(scan,350)});
+
+// ---- Touch ripple on buttons and chips -------------------------------------------------
+document.addEventListener('pointerdown',function(e){
+ if(calm||e.button>0)return;var h=e.target.closest&&e.target.closest('.btn,.chip,.pwa-b,#frB .b-btn');if(!h||h.disabled)return;
+ var r=h.getBoundingClientRect(),s=Math.max(r.width,r.height)*2.2,sp=document.createElement('span');
+ sp.className='zrip';sp.setAttribute('aria-hidden','true');
+ sp.style.cssText='width:'+s+'px;height:'+s+'px;left:'+(e.clientX-r.left-s/2)+'px;top:'+(e.clientY-r.top-s/2)+'px';
+ h.appendChild(sp);setTimeout(function(){sp.remove()},700)},{passive:true});
+
+// ---- Theme button: cross-fade instead of a hard cut -----------------------------------
+var fadeT=0;
+if(window.MutationObserver)new MutationObserver(function(){if(booting()||calm)return;
+ d.classList.add('zthemefade');clearTimeout(fadeT);fadeT=setTimeout(function(){d.classList.remove('zthemefade')},520)})
+ .observe(d,{attributes:true,attributeFilter:['data-theme']});
+
+// ---- The same neon inside the CSAT Question Forge --------------------------------------
+var FRAME_CSS=[].map.call(document.querySelectorAll('#zneo'),function(s){return s.textContent.split('/* atmosphere')[0]}).join('')+
+ 'body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(70vmax 55vmax at -10% -10%,var(--neo-wash-a),transparent 62%),radial-gradient(70vmax 55vmax at 85% 110%,var(--neo-wash-c),transparent 62%)}'+
+ '.btn.primary{background:var(--neo-fill)!important;border-color:transparent!important;color:#fff!important;box-shadow:var(--neo-glow)}'+
+ '.tab{background:var(--neo-line) 50% 100%/0% 3px no-repeat;transition:background-size .45s cubic-bezier(.2,.8,.2,1),color .2s}'+
+ '.tab[aria-selected="true"]{border-bottom-color:transparent;background-size:100% 3px}'+
+ '.opt{transition:border-color .2s,box-shadow .25s,transform .2s}'+
+ '.opt[aria-checked="true"]{border-color:var(--neo-m);box-shadow:0 0 0 3px var(--neo-ring)}'+
+ '.opt[aria-checked="true"] .bub,.opt.inked .bub{background:var(--neo-fill);border-color:transparent;color:#fff}'+
+ '.chip.hot{border-color:var(--neo-m);color:var(--neo-m)}'+
+ '.wl-bar{position:relative}.wl-bar::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:var(--neo-line);opacity:.8}'+
+ '.spine{border-left-color:var(--neo-v)}'+
+ '::selection{background:var(--neo-m);color:#fff}'+
+ '@media (prefers-reduced-motion:no-preference){.opt:active{transform:scale(.985)}.opt[aria-checked="true"] .bub{animation:neo-pop .5s cubic-bezier(.34,1.56,.64,1)}}'+
+ '@keyframes neo-pop{0%{transform:scale(.7)}55%{transform:scale(1.18)}100%{transform:scale(1)}}';
+var fr=document.getElementById('frC');
+function dress(){try{var fd=fr.contentDocument;if(!fd||!fd.head||fd.getElementById('zneo-frame'))return;
+ var st=fd.createElement('style');st.id='zneo-frame';st.textContent=FRAME_CSS;fd.head.appendChild(st)}catch(e){}}
+if(fr){fr.addEventListener('load',dress);dress()}
+})();
+</script>
 <!-- /zola-pwa:body -->

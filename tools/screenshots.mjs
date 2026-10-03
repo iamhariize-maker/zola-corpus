@@ -38,7 +38,7 @@ for (const [name, hash, viewport, scale] of SHOTS) {
   const page = await ctx.newPage();
   await page.goto(base + hash, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
-  await page.waitForTimeout(1200);
+  await page.waitForTimeout(3000);
   const png = await page.screenshot();
   // Encode as WebP in the browser: a quarter of the PNG size, sharp enough for text.
   const webp = await page.evaluate(async b64 => {

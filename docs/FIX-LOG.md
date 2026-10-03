@@ -86,3 +86,12 @@ opt-in, which was not chosen).
 | Share kit | `share/zola-corpus-qr-card.png` and `share/zola-corpus-link-card.png` (1080 × 1350 at 2×, Vivid style, install steps, anti-scam line); `share/zola-corpus-qr.png`/`.svg` for print. The QR encodes `…/zola-corpus/?s=qr` with error correction H. | Decoded with OpenCV at full size and after downscaling and blurring. |
 | Counting | `pwa/stats.js`: one view per launch (`/web` or `/app`), events `scan-qr`, `open-link`, `installed` (Android/desktop) and `first-app-launch` (any phone, once per device). No cookies, names, input or progress; skips Do Not Track/GPC, offline and non-production hosts; footer opt-out. The source tag is stripped from the address so reloads and copied links are not recounted. Inert until `CODE` is set. | `tests/stats.test.mjs`: 11 checks (off by default, correct counts, no recount, no personal data, opt-out, privacy text corrected in footer and live-feed dialog, installed launches). |
 
+## Tracker source check · 3 October 2026
+
+The owner asked for every unverified tracker event to be checked and chose to apply the results through the build (option A).
+
+| Area | Change | Verification |
+|---|---|---|
+| Source check | All 57 events checked against official records or reliable reports; 40 confirmed, 14 corrected or updated (dates for Keralam, CDS, Glaw Lake, Mizoram repository, soil map, Nepal train, Maratha forts, DPDP Rules, Gogabil, AI Summit; BRICS summit held; 130th Amendment JPC deadline; NCLT in the AI-citation case; GII overall rank 38th), 3 only partly confirmed. | `docs/VERIFICATION-2026-10-03.md` lists each result with sources. |
+| Applied at build | `tools/tracker-checks.mjs` + `applyTrackerChecks` in `tools/app-fixes.mjs`: exact before→after edits, `st`/`evidence_status` set for checked events, a `zc` record per event. Tracker tags read "Checked 3 Oct 2026" or "Partly checked", each event lists what was checked with links, the Brief figure and filter say "checked", and the Sources page note is updated. | Contract tests: reapplies to an owner build with the original wording; partly confirmed events stay unmarked; a changed event stops the build. |
+

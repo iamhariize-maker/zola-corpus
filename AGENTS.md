@@ -38,6 +38,11 @@ in `tools/app-fixes.mjs` and are reapplied by the build tool, rather than hand-e
 Changed upstream entry points fail the build and need review. `pwa/data.js` is inlined into the managed head
 and supplies their validators plus the complete backup validator. See `docs/FIX-LOG.md`.
 
+The owner also approved (3 October 2026) a source check of every tracker event. `tools/tracker-checks.mjs` holds each
+result, its sources and exact before→after text edits; the build applies them to `dataItems` and shows "Checked 3 Oct 2026".
+If an owner upload changes a checked field, the build stops: recheck that event and update the file
+(report: `docs/VERIFICATION-2026-10-03.md`).
+
 ### What is in the layer
 
 `pwa/head.html`: manifest/icons/meta, Open Graph card, font faces (`#zfonts-neo`), launch screen (`#zboot` CSS and

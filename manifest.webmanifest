@@ -1,0 +1,25 @@
+{
+  "id": "./",
+  "name": "Zola Corpus",
+  "short_name": "Zola",
+  "description": "UPSC and APSC Prelims 2027: forecast tracker, Hacking the System and the CSAT Question Forge. Works offline.",
+  "lang": "en",
+  "start_url": "./#forecast/brief",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F3F1F7",
+  "theme_color": "#FFFFFF",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Forecast tracker", "short_name": "Forecast", "url": "./#forecast/brief", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
+    {"name": "Hacking the System", "short_name": "Hacking", "url": "./#hacking", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
+    {"name": "CSAT Question Forge", "short_name": "CSAT", "url": "./#csat", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]}
+  ]
+}

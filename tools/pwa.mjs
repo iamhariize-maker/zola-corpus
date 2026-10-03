@@ -41,7 +41,7 @@ function outsideCode(html, fn) {
 export function applyLayer(html) {
   html = applyAppFixes(html);
   const head = read('pwa/head.html').trim().replace('<!-- zola-data -->', '<script id="zola-data">\n' + read('pwa/data.js').trim() + '\n</script>') + '\n';
-  const studio = '<style id="zstudio">\n' + read('pwa/studio.css') + '\n</style>\n<style id="zstudio-frame-source" media="not all">\n' + read('pwa/studio-frame.css') + '\n</style>\n<script>\n' + read('pwa/studio.js') + '\n</script>';
+  const studio = '<style id="zstudio">\n' + read('pwa/studio.css') + '\n</style>\n<style id="zstudio-frame-source" media="not all">\n' + read('pwa/studio-frame.css') + '\n</style>\n<script>\n' + read('pwa/studio.js') + '\n</script>\n<script id="zstats">\n' + read('pwa/stats.js') + '\n</script>';
   const body = read('pwa/body.html').trim().replace('<!-- zola-studio -->', studio) + '\n';
   const h = html.search(/<\/head>/i);
   if (h < 0) throw new Error('no </head> in the page');

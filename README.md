@@ -70,6 +70,8 @@ layer into the repository copy, so the file works the same when opened directly.
 | `index.html` | The whole app (Zola Corpus 2.4), with the PWA layer between `zola-pwa` markers |
 | `pwa/head.html`, `pwa/body.html`, `pwa/data.js` | **The PWA layer and data checks.** Edit these, not the marked blocks in `index.html` |
 | `pwa/studio.css`, `pwa/studio-frame.css`, `pwa/studio.js` | Studio surfaces, motion and navigation enhancements; inlined by the build for offline use |
+| `pwa/stats.js` | Anonymous GoatCounter counts (views, QR scans, link opens, installs) with an opt-out; off until a site code is set |
+| `share/` | Share cards (QR and link) and a print QR code |
 | `tools/app-fixes.mjs` | Reapplies the owner-authorized import and feed safeguards to fresh owner builds |
 | `docs/FIX-LOG.md` | Fixes, regression coverage and verification results |
 | `manifest.webmanifest` | Name, icons, colours, shortcuts, screenshots, launch behaviour |

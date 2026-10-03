@@ -75,3 +75,14 @@ The owner asked for tasteful colour and matching animation on top of the Studio 
 | Accessibility | Forced-colours and print fall back to solid text. | axe-core 4.13.0 (WCAG 2 A/AA, 2.1 AA) on Brief, Tracker, Hacking library, M01 and CSAT (incl. frame), light and dark, phone and desktop: 0 violations in 20 samples. |
 
 Release checks before publishing: `npm run check` and `npm test` passed.
+
+## Share kit and anonymous counts · 3 October 2026
+
+The owner asked for QR and link images to share, and chose anonymous counts over identifying users (names only ever by
+opt-in, which was not chosen).
+
+| Area | Change | Verification |
+|---|---|---|
+| Share kit | `share/zola-corpus-qr-card.png` and `share/zola-corpus-link-card.png` (1080 × 1350 at 2×, Vivid style, install steps, anti-scam line); `share/zola-corpus-qr.png`/`.svg` for print. The QR encodes `…/zola-corpus/?s=qr` with error correction H. | Decoded with OpenCV at full size and after downscaling and blurring. |
+| Counting | `pwa/stats.js`: one view per launch (`/web` or `/app`), events `scan-qr`, `open-link`, `installed` (Android/desktop) and `first-app-launch` (any phone, once per device). No cookies, names, input or progress; skips Do Not Track/GPC, offline and non-production hosts; footer opt-out. The source tag is stripped from the address so reloads and copied links are not recounted. Inert until `CODE` is set. | `tests/stats.test.mjs`: 11 checks (off by default, correct counts, no recount, no personal data, opt-out, privacy text corrected in footer and live-feed dialog, installed launches). |
+

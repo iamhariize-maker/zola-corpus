@@ -53,6 +53,7 @@ a tiny script that adds `html.zboot`).
 | `style#zneo-motion` + script | Count-up figures (once a day), scroll reveal, bar growth, ripple, theme cross-fade, reading-progress bar, CSAT frame dressing |
 | `style#zux` + script | Scroll memory per section, collapsing header, exam-dates sheet and `.ics` export |
 | `pwa/studio.css`, `pwa/studio-frame.css`, `pwa/studio.js` | Final Studio design overrides, Brief actions, return-to-top and CSAT palette; inlined at `<!-- zola-studio -->` |
+| `pwa/stats.js` | Anonymous counts (GoatCounter, owner-approved 3 Oct 2026); inert until `CODE` is set; inlined after the Studio script |
 
 Plain ES5-style JavaScript (no modules, no build step, no runtime dependencies). Keep it that way.
 
@@ -126,6 +127,7 @@ published go in `SITE_FILES` in `tools/pwa.mjs`.
 | `zola.live.v1` | app (Zola Live) | last good copy of the feed |
 | `zola.pwa.*` | PWA layer | install snooze, visits, update-check time, ready notice |
 | `zola.neo.countedOn` | design layer | date figures last counted up |
+| `zola.stat.off`, `zola.stat.appSeen` | counting layer | counting turned off on this device; first installed launch already counted |
 | `sessionStorage['zola.ux.pos']` | UX layer | scroll position per section |
 
 Full backups include both learner-progress keys and every `zolaV2.*`/`zola.*` localStorage key. Backup/restore
@@ -135,7 +137,11 @@ is available from Brief; do not revert to prefix-only exports. Feed checks follo
 
 The app is deliberately honest: it ranks topics, never predicts questions, labels unverified items and shows
 sources. Keep that. Plain English, no hype, no claims the app cannot back (for example, nothing like "free"
-or "guaranteed"). No trackers, no third-party scripts or CDNs (offline-first), and no network calls beyond the feed.
+or "guaranteed"). No trackers, no third-party scripts or CDNs (offline-first), and no network calls beyond the feed, with one
+owner-approved exception: `pwa/stats.js` sends anonymous counts to GoatCounter (views, `?s=qr` scans, `?s=link` opens,
+installs) when its `CODE` is set. It sends no names, input or progress, sets no cookies, honours Do Not Track/GPC and a
+per-device opt-out, and rewrites the app's "nothing leaves your device"/"no tracking" lines so they stay true. Never add
+identifying data to it. Share images live in `share/`; the QR code points at `?s=qr`.
 
 ## Owner and accounts
 

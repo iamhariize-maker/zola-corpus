@@ -33,4 +33,5 @@ ok(checked.length===57&&checked.every(it=>it.zc)&&checked.filter(it=>it.zc.r==='
 const tampered=structuredClone(original);tampered.find(x=>x.id==='TRK-002').w='Assent 1 Sep 2026';
 let stopped=false;try{applyTrackerChecks(ownerBuild(tampered))}catch(e){stopped=/TRK-002\.w/.test(e.message)}
 ok(stopped,'an event changed since it was checked stops the build');
+ok(html.includes('Zola Corpus 2.4, built for UPSC and APSC Prelims 2027. Current to 3 October 2026.')&&!html.includes('Zola Corpus 2.0,'),'footer edition matches the header');
 process.exit(failures()?1:0);

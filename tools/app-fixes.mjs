@@ -43,6 +43,8 @@ function applyTrackerDisplay(html) {
 }
 export function applyAppFixes(html) {
   html = applyTrackerDisplay(applyTrackerChecks(html));
+  // Owner-approved 3 Oct 2026: the footer matches the header's edition and date.
+  html = replace(html, 'PLA5h. Zola Corpus 2.0, built for UPSC and APSC Prelims 2027. Current to 2 October 2026.', 'PLA5h. Zola Corpus 2.4, built for UPSC and APSC Prelims 2027. Current to 3 October 2026.', 'footer edition');
   html = replace(html, "function validate(f){\n if(!f||typeof f!=='object')", "function validate(f){\n window.ZOLA_DATA.feed(f); // zola-app-fix: strict feed contract\n if(!f||typeof f!=='object')", 'feed validation');
   html = replace(html,
     "$('#b-import').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{const d=JSON.parse(t);if(!d.data||!d.data.traps)throw new Error('not a Zola B progress file');mem=Object.assign(load(),d.data);save();render('review');$('#b-io').textContent='Imported.'}).catch(err=>{$('#b-io').textContent='Import failed: '+err.message})};",

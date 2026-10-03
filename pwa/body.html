@@ -29,6 +29,40 @@
 .wl-mark{white-space:nowrap}
 @media print{.pwa-toast{display:none}}
 </style>
+<style id="zmotion">
+/* Motion: one easing family, short durations, content-only (sticky bars and the header never move on navigation). */
+:root{--z-out:cubic-bezier(.2,.8,.2,1);--z-spring:cubic-bezier(.34,1.56,.64,1)}
+html{-webkit-tap-highlight-color:transparent}
+@media (prefers-reduced-motion:no-preference){
+ /* the app arriving from the launch screen */
+ html.zreveal .hdr{animation:z-drop .5s var(--z-out) backwards}
+ html.zreveal #catA:not([hidden]),html.zreveal #frB:not([hidden]){animation:z-arrive .62s var(--z-out) .05s backwards}
+ /* switching sections */
+ #catA:not([hidden])>main,#frB:not([hidden]) .b-main{animation:z-rise .34s var(--z-out) backwards}
+ #catA section[id^="p-"]:not([hidden]){animation:z-rise .32s var(--z-out) backwards}
+ #b-content>*{animation:z-rise .36s var(--z-out) backwards}
+ #b-content>:nth-child(2){animation-delay:.035s}#b-content>:nth-child(3){animation-delay:.07s}
+ #b-content>:nth-child(4){animation-delay:.105s}#b-content>:nth-child(n+5){animation-delay:.14s}
+ #frC:not([hidden]){animation:z-fade .3s ease-out backwards}
+ /* state changes glide instead of snapping */
+ .omr button,.sub button{transition:border-color .25s,color .2s,background-color .2s}
+ .omr .bub{transition:background-color .25s,border-color .25s,color .25s,box-shadow .35s,transform .4s var(--z-spring)}
+ .b-nav a,.tbtn,.zl-btn,.btn,.b-btn{transition:background-color .2s,color .2s,border-color .2s,box-shadow .2s,transform .18s var(--z-out)}
+ .zl-dot{transition:background-color .5s,box-shadow .5s,border-color .5s}
+ /* touch feedback */
+ .omr button:active .bub{transform:scale(.9)}
+ .sub button:active,.b-nav a:active,.tbtn:active,.zl-btn:active,.btn:active,.b-btn:active,.pwa-b:active{transform:scale(.96)}
+ details>summary{transition:color .2s}
+ details[open]>:not(summary){animation:z-rise .26s var(--z-out) backwards}
+}
+@media (prefers-reduced-motion:reduce){
+ #catA:not([hidden])>main,#frB:not([hidden]) .b-main,#catA section[id^="p-"]:not([hidden]),#b-content>*,#frC:not([hidden]){animation:z-fade .15s linear backwards}
+}
+@keyframes z-arrive{from{opacity:0;transform:translate3d(0,18px,0) scale(.985)}}
+@keyframes z-rise{from{opacity:0;transform:translate3d(0,12px,0)}}
+@keyframes z-drop{from{opacity:0;transform:translate3d(0,-10px,0)}}
+@keyframes z-fade{from{opacity:0}}
+</style>
 <script>// Zola PWA layer: install offer (Android, desktop and iOS), offline-ready and update notices,
 // launch from home-screen shortcuts into the running app, durable storage, theme-coloured status bar.
 (function(){
@@ -72,6 +106,18 @@ function show(o){
  document.body.appendChild(t);toast=t;kind=o.kind;
  if(o.ttl)timer=setTimeout(function(){hide(o.kind)},o.ttl);
 }
+
+// ---- Launch screen: lift it once the app has assembled -----------------------------------
+(function(){var d=document.documentElement;if(!d.classList.contains('zboot'))return;var done=false;
+ function lift(){if(done)return;done=true;
+  d.classList.add('zout','zreveal');var m=document.getElementById('zboot-meta');if(m)m.remove();
+  setTimeout(function(){d.classList.remove('zboot','zboot-app','zout')},560);
+  setTimeout(function(){d.classList.remove('zreveal')},1400)}
+ function ready(){var f=document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve();
+  Promise.race([f,new Promise(function(r){setTimeout(r,800)})]).then(function(){
+   requestAnimationFrame(function(){requestAnimationFrame(lift)})})}
+ if(document.readyState==='complete')ready();else window.addEventListener('load',ready);
+})();
 
 // ---- Install -------------------------------------------------------------------------
 // Let the learner see the app first: offer on a return visit, or after half a minute on the first.
@@ -128,7 +174,7 @@ window.addEventListener('offline',function(){show({kind:'offline',title:'You are
 window.addEventListener('online',function(){hide('offline')});
 
 // ---- Keep the phone's status bar in step with the in-app theme button ----------------------
-var metas=[].slice.call(document.querySelectorAll('meta[name="theme-color"]'));
+var metas=[].slice.call(document.querySelectorAll('meta[name="theme-color"]:not(#zboot-meta)'));
 metas.forEach(function(m){m.dataset.def=m.getAttribute('content');m.dataset.media=m.getAttribute('media')||''});
 function syncBar(){var t=document.documentElement.getAttribute('data-theme');
  if(t==='light'||t==='dark'){var c=getComputedStyle(document.documentElement).getPropertyValue('--sheet').trim();

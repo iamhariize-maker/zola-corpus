@@ -31,6 +31,7 @@ with the link and the install steps (deliberately no QR code, so people can read
 | | |
 |---|---|
 | **Installs everywhere** | Android and desktop Chrome/Edge get an Install button. iPhone and iPad get a one-time "Share → Add to Home Screen" hint. The offer waits for a return visit (or 30 seconds on a first visit), and "Not now" keeps it quiet for two weeks. |
+| **Opens smoothly** | A launch screen in the brand violet picks up where Android's own splash leaves off. It holds while the app assembles itself, then the logo zooms out into the finished page, so nobody sees half-built screens. Tabs, sections and Hacking pages glide in; tabs, pills and buttons respond to touch. "Reduce motion" on the phone is respected (quick fades only), and the launch screen can never trap the app: it clears itself after 4.5 s whatever happens. |
 | **Rich install dialog** | Real app screenshots for phone and desktop, so the install sheet looks like a store listing. |
 | **Works offline** | The whole app is saved on the device on the first visit ("Ready to work offline"). Going offline shows a short reassurance, not an error. |
 | **Updates itself** | Publish a new `index.html` and open copies show **New build ready · Reload**. Copies left open for a while check again when you return to them. |

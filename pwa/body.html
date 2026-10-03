@@ -1,0 +1,140 @@
+<!-- zola-pwa:body · managed by tools/pwa.mjs from pwa/body.html; edit that file, not this block -->
+<style id="pwa-css">
+.pwa-toast{position:fixed;left:12px;right:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:70;max-width:540px;margin:0 auto;
+ display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 12px 12px 14px;
+ background:var(--sheet,#fff);color:var(--ink,#1D1533);border:1px solid var(--rule,#DCD6E8);border-left:4px solid var(--pen,#4A2BB0);border-radius:var(--r2,14px);
+ box-shadow:0 18px 40px -18px rgba(29,21,51,.5),0 2px 6px rgba(29,21,51,.08);font:15px/1.45 var(--sans,system-ui,sans-serif);
+ animation:pwa-in .28s cubic-bezier(.2,.8,.2,1)}
+.pwa-toast[data-kind="ready"]{border-left-color:var(--ok,#0B7656)}
+.pwa-toast[data-kind="offline"]{border-left-color:var(--gold,#C98500)}
+.pwa-ico{flex:none;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--pen-soft,#ECE7FB);color:var(--pen,#4A2BB0)}
+.pwa-toast[data-kind="ready"] .pwa-ico{background:var(--ok-soft,#DDF2E9);color:var(--ok,#0B7656)}
+.pwa-toast[data-kind="offline"] .pwa-ico{background:var(--gold-soft,#FCF0D4);color:var(--gold,#C98500)}
+.pwa-ico svg{width:20px;height:20px}
+.pwa-txt{flex:1 1 200px;min-width:0;margin:0}
+.pwa-txt b{display:block;font:700 15px/1.3 var(--display,var(--sans,system-ui,sans-serif))}
+.pwa-txt span{display:block;color:var(--muted,#605873);font-size:14px}
+.pwa-txt strong{color:var(--ink,#1D1533)}
+.pwa-txt svg{width:15px;height:15px;vertical-align:-2px}
+.pwa-acts{display:flex;gap:6px;margin-left:auto}
+.pwa-b{min-height:40px;padding:0 16px;border-radius:99px;border:1.5px solid var(--pen,#4A2BB0);background:var(--pen,#4A2BB0);color:var(--onpen,#fff);
+ font:700 14px var(--sans,system-ui,sans-serif);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pwa-b.q{background:transparent;color:var(--pen,#4A2BB0);border-color:transparent}
+.pwa-b:hover{filter:brightness(1.08)}
+.pwa-b:focus-visible{outline:3px solid var(--pen,#4A2BB0);outline-offset:2px}
+.pwa-toast.out{animation:pwa-out .2s ease-in forwards}
+@keyframes pwa-in{from{opacity:0;transform:translateY(14px) scale(.98)}}
+@keyframes pwa-out{to{opacity:0;transform:translateY(10px)}}
+@media (prefers-reduced-motion:reduce){.pwa-toast,.pwa-toast.out{animation:none}}
+@media print{.pwa-toast{display:none}}
+</style>
+<script>// Zola PWA layer: install offer (Android, desktop and iOS), offline-ready and update notices,
+// launch from home-screen shortcuts into the running app, durable storage, theme-coloured status bar.
+(function(){
+'use strict';
+var P='zola.pwa.',toast=null,kind='',timer=0,deferred=null,reg=null,noop=function(){};
+function get(k){try{return localStorage.getItem(P+k)}catch(e){return null}}
+function set(k,v){try{localStorage.setItem(P+k,String(v))}catch(e){}}
+function mm(q){return !!(window.matchMedia&&matchMedia(q).matches)}
+function standalone(){return mm('(display-mode: standalone)')||mm('(display-mode: minimal-ui)')||navigator.standalone===true}
+function snoozed(){return Date.now()-(+get('dismissedAt')||0)<14*864e5}
+function snooze(){set('dismissedAt',Date.now())}
+
+var SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+var ICON={
+ install:SVG+'<path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>',
+ update:SVG+'<path d="M20 11a8 8 0 0 0-14.6-4.5L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.6 4.5L20 16"/><path d="M20 21v-5h-5"/></svg>',
+ ready:SVG+'<path d="M20 6 9 17l-5-5"/></svg>',
+ offline:SVG+'<path d="m2 2 20 20"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M5 12.9a10 10 0 0 1 5.2-2.8M19 12.9a10 10 0 0 0-2.3-1.6"/><path d="M2 8.8a15 15 0 0 1 4.2-2.6M22 8.8A15 15 0 0 0 10.7 5"/><path d="M12 20h.01"/></svg>',
+ share:SVG+'<path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>'
+};
+var RANK={update:3,install:2,ios:2,ready:1,offline:1};
+
+function hide(k){if(!toast||(k&&kind!==k))return;var t=toast;toast=null;kind='';clearTimeout(timer);
+ t.classList.add('out');setTimeout(function(){t.remove()},mm('(prefers-reduced-motion: reduce)')?0:220)}
+function btn(label,cls,fn){var b=document.createElement('button');b.type='button';b.className='pwa-b'+(cls?' '+cls:'');b.textContent=label;
+ b.addEventListener('click',function(){hide();fn&&fn()});return b}
+// o: {kind, icon, title, html|text, action, onAction, later, onLater, ttl}
+function show(o){
+ if(toast&&(RANK[kind]||0)>(RANK[o.kind]||0))return;          // never bury a more important message
+ if(toast&&kind===o.kind)return;
+ if(toast){toast.remove();toast=null;clearTimeout(timer)}
+ var t=document.createElement('div');t.className='pwa-toast';t.dataset.kind=o.kind;
+ t.setAttribute('role','status');t.setAttribute('aria-live','polite');
+ var i=document.createElement('div');i.className='pwa-ico';i.innerHTML=ICON[o.icon||o.kind]||'';t.appendChild(i);
+ var p=document.createElement('p');p.className='pwa-txt';var b=document.createElement('b');b.textContent=o.title;p.appendChild(b);
+ var s=document.createElement('span');if(o.html)s.innerHTML=o.html;else s.textContent=o.text||'';p.appendChild(s);t.appendChild(p);
+ if(o.action||o.later){var a=document.createElement('div');a.className='pwa-acts';
+  if(o.later)a.appendChild(btn(o.later,'q',o.onLater));
+  if(o.action)a.appendChild(btn(o.action,'',o.onAction));t.appendChild(a)}
+ t.addEventListener('keydown',function(e){if(e.key==='Escape'){hide();o.onLater&&o.onLater()}});
+ document.body.appendChild(t);toast=t;kind=o.kind;
+ if(o.ttl)timer=setTimeout(function(){hide(o.kind)},o.ttl);
+}
+
+// ---- Install -------------------------------------------------------------------------
+// Let the learner see the app first: offer on a return visit, or after half a minute on the first.
+var visits=(+get('visits')||0)+1;set('visits',visits);
+function whenSettled(fn){setTimeout(fn,visits>1?4000:30000)}
+var ua=navigator.userAgent||'';
+var ios=/iphone|ipad|ipod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+if(standalone())document.documentElement.classList.add('pwa-standalone');
+
+function offerInstall(){
+ if(!deferred||standalone()||snoozed())return;
+ show({kind:'install',title:'Install Zola Corpus',text:'Opens like an app from your home screen and works offline.',
+  later:'Not now',onLater:snooze,action:'Install',onAction:function(){var d=deferred;deferred=null;if(!d)return;d.prompt();
+   Promise.resolve(d.userChoice).then(function(c){if(c&&c.outcome==='dismissed')snooze()},noop)}});
+}
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;whenSettled(offerInstall)});
+window.addEventListener('appinstalled',function(){deferred=null;hide('install');persist()});
+if(ios&&!standalone()&&!snoozed())whenSettled(function(){
+ show({kind:'ios',icon:'install',title:'Install Zola Corpus',html:'Tap '+ICON.share+' <strong>Share</strong>, then <strong>Add to Home Screen</strong>. It then works offline.',
+  later:'Got it',onLater:snooze});
+});
+
+// ---- Durable storage: keep progress safe from the browser's storage clean-ups once installed --
+function persist(){var s=navigator.storage;if(s&&s.persist&&s.persisted)s.persisted().then(function(p){return p||s.persist()}).catch(noop)}
+if(standalone())persist();
+
+// ---- Home-screen shortcuts open the requested section in the window that is already running --
+if(window.launchQueue&&launchQueue.setConsumer)launchQueue.setConsumer(function(p){
+ try{var h=p&&p.targetURL?new URL(p.targetURL).hash:'';if(h&&h!==location.hash)location.hash=h}catch(e){}});
+
+// ---- Service worker: offline copy, update notice ----------------------------------------
+var secure=location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
+function offerUpdate(){show({kind:'update',title:'New build ready',text:'A newer Zola Corpus has been saved on this device.',
+ later:'Later',action:'Reload',onAction:function(){location.reload()}})}
+function check(){
+ if(!navigator.onLine||Date.now()-(+get('checkedAt')||0)<15*60e3)return;set('checkedAt',Date.now());
+ if(reg)reg.update().catch(noop);
+ var c=navigator.serviceWorker.controller;if(c)c.postMessage({type:'zola-check'});
+}
+if('serviceWorker' in navigator&&secure){
+ var had=!!navigator.serviceWorker.controller;
+ navigator.serviceWorker.addEventListener('controllerchange',function(){
+  if(had)offerUpdate();
+  else if(!get('readyShown')){set('readyShown',1);
+   show({kind:'ready',title:'Ready to work offline',text:'Zola Corpus is now saved on this device.',ttl:6500})}
+  had=true});
+ navigator.serviceWorker.addEventListener('message',function(e){if(e.data&&e.data.type==='zola-update')offerUpdate()});
+ window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js',{scope:'./'}).then(function(r){reg=r},noop)});
+ document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')check()});
+}
+
+// ---- Connection notices ----------------------------------------------------------------
+window.addEventListener('offline',function(){show({kind:'offline',title:'You are offline',text:'Everything saved on this device keeps working.',ttl:7000})});
+window.addEventListener('online',function(){hide('offline')});
+
+// ---- Keep the phone's status bar in step with the in-app theme button ----------------------
+var metas=[].slice.call(document.querySelectorAll('meta[name="theme-color"]'));
+metas.forEach(function(m){m.dataset.def=m.getAttribute('content');m.dataset.media=m.getAttribute('media')||''});
+function syncBar(){var t=document.documentElement.getAttribute('data-theme');
+ if(t==='light'||t==='dark'){var c=getComputedStyle(document.documentElement).getPropertyValue('--sheet').trim();
+  if(c)metas.forEach(function(m){m.setAttribute('content',c);m.removeAttribute('media')})}
+ else metas.forEach(function(m){m.setAttribute('content',m.dataset.def);if(m.dataset.media)m.setAttribute('media',m.dataset.media)})}
+if(window.MutationObserver)new MutationObserver(syncBar).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+syncBar();
+})();
+</script>
+<!-- /zola-pwa:body -->

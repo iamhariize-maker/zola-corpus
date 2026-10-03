@@ -1,69 +1,66 @@
-# Zola Corpus (installable web app)
+# Zola Corpus
 
-Live at **https://iamhariize-maker.github.io/zola-corpus/** once GitHub Pages is switched on.
-Open it once while online; after that it installs like an app and works fully offline.
-The live dot in the header reads from the companion repo `iamhariize-maker/zola-feed`.
+UPSC and APSC Prelims 2027 in one installable app: the **Forecast tracker**, **Hacking the System**
+and the **CSAT Question Forge**. Open it once while online; after that it installs like an app and works
+fully offline.
 
-## What is in this repo
+**Live:** https://iamhariize-maker.github.io/zola-corpus/
+**Live feed:** [`iamhariize-maker/Zola-feed`](https://github.com/iamhariize-maker/Zola-feed) (exam dates, news inbox, notices)
 
-| File | Job |
+## What the app layer gives you
+
+| | |
 |---|---|
-| `index.html` | The whole app (Zola Corpus 2.4) with the install and offline layer added |
-| `manifest.webmanifest` | App name, icons, colours, home-screen shortcuts (Forecast, Hacking, CSAT) |
-| `sw.js` | Service worker: keeps the app on the device, refreshes it in the background |
-| `icons/` | Home-screen, maskable and Apple icons |
-| `.nojekyll` | Tells GitHub Pages to serve the files as they are (optional) |
+| **Installs everywhere** | Android and desktop Chrome/Edge get an Install button. iPhone and iPad get a one-time "Share → Add to Home Screen" hint. The offer waits for a return visit (or 30 seconds on a first visit), and "Not now" keeps it quiet for two weeks. |
+| **Rich install dialog** | Real app screenshots for phone and desktop, so the install sheet looks like a store listing. |
+| **Works offline** | The whole app is saved on the device on the first visit ("Ready to work offline"). Going offline shows a short reassurance, not an error. |
+| **Updates itself** | Publish a new `index.html` and open copies show **New build ready · Reload**. Copies left open for a while check again when you return to them. |
+| **Home-screen shortcuts** | Long-press the icon to jump to Forecast, Hacking or CSAT. When the app is already open, a shortcut reuses that window instead of opening a second one. |
+| **Keeps your progress** | Once installed, the app asks the browser to keep its storage, so a storage clean-up can't wipe your review progress. |
+| **Looks right** | Crisp SVG favicon, maskable and monochrome (Android 13 themed) icons, a status bar that follows the in-app theme button, and a share card for WhatsApp/Telegram links. |
 
-## Set up both repos (once)
+## Set up (once)
 
-Do the feed first, then the app. Both repos must be **public** (GitHub Pages and the raw feed need that on a free account).
+1. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
+2. **Actions** tab: open **Deploy Zola Corpus** and press **Run workflow** (only needed the first time; later pushes deploy by themselves).
+3. When the run is green, open https://iamhariize-maker.github.io/zola-corpus/ in Chrome on Android and tap **Install**.
 
-### Route 1: GitHub website (works from a phone, easier on a laptop)
+## Ship a new build of the app
 
-**Feed repo**
-1. Go to https://github.com/new, name it `zola-feed`, choose Public, create.
-2. Unzip `zola-feed.zip`. Add file → Upload files, and drag in everything inside the `zola-feed` folder.
-   If `.github` will not upload, use Add file → Create new file, type `.github/workflows/update-feed.yml`
-   as the name and paste the file in.
-3. Actions tab → allow workflows if asked → "Update Zola feed" → Run workflow.
+Replace `index.html` and commit it. That works from the GitHub website: **Add file → Upload files**.
 
-**App repo**
-1. https://github.com/new, name it `zola-corpus`, Public, create.
-2. Unzip `zola-corpus-pwa.zip` and upload everything inside the `zola-corpus` folder, keeping `icons/` as a folder.
-3. Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch `main`, folder `/ (root)` → Save.
-4. After a minute or two, open https://iamhariize-maker.github.io/zola-corpus/ in Chrome on Android.
-   Tap **Install** on the prompt at the bottom, or ⋮ → Install app.
+You don't need to carry the install/offline layer across by hand. The deploy re-applies it from `pwa/` to
+whatever `index.html` you upload, stamps a fresh cache version, checks everything and publishes.
+Installed copies download the new build in the background and offer a reload.
 
-### Route 2: command line (Windows terminal, or hand it to Claude Code)
+On a computer, `npm run apply` (or `node tools/pwa.mjs apply path/to/new-build.html`) also writes the
+layer into the repository copy, so the file works the same when opened directly.
 
-Needs Git and the GitHub CLI (`winget install GitHub.cli`), then `gh auth login` once.
+## Files
+
+| Path | Job |
+|---|---|
+| `index.html` | The whole app (Zola Corpus 2.4), with the PWA layer between `zola-pwa` markers |
+| `pwa/head.html`, `pwa/body.html` | **The PWA layer.** Edit these, not the marked blocks in `index.html` |
+| `manifest.webmanifest` | Name, icons, colours, shortcuts, screenshots, launch behaviour |
+| `sw.js` | Service worker: offline copy, background refresh, update notices |
+| `icons/`, `screenshots/` | Home-screen, maskable, monochrome, shortcut and share images; install-dialog screenshots |
+| `404.html` | Sends a mistyped address back to the app |
+| `tools/pwa.mjs` | `apply`, `check` and `build`, with no dependencies |
+| `tools/screenshots.mjs` | Regenerates `screenshots/` from the real app (needs Playwright) |
+| `.github/workflows/deploy.yml` | Check → build → publish to GitHub Pages on every push to `main` |
+
+## On a computer
 
 ```bash
-cd zola-feed
-git init -b main && git add . && git commit -m "Zola feed"
-gh repo create zola-feed --public --source . --push
-gh workflow run update-feed.yml -R iamhariize-maker/zola-feed
-
-cd ../zola-corpus
-git init -b main && git add . && git commit -m "Zola Corpus 2.4 PWA"
-gh repo create zola-corpus --public --source . --push
-gh api -X POST repos/iamhariize-maker/zola-corpus/pages -f "source[branch]=main" -f "source[path]=/"
+npm run check    # manifest, icons, screenshots, service worker and layer
+npm run serve    # build to _site and serve at http://localhost:8080 (offline mode works on localhost)
 ```
-
-If `gh workflow run` says the workflow is not found, wait a minute and run it again.
-
-## How updates reach people
-
-- **Feed** (exam dates, news inbox, notices): edit `zola-feed.json` in the feed repo. The app picks it up on next open.
-- **New build of the app**: replace `index.html` and commit. Installed copies download it in the background
-  and show "A newer build of Zola Corpus has been saved on this device. Reload now".
-  A fresh build from Claude will not include the install/offline layer on its own: give Claude this
-  `index.html` together with the new file and ask it to carry the PWA layer across.
-- Change `VERSION` at the top of `sw.js` only when you change icons, the manifest or `sw.js` itself.
 
 ## Good to know
 
-- Public repo means anyone with the link can open and save the corpus.
-- The app is pre-pointed at `https://raw.githubusercontent.com/iamhariize-maker/zola-feed/main/zola-feed.json`.
-  Until the feed repo exists it shows a 404 under Go live and keeps using its built-in data, which is expected.
-- Opening `index.html` straight from a file still works; installing and offline caching need the https address.
+- The repository is public, so anyone with the link can open and install the app.
+- The app reads `https://raw.githubusercontent.com/iamhariize-maker/zola-feed/main/zola-feed.json`.
+  Until the feed's `main` branch exists, **Go live** shows a 404 and the app keeps using its built-in data.
+- If you ever switch Pages to **Deploy from a branch** instead, the files still work as they are. In that
+  case, bump `VERSION` at the top of `sw.js` whenever you change icons, the manifest or `sw.js`.

@@ -2,24 +2,40 @@
   "id": "./",
   "name": "Zola Corpus",
   "short_name": "Zola",
-  "description": "UPSC and APSC Prelims 2027: forecast tracker, Hacking the System and the CSAT Question Forge. Works offline.",
-  "lang": "en",
+  "description": "UPSC and APSC Prelims 2027: the forecast tracker, Hacking the System and the CSAT Question Forge in one app. Works offline.",
+  "lang": "en-IN",
+  "dir": "ltr",
   "start_url": "./#forecast/brief",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "any",
   "background_color": "#F3F1F7",
   "theme_color": "#FFFFFF",
   "categories": ["education", "productivity"],
+  "launch_handler": {"client_mode": ["focus-existing", "auto"]},
+  "prefer_related_applications": false,
   "icons": [
+    {"src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"},
     {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
     {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
     {"src": "icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
-    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
+    {"src": "icons/monochrome-512.png", "sizes": "512x512", "type": "image/png", "purpose": "monochrome"}
   ],
   "shortcuts": [
-    {"name": "Forecast tracker", "short_name": "Forecast", "url": "./#forecast/brief", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
-    {"name": "Hacking the System", "short_name": "Hacking", "url": "./#hacking", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
-    {"name": "CSAT Question Forge", "short_name": "CSAT", "url": "./#csat", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]}
+    {"name": "Forecast tracker", "short_name": "Forecast", "description": "What 2027 is likely to draw on", "url": "./#forecast/brief",
+     "icons": [{"src": "icons/shortcut-forecast-96.png", "sizes": "96x96", "type": "image/png"}, {"src": "icons/shortcut-forecast-192.png", "sizes": "192x192", "type": "image/png"}]},
+    {"name": "Hacking the System", "short_name": "Hacking", "description": "Levers, exploits and patches", "url": "./#hacking",
+     "icons": [{"src": "icons/shortcut-hacking-96.png", "sizes": "96x96", "type": "image/png"}, {"src": "icons/shortcut-hacking-192.png", "sizes": "192x192", "type": "image/png"}]},
+    {"name": "CSAT Question Forge", "short_name": "CSAT", "description": "Clear the 66-mark gate", "url": "./#csat",
+     "icons": [{"src": "icons/shortcut-csat-96.png", "sizes": "96x96", "type": "image/png"}, {"src": "icons/shortcut-csat-192.png", "sizes": "192x192", "type": "image/png"}]}
+  ],
+  "screenshots": [
+    {"src": "screenshots/phone-forecast.webp", "sizes": "1080x1920", "type": "image/webp", "form_factor": "narrow", "label": "Forecast tracker: what UPSC 2027 is most likely to draw on"},
+    {"src": "screenshots/phone-hacking.webp", "sizes": "1080x1920", "type": "image/webp", "form_factor": "narrow", "label": "Hacking the System: levers, exploits and patches"},
+    {"src": "screenshots/phone-csat.webp", "sizes": "1080x1920", "type": "image/webp", "form_factor": "narrow", "label": "CSAT Question Forge: clear the 66-mark gate"},
+    {"src": "screenshots/desktop-forecast.webp", "sizes": "1920x1080", "type": "image/webp", "form_factor": "wide", "label": "Zola Corpus on a laptop: the forecast tracker"},
+    {"src": "screenshots/desktop-hacking.webp", "sizes": "1920x1080", "type": "image/webp", "form_factor": "wide", "label": "Zola Corpus on a laptop: Hacking the System"}
   ]
 }

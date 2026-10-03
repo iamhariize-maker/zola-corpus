@@ -1,0 +1,17 @@
+{
+  "name": "zola-corpus",
+  "version": "2.4.0",
+  "private": true,
+  "description": "Zola Corpus: installable, offline-first web app for UPSC and APSC Prelims 2027",
+  "type": "module",
+  "scripts": {
+    "check": "node tools/pwa.mjs check",
+    "apply": "node tools/pwa.mjs apply",
+    "build": "node tools/pwa.mjs build _site",
+    "serve": "node tools/pwa.mjs build _site && npx --yes http-server _site -p 8080 -c-1",
+    "screenshots": "node tools/screenshots.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

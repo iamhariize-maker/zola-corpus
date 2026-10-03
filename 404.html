@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zola Corpus</title>
+<meta name="robots" content="noindex">
+<script>
+// Unknown address under the app: go to the app itself, keeping any #section.
+(function () {
+  var base = '/' + (location.pathname.split('/')[1] || '') + '/';
+  location.replace(base + location.search + location.hash);
+})();
+</script>
+<p style="font:16px system-ui,sans-serif;padding:24px">Opening <a href="./">Zola Corpus</a>…</p>
+</html>

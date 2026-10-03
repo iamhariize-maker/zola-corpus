@@ -9,9 +9,13 @@
     "apply": "node tools/pwa.mjs apply",
     "build": "node tools/pwa.mjs build _site",
     "serve": "node tools/pwa.mjs build _site && npx --yes http-server _site -p 8080 -c-1",
-    "screenshots": "node tools/screenshots.mjs"
+    "screenshots": "node tools/screenshots.mjs",
+    "test": "node tests/run.mjs"
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.0"
   }
 }

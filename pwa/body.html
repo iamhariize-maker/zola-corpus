@@ -35,8 +35,8 @@
 html{-webkit-tap-highlight-color:transparent}
 @media (prefers-reduced-motion:no-preference){
  /* the app arriving from the launch screen */
- html.zreveal .hdr{animation:z-drop .5s var(--z-out) backwards}
- html.zreveal #catA:not([hidden]),html.zreveal #frB:not([hidden]){animation:z-arrive .62s var(--z-out) .05s backwards}
+ html.zreveal .hdr{animation:z-drop .4s var(--z-out) backwards}
+ html.zreveal #catA:not([hidden]),html.zreveal #frB:not([hidden]){animation:z-arrive .45s var(--z-out) backwards}
  /* switching sections */
  #catA:not([hidden])>main,#frB:not([hidden]) .b-main{animation:z-rise .34s var(--z-out) backwards}
  #catA section[id^="p-"]:not([hidden]){animation:z-rise .32s var(--z-out) backwards}
@@ -111,10 +111,10 @@ function show(o){
 (function(){var d=document.documentElement;if(!d.classList.contains('zboot'))return;var done=false;
  function lift(){if(done)return;done=true;
   d.classList.add('zout','zreveal');var m=document.getElementById('zboot-meta');if(m)m.remove();
-  setTimeout(function(){d.classList.remove('zboot','zboot-app','zout')},560);
+  setTimeout(function(){d.classList.remove('zboot','zboot-app','zout')},340);
   setTimeout(function(){d.classList.remove('zreveal')},1400)}
  function ready(){var f=document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve();
-  Promise.race([f,new Promise(function(r){setTimeout(r,800)})]).then(function(){
+  Promise.race([f,new Promise(function(r){setTimeout(r,450)})]).then(function(){
    requestAnimationFrame(function(){requestAnimationFrame(lift)})})}
  if(document.readyState==='complete')ready();else window.addEventListener('load',ready);
 })();
@@ -373,16 +373,18 @@ addEventListener('resize',prog);addEventListener('hashchange',function(){setTime
 // ---- Counting figures (57, 600, 232 days...) ------------------------------------------
 function countUp(el){
  var t=(el.textContent||'').trim();if(el.dataset.zc||!/^\d{1,5}$/.test(t))return;el.dataset.zc='1';
- var n=+t;if(calm||n<3)return;
+ var n=+t;if(calm||!countToday||n<3)return;
  var dur=Math.min(1500,650+n*3),t0=0,last='0';el.textContent='0';
  (function step(ts){if(!el.isConnected||el.textContent!==last)return;   // the app re-rendered it: leave it alone
   if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/dur),v=k<1?String(Math.round(n*(1-Math.pow(1-k,3)))):t;
   el.textContent=v;last=v;if(k<1)requestAnimationFrame(step)})(performance.now());
 }
 var COUNT='.stat .num,#clock .num,#frB .b-ledger b';
+var COUNT_DAY='zola.neo.countedOn',today=new Date().toDateString(),countToday=true;
+try{countToday=localStorage.getItem(COUNT_DAY)!==today;localStorage.setItem(COUNT_DAY,today)}catch(e){}
 
 // ---- Scroll reveal: only content that starts below the fold, once ---------------------
-var REVEAL='.stat,details.item,#frB a.b-card,#frB .b-ledger,.box,.callout,.chart,.hbar,.tscroll,li.exam,#frB .b-item,#frB .b-how>*';
+var REVEAL='.stat,#frB a.b-card,#frB .b-ledger,.box,.callout,.chart,.hbar,.tscroll,li.exam,#frB .b-item,#frB .b-how>*';
 var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){
  var shown=es.filter(function(e){return e.isIntersecting}).sort(function(a,b){return a.boundingClientRect.top-b.boundingClientRect.top});
  shown.forEach(function(e,i){var el=e.target;io.unobserve(el);
@@ -447,6 +449,124 @@ var fr=document.getElementById('frC');
 function dress(){try{var fd=fr.contentDocument;if(!fd||!fd.head||fd.getElementById('zneo-frame'))return;
  var st=fd.createElement('style');st.id='zneo-frame';st.textContent=FRAME_CSS;fd.head.appendChild(st)}catch(e){}}
 if(fr){fr.addEventListener('load',dress);dress()}
+})();
+</script>
+<style id="zux">
+/* Header that steps aside while you read, and the exam-dates sheet. */
+.hdr{transition:transform .32s var(--z-out,ease)}
+.sub,#frB .b-nav{transition:top .32s var(--z-out,ease)}
+html.zcollapse:not(.zframed) .hdr{transform:translate3d(0,calc(-1 * var(--zcol,0px)),0)}
+html.zcollapse:not(.zframed) .sub,html.zcollapse:not(.zframed) #frB .b-nav{top:calc(var(--hdr) - var(--zcol,0px))}
+@media (prefers-reduced-motion:reduce){.hdr,.sub,#frB .b-nav{transition:none}}
+.clock[role="button"]{cursor:pointer;border-radius:10px;padding:2px 4px;margin:-2px -4px}
+.clock[role="button"]:hover{background:var(--pen-soft)}
+.zcal-add{display:inline-flex;align-items:center;gap:8px;margin:10px 0 4px}
+#zcal{width:min(560px,94vw);max-height:86vh;border:1px solid var(--rule);border-radius:22px;background:var(--sheet);color:var(--ink);padding:0;
+ box-shadow:0 30px 80px -30px rgba(20,10,50,.6)}
+#zcal::backdrop{background:rgba(15,10,30,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+#zcal[open]{animation:z-rise .3s var(--z-out,ease)}
+#zcal header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 18px 12px;border-bottom:1px solid var(--rule)}
+#zcal h2{margin:0;font:700 21px/1.2 var(--display);letter-spacing:-.02em}
+#zcal h2::before{content:"";display:block;width:36px;height:3px;border-radius:3px;background:var(--neo-line);margin:0 0 8px}
+#zcal .zc-body{padding:12px 18px 18px;font:15px/1.5 var(--sans)}
+#zcal ul{list-style:none;margin:0 0 14px;padding:0}
+#zcal li{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;padding:11px 0;border-top:1px solid var(--rule2)}
+#zcal li:first-child{border-top:0}
+#zcal li b{font:600 15.5px/1.35 var(--sans)}
+#zcal li .zc-when{font:500 12px/1.3 var(--mono);letter-spacing:.03em;color:var(--muted);text-transform:uppercase}
+#zcal li .zc-left{grid-row:span 2;text-align:right;font:700 20px/1 var(--display);font-feature-settings:"tnum"}
+#zcal li .zc-left small{display:block;font:500 10px/1.4 var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+#zcal li.zc-primary .zc-left{background:var(--neo-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+#zcal .zc-note{font-size:13px;color:var(--muted);margin:10px 0 0}
+#zcal .zc-acts{display:flex;flex-wrap:wrap;gap:8px}
+</style>
+<script>// Zola UX: each section remembers where you were, the header steps aside while reading,
+// and exam dates go into the phone's calendar.
+(function(){
+'use strict';
+var d=document.documentElement,se=function(){return document.scrollingElement||d};
+
+// ---- Every section opens at its top, or where you last left it -----------------------
+var pos={},quietUntil=0,key=function(){return location.hash||'#'};
+try{pos=JSON.parse(sessionStorage.getItem('zola.ux.pos')||'{}')}catch(e){}
+addEventListener('scroll',function(){if(Date.now()<quietUntil)return;pos[key()]=Math.round(se().scrollTop)},{passive:true});
+addEventListener('hashchange',function(){
+ var target=pos[key()]||0;quietUntil=Date.now()+450;
+ requestAnimationFrame(function(){requestAnimationFrame(function(){window.scrollTo(0,target);d.classList.remove('zcollapse')})});
+ try{sessionStorage.setItem('zola.ux.pos',JSON.stringify(pos))}catch(e){}
+});
+
+// ---- Header steps aside while you read down, comes back the moment you scroll up -------
+var hdr=document.querySelector('.hdr'),top=hdr&&hdr.querySelector('.top'),lastY=0,acc=0;
+function measure(){if(!hdr||!top)return;var h=hdr.getBoundingClientRect().top,t=top.getBoundingClientRect().bottom;d.style.setProperty('--zcol',Math.max(0,Math.round(t-h))+'px')}
+function framed(){d.classList.toggle('zframed',document.body.classList.contains('framed'))}
+if(hdr&&top){measure();addEventListener('resize',measure);
+ addEventListener('scroll',function(){var y=se().scrollTop,dy=y-lastY;lastY=y;
+  if(Date.now()<quietUntil||y<80){d.classList.remove('zcollapse');acc=0;return}
+  acc=(dy>0)===(acc>0)?acc+dy:dy;
+  if(acc>28)d.classList.add('zcollapse');else if(acc<-10)d.classList.remove('zcollapse')},{passive:true});
+ hdr.addEventListener('focusin',function(){d.classList.remove('zcollapse')});
+ if(window.MutationObserver)new MutationObserver(framed).observe(document.body,{attributes:true,attributeFilter:['class']});framed()}
+
+// ---- Exam dates → calendar ----------------------------------------------------------------
+var FEED='https://raw.githubusercontent.com/iamhariize-maker/zola-feed/main/zola-feed.json';
+function cachedExams(){try{var v=JSON.parse(localStorage.getItem('zola.live.v1')||'{}');return v.feed&&Array.isArray(v.feed.exams)?v.feed.exams:null}catch(e){return null}}
+function getExams(){var c=cachedExams();if(c&&c.length)return Promise.resolve(c);
+ return fetch(FEED,{cache:'no-cache'}).then(function(r){return r.json()}).then(function(f){return f.exams||[]})}
+var ymd=function(s){return /^\d{4}-\d{2}-\d{2}$/.test(s||'')};
+function daysTo(s){var t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(s+'T00:00:00')-t)/864e5)}
+function fmt(s){try{return new Date(s+'T00:00:00').toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}catch(e){return s}}
+function esc(t){return String(t||'').replace(/[\;,]/g,function(c){return '\\'+c}).replace(/\n/g,'\\n')}
+function ics(list){
+ var stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
+ var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Zola Corpus//Exam dates//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Zola Corpus exam dates'];
+ list.forEach(function(e){var a=e.date.replace(/-/g,''),n=new Date(e.date+'T00:00:00');n.setDate(n.getDate()+1);
+  var b=n.getFullYear()+String(n.getMonth()+1).padStart(2,'0')+String(n.getDate()).padStart(2,'0');
+  L.push('BEGIN:VEVENT','UID:'+String(e.id||a).replace(/[^\w.-]/g,'')+'@zola-corpus','DTSTAMP:'+stamp,'DTSTART;VALUE=DATE:'+a,'DTEND;VALUE=DATE:'+b,
+   'SUMMARY:'+esc(e.label),'DESCRIPTION:'+esc((e.status?'Status: '+e.status+'. ':'')+(e.source&&e.source.url?'Source: '+e.source.url+' ':'')+'Added from Zola Corpus.'),'TRANSP:TRANSPARENT');
+  [['-P7D','One week to go'],['-P1D','Tomorrow']].forEach(function(al){L.push('BEGIN:VALARM','ACTION:DISPLAY','TRIGGER:'+al[0],'DESCRIPTION:'+esc(e.label+': '+al[1]),'END:VALARM')});
+  L.push('END:VEVENT')});
+ L.push('END:VCALENDAR');return L.join('\r\n')+'\r\n'}
+function download(list){var blob=new Blob([ics(list)],{type:'text/calendar;charset=utf-8'}),u=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=u;a.download=list.length===1?'zola-'+list[0].date+'.ics':'zola-exam-dates.ics';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}
+var dlg=null;
+function sheet(){
+ if(!dlg){dlg=document.createElement('dialog');dlg.id='zcal';dlg.setAttribute('aria-labelledby','zcal-h');
+  dlg.innerHTML='<header><h2 id="zcal-h">Exam dates</h2><button type="button" class="btn ghost" data-x>Close</button></header><div class="zc-body"><p class="zc-note">Loading…</p></div>';
+  dlg.querySelector('[data-x]').addEventListener('click',function(){dlg.close()});
+  dlg.addEventListener('click',function(e){if(e.target===dlg)dlg.close()});document.body.appendChild(dlg)}
+ var body=dlg.querySelector('.zc-body');
+ if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');
+ getExams().then(function(ex){
+  ex=(ex||[]).filter(function(e){return e&&ymd(e.date)&&e.label}).sort(function(a,b){return a.date<b.date?-1:1});
+  var up=ex.filter(function(e){return daysTo(e.date)>=0});
+  if(!up.length){body.innerHTML='<p class="zc-note">No upcoming exam dates in the feed yet.</p>';return}
+  body.innerHTML='';var ul=document.createElement('ul');
+  up.forEach(function(e){var li=document.createElement('li');if(e.primary)li.className='zc-primary';var n=daysTo(e.date);
+   li.innerHTML='<b></b><span class="zc-left"></span><span class="zc-when"></span>';
+   li.querySelector('b').textContent=e.label;li.querySelector('.zc-when').textContent=fmt(e.date)+(e.status&&e.status!=='scheduled'?' · '+e.status:'');
+   li.querySelector('.zc-left').innerHTML=n+'<small>'+(n===1?'day':'days')+'</small>';ul.appendChild(li)});
+  body.appendChild(ul);
+  var acts=document.createElement('div');acts.className='zc-acts';
+  var all=document.createElement('button');all.type='button';all.className='btn';all.textContent='Add all '+up.length+' to my calendar';
+  all.addEventListener('click',function(){download(up)});acts.appendChild(all);
+  var prim=up.filter(function(e){return e.primary})[0];
+  if(prim&&up.length>1){var one=document.createElement('button');one.type='button';one.className='btn ghost';one.textContent='Only Prelims';one.addEventListener('click',function(){download([prim])});acts.appendChild(one)}
+  body.appendChild(acts);
+  var note=document.createElement('p');note.className='zc-note';note.textContent='Opens in your calendar app with reminders a week and a day before. Dates come from the official calendar via the Zola feed; check them against the source if they change.';body.appendChild(note);
+ }).catch(function(){body.innerHTML='<p class="zc-note">Connect to the internet once so Zola can fetch the exam dates, then try again.</p>'});
+}
+// The countdown opens it
+var clock=document.getElementById('clock');
+if(clock){clock.setAttribute('role','button');clock.tabIndex=0;clock.title='Exam dates · add to calendar';
+ clock.addEventListener('click',sheet);clock.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();sheet()}})}
+// …and so does a button under any exam list the app shows
+function addButtons(){[].forEach.call(document.querySelectorAll('li.exam'),function(li){var list=li.parentElement;
+ if(!list||list.dataset.zcal)return;list.dataset.zcal='1';var b=document.createElement('button');b.type='button';b.className='btn ghost zcal-add';
+ b.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M12 14v4M10 16h4"/></svg>Add exam dates to my calendar';
+ b.addEventListener('click',sheet);list.insertAdjacentElement('afterend',b)})}
+if(window.MutationObserver){var t=0;new MutationObserver(function(){clearTimeout(t);t=setTimeout(addButtons,120)}).observe(document.getElementById('catA')||document.body,{childList:true,subtree:true})}
+addButtons();
 })();
 </script>
 <!-- /zola-pwa:body -->

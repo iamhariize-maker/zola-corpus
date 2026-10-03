@@ -35,6 +35,8 @@ with the link and the install steps (deliberately no QR code, so people can read
 | **Boardroom Neon design** | The violet-ink app keeps its formal type and layout; a violet → magenta → cyan neon is added only as accents: a neon hairline under the header that fills as you read, chapter marks on section titles, gradient key figures, glowing tier S events, gradient buttons, chips and active tabs. Dark mode becomes a night-city boardroom with soft neon washes and a faint synthwave horizon grid. Text never sits on cyan, so contrast holds. The CSAT Question Forge wears the same layer. |
 | **Type** | Space Grotesk for headlines, interface and figures; Newsreader stays for long reading; JetBrains Mono for the small print (labels, tags, captions, tier letters, the countdown caption), like a spec sheet. Both new fonts are open-licensed, subset to the characters the app uses (about 57 KB together) and saved for offline use. See `fonts/`. |
 | **Fun that does a job** | Figures count up when they come into view; cards and charts rise in as you scroll (anything already on screen is never hidden); signal bars and chart bars grow when opened; selected tabs and answer bubbles pop; buttons and chips ripple under your finger; the live dot pings while the feed is connected; the theme button cross-fades. |
+| **Reads comfortably** | Switching between Forecast, Hacking and CSAT opens each at its top, and coming back returns you to where you were. While you read down, the header steps aside (48 px more reading space) and returns the moment you scroll up. |
+| **Exam dates in your calendar** | Tap the countdown (or the button under the Watch list) to see every exam date and add them to your phone's calendar, with reminders a week and a day before. |
 | **Rich install dialog** | Real app screenshots for phone and desktop, so the install sheet looks like a store listing. |
 | **Works offline** | The whole app is saved on the device on the first visit ("Ready to work offline"). Going offline shows a short reassurance, not an error. |
 | **Updates itself** | Publish a new `index.html` and open copies show **New build ready · Reload**. Copies left open for a while check again when you return to them. |
@@ -76,11 +78,17 @@ layer into the repository copy, so the file works the same when opened directly.
 | `tools/screenshots.mjs` | Regenerates `screenshots/` from the real app (needs Playwright) |
 | `.github/workflows/deploy.yml` | Check → build → publish to GitHub Pages on every push to `main` |
 
+## For developers and coding agents
+
+Read [`AGENTS.md`](AGENTS.md) (rules, architecture, commands) and [`docs/ROADMAP.md`](docs/ROADMAP.md) (next tasks with
+acceptance checks). `npm test` runs 34 browser checks.
+
 ## On a computer
 
 ```bash
 npm run check    # manifest, icons, screenshots, service worker and layer
 npm run serve    # build to _site and serve at http://localhost:8080 (offline mode works on localhost)
+npm test         # browser suites (needs: npm i -D playwright && npx playwright install chromium)
 ```
 
 ## Good to know

@@ -490,11 +490,11 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 /* Launch screen: covers the app from the first frame while it assembles, then zooms out into it. */
 html.zboot{overflow:hidden}
 html.zboot::before,html.zboot::after{content:"";position:fixed;z-index:2147483000;pointer-events:none}
-html.zboot::before{inset:0;background:#F3F1F7;transition:opacity .45s cubic-bezier(.4,0,.2,1)}
+html.zboot::before{inset:0;background:#F3F1F7;transition:opacity .3s cubic-bezier(.4,0,.2,1)}
 html.zboot::after{left:50%;top:46%;width:112px;height:112px;margin:-56px 0 0 -56px;border-radius:26px;
  background:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22%3E%3Cdefs%3E%3Cmask id=%22cut%22 maskUnits=%22userSpaceOnUse%22 x=%22-2000%22 y=%22-2000%22 width=%227000%22 height=%225000%22%3E%3Crect x=%22-2000%22 y=%22-2000%22 width=%227000%22 height=%225000%22 fill=%22%23fff%22/%3E%3Cpolygon points=%221735,800 1465,206 1708,206 1681,-190 1951,404 1708,404%22 fill=%22%23000%22 stroke=%22%23000%22 stroke-width=%2258%22 stroke-linejoin=%22round%22/%3E%3C/mask%3E%3C/defs%3E%3Cdefs%3E%0A%3ClinearGradient id=%22bg%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%236B47EC%22/%3E%3Cstop offset=%22.55%22 stop-color=%22%234A2BB0%22/%3E%3Cstop offset=%221%22 stop-color=%22%2328156F%22/%3E%3C/linearGradient%3E%0A%3CradialGradient id=%22sheen%22 cx=%22.22%22 cy=%22.12%22 r=%22.75%22%3E%3Cstop offset=%220%22 stop-color=%22%23fff%22 stop-opacity=%22.28%22/%3E%3Cstop offset=%22.6%22 stop-color=%22%23fff%22 stop-opacity=%220%22/%3E%3C/radialGradient%3E%0A%3ClinearGradient id=%22bolt%22 x1=%220%22 y1=%221%22 x2=%220%22 y2=%220%22%3E%3Cstop offset=%220%22 stop-color=%22%23FF7A1A%22/%3E%3Cstop offset=%22.5%22 stop-color=%22%23FFB22E%22/%3E%3Cstop offset=%221%22 stop-color=%22%23FFE07A%22/%3E%3C/linearGradient%3E%0A%3Cfilter id=%22glow%22 x=%22-50%25%22 y=%22-50%25%22 width=%22200%25%22 height=%22200%25%22%3E%3CfeGaussianBlur stdDeviation=%227%22 result=%22b%22/%3E%3CfeFlood flood-color=%22%23FFB22E%22 flood-opacity=%22.6%22/%3E%3CfeComposite in2=%22b%22 operator=%22in%22/%3E%3CfeMerge%3E%3CfeMergeNode/%3E%3CfeMergeNode in=%22SourceGraphic%22/%3E%3C/feMerge%3E%3C/filter%3E%0A%3Cfilter id=%22lift%22 x=%22-20%25%22 y=%22-20%25%22 width=%22140%25%22 height=%22160%25%22%3E%3CfeDropShadow dx=%220%22 dy=%226%22 stdDeviation=%227%22 flood-color=%22%2314093F%22 flood-opacity=%22.45%22/%3E%3C/filter%3E%0A%3C/defs%3E%3Crect width=%22512%22 height=%22512%22 rx=%22112%22 fill=%22url(%23bg)%22/%3E%3Crect width=%22512%22 height=%22512%22 rx=%22112%22 fill=%22url(%23sheen)%22/%3E%3Cg filter=%22url(%23lift)%22%3E%3Cg transform=%22translate(51.00 293.02) scale(0.16728 -0.16728)%22%3E%3Cg fill=%22%23fff%22 mask=%22url(%23cut)%22%3E%3Cpath transform=%22translate(0 0)%22 d=%22M140 0 12 528H180L245 126H265L346 528H537L621 126H642L704 528H869L741 0H519L446 398H427L359 0Z%22/%3E%3Cpath transform=%22translate(843 0)%22 d=%22M499 0V660H660V0ZM69 0V660H230V0ZM167 268V398H564V268Z%22/%3E%3Cpath transform=%22translate(1837 0)%22 d=%22M62 -169V258V528H194L196 378L214 376Q223 432 246.0 469.0Q269 506 305.5 524.0Q342 542 389 542Q459 542 509.5 508.0Q560 474 587.0 411.0Q614 348 614 260Q614 182 590.5 120.0Q567 58 519.5 22.0Q472 -14 399 -14Q350 -14 316.0 3.5Q282 21 258.5 55.0Q235 89 219 140H200Q206 113 211.0 85.0Q216 57 219.5 31.0Q223 5 223 -19V-169ZM340 113Q373 113 396.5 131.0Q420 149 433.0 182.0Q446 215 446 259Q446 306 432.5 339.5Q419 373 394.0 391.5Q369 410 336 410Q305 410 283.5 396.5Q262 383 248.5 361.5Q235 340 229.0 316.0Q223 292 223 271V249Q223 230 228.0 211.0Q233 192 243.0 174.5Q253 157 267.0 143.0Q281 129 299.5 121.0Q318 113 340 113Z%22/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg filter=%22url(%23glow)%22%3E%3Cg transform=%22translate(51.00 293.02) scale(0.16728 -0.16728)%22%3E%3Cpolygon fill=%22url(%23bolt)%22 points=%221735,800 1465,206 1708,206 1681,-190 1951,404 1708,404%22/%3E%3C/g%3E%3C/g%3E%3Crect x=%22210%22 y=%22350.8%22 width=%2292%22 height=%2216%22 rx=%228%22 fill=%22%23FF4D6A%22/%3E%3C/svg%3E") center/contain no-repeat;
  box-shadow:0 22px 44px -18px rgba(46,26,110,.55);
- animation:zbreathe 1.6s ease-in-out .5s infinite;transition:opacity .34s ease-out,transform .5s cubic-bezier(.2,.8,.2,1)}
+ animation:zbreathe 1.6s ease-in-out .5s infinite;transition:opacity .22s ease-out,transform .34s cubic-bezier(.2,.8,.2,1)}
 @media (prefers-color-scheme:dark){html.zboot:not([data-theme="light"])::before{background:#0F0B19}}
 html.zboot[data-theme="dark"]::before{background:#0F0B19}
 html.zboot.zboot-app::before{background:#2A1673}
@@ -2871,8 +2871,8 @@ window.ZOLA_B={render,tidy,MACH,claims};
 html{-webkit-tap-highlight-color:transparent}
 @media (prefers-reduced-motion:no-preference){
  /* the app arriving from the launch screen */
- html.zreveal .hdr{animation:z-drop .5s var(--z-out) backwards}
- html.zreveal #catA:not([hidden]),html.zreveal #frB:not([hidden]){animation:z-arrive .62s var(--z-out) .05s backwards}
+ html.zreveal .hdr{animation:z-drop .4s var(--z-out) backwards}
+ html.zreveal #catA:not([hidden]),html.zreveal #frB:not([hidden]){animation:z-arrive .45s var(--z-out) backwards}
  /* switching sections */
  #catA:not([hidden])>main,#frB:not([hidden]) .b-main{animation:z-rise .34s var(--z-out) backwards}
  #catA section[id^="p-"]:not([hidden]){animation:z-rise .32s var(--z-out) backwards}
@@ -2947,10 +2947,10 @@ function show(o){
 (function(){var d=document.documentElement;if(!d.classList.contains('zboot'))return;var done=false;
  function lift(){if(done)return;done=true;
   d.classList.add('zout','zreveal');var m=document.getElementById('zboot-meta');if(m)m.remove();
-  setTimeout(function(){d.classList.remove('zboot','zboot-app','zout')},560);
+  setTimeout(function(){d.classList.remove('zboot','zboot-app','zout')},340);
   setTimeout(function(){d.classList.remove('zreveal')},1400)}
  function ready(){var f=document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve();
-  Promise.race([f,new Promise(function(r){setTimeout(r,800)})]).then(function(){
+  Promise.race([f,new Promise(function(r){setTimeout(r,450)})]).then(function(){
    requestAnimationFrame(function(){requestAnimationFrame(lift)})})}
  if(document.readyState==='complete')ready();else window.addEventListener('load',ready);
 })();
@@ -3209,16 +3209,18 @@ addEventListener('resize',prog);addEventListener('hashchange',function(){setTime
 // ---- Counting figures (57, 600, 232 days...) ------------------------------------------
 function countUp(el){
  var t=(el.textContent||'').trim();if(el.dataset.zc||!/^\d{1,5}$/.test(t))return;el.dataset.zc='1';
- var n=+t;if(calm||n<3)return;
+ var n=+t;if(calm||!countToday||n<3)return;
  var dur=Math.min(1500,650+n*3),t0=0,last='0';el.textContent='0';
  (function step(ts){if(!el.isConnected||el.textContent!==last)return;   // the app re-rendered it: leave it alone
   if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/dur),v=k<1?String(Math.round(n*(1-Math.pow(1-k,3)))):t;
   el.textContent=v;last=v;if(k<1)requestAnimationFrame(step)})(performance.now());
 }
 var COUNT='.stat .num,#clock .num,#frB .b-ledger b';
+var COUNT_DAY='zola.neo.countedOn',today=new Date().toDateString(),countToday=true;
+try{countToday=localStorage.getItem(COUNT_DAY)!==today;localStorage.setItem(COUNT_DAY,today)}catch(e){}
 
 // ---- Scroll reveal: only content that starts below the fold, once ---------------------
-var REVEAL='.stat,details.item,#frB a.b-card,#frB .b-ledger,.box,.callout,.chart,.hbar,.tscroll,li.exam,#frB .b-item,#frB .b-how>*';
+var REVEAL='.stat,#frB a.b-card,#frB .b-ledger,.box,.callout,.chart,.hbar,.tscroll,li.exam,#frB .b-item,#frB .b-how>*';
 var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){
  var shown=es.filter(function(e){return e.isIntersecting}).sort(function(a,b){return a.boundingClientRect.top-b.boundingClientRect.top});
  shown.forEach(function(e,i){var el=e.target;io.unobserve(el);
@@ -3283,6 +3285,124 @@ var fr=document.getElementById('frC');
 function dress(){try{var fd=fr.contentDocument;if(!fd||!fd.head||fd.getElementById('zneo-frame'))return;
  var st=fd.createElement('style');st.id='zneo-frame';st.textContent=FRAME_CSS;fd.head.appendChild(st)}catch(e){}}
 if(fr){fr.addEventListener('load',dress);dress()}
+})();
+</script>
+<style id="zux">
+/* Header that steps aside while you read, and the exam-dates sheet. */
+.hdr{transition:transform .32s var(--z-out,ease)}
+.sub,#frB .b-nav{transition:top .32s var(--z-out,ease)}
+html.zcollapse:not(.zframed) .hdr{transform:translate3d(0,calc(-1 * var(--zcol,0px)),0)}
+html.zcollapse:not(.zframed) .sub,html.zcollapse:not(.zframed) #frB .b-nav{top:calc(var(--hdr) - var(--zcol,0px))}
+@media (prefers-reduced-motion:reduce){.hdr,.sub,#frB .b-nav{transition:none}}
+.clock[role="button"]{cursor:pointer;border-radius:10px;padding:2px 4px;margin:-2px -4px}
+.clock[role="button"]:hover{background:var(--pen-soft)}
+.zcal-add{display:inline-flex;align-items:center;gap:8px;margin:10px 0 4px}
+#zcal{width:min(560px,94vw);max-height:86vh;border:1px solid var(--rule);border-radius:22px;background:var(--sheet);color:var(--ink);padding:0;
+ box-shadow:0 30px 80px -30px rgba(20,10,50,.6)}
+#zcal::backdrop{background:rgba(15,10,30,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+#zcal[open]{animation:z-rise .3s var(--z-out,ease)}
+#zcal header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 18px 12px;border-bottom:1px solid var(--rule)}
+#zcal h2{margin:0;font:700 21px/1.2 var(--display);letter-spacing:-.02em}
+#zcal h2::before{content:"";display:block;width:36px;height:3px;border-radius:3px;background:var(--neo-line);margin:0 0 8px}
+#zcal .zc-body{padding:12px 18px 18px;font:15px/1.5 var(--sans)}
+#zcal ul{list-style:none;margin:0 0 14px;padding:0}
+#zcal li{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;padding:11px 0;border-top:1px solid var(--rule2)}
+#zcal li:first-child{border-top:0}
+#zcal li b{font:600 15.5px/1.35 var(--sans)}
+#zcal li .zc-when{font:500 12px/1.3 var(--mono);letter-spacing:.03em;color:var(--muted);text-transform:uppercase}
+#zcal li .zc-left{grid-row:span 2;text-align:right;font:700 20px/1 var(--display);font-feature-settings:"tnum"}
+#zcal li .zc-left small{display:block;font:500 10px/1.4 var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+#zcal li.zc-primary .zc-left{background:var(--neo-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+#zcal .zc-note{font-size:13px;color:var(--muted);margin:10px 0 0}
+#zcal .zc-acts{display:flex;flex-wrap:wrap;gap:8px}
+</style>
+<script>// Zola UX: each section remembers where you were, the header steps aside while reading,
+// and exam dates go into the phone's calendar.
+(function(){
+'use strict';
+var d=document.documentElement,se=function(){return document.scrollingElement||d};
+
+// ---- Every section opens at its top, or where you last left it -----------------------
+var pos={},quietUntil=0,key=function(){return location.hash||'#'};
+try{pos=JSON.parse(sessionStorage.getItem('zola.ux.pos')||'{}')}catch(e){}
+addEventListener('scroll',function(){if(Date.now()<quietUntil)return;pos[key()]=Math.round(se().scrollTop)},{passive:true});
+addEventListener('hashchange',function(){
+ var target=pos[key()]||0;quietUntil=Date.now()+450;
+ requestAnimationFrame(function(){requestAnimationFrame(function(){window.scrollTo(0,target);d.classList.remove('zcollapse')})});
+ try{sessionStorage.setItem('zola.ux.pos',JSON.stringify(pos))}catch(e){}
+});
+
+// ---- Header steps aside while you read down, comes back the moment you scroll up -------
+var hdr=document.querySelector('.hdr'),top=hdr&&hdr.querySelector('.top'),lastY=0,acc=0;
+function measure(){if(!hdr||!top)return;var h=hdr.getBoundingClientRect().top,t=top.getBoundingClientRect().bottom;d.style.setProperty('--zcol',Math.max(0,Math.round(t-h))+'px')}
+function framed(){d.classList.toggle('zframed',document.body.classList.contains('framed'))}
+if(hdr&&top){measure();addEventListener('resize',measure);
+ addEventListener('scroll',function(){var y=se().scrollTop,dy=y-lastY;lastY=y;
+  if(Date.now()<quietUntil||y<80){d.classList.remove('zcollapse');acc=0;return}
+  acc=(dy>0)===(acc>0)?acc+dy:dy;
+  if(acc>28)d.classList.add('zcollapse');else if(acc<-10)d.classList.remove('zcollapse')},{passive:true});
+ hdr.addEventListener('focusin',function(){d.classList.remove('zcollapse')});
+ if(window.MutationObserver)new MutationObserver(framed).observe(document.body,{attributes:true,attributeFilter:['class']});framed()}
+
+// ---- Exam dates → calendar ----------------------------------------------------------------
+var FEED='https://raw.githubusercontent.com/iamhariize-maker/zola-feed/main/zola-feed.json';
+function cachedExams(){try{var v=JSON.parse(localStorage.getItem('zola.live.v1')||'{}');return v.feed&&Array.isArray(v.feed.exams)?v.feed.exams:null}catch(e){return null}}
+function getExams(){var c=cachedExams();if(c&&c.length)return Promise.resolve(c);
+ return fetch(FEED,{cache:'no-cache'}).then(function(r){return r.json()}).then(function(f){return f.exams||[]})}
+var ymd=function(s){return /^\d{4}-\d{2}-\d{2}$/.test(s||'')};
+function daysTo(s){var t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(s+'T00:00:00')-t)/864e5)}
+function fmt(s){try{return new Date(s+'T00:00:00').toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}catch(e){return s}}
+function esc(t){return String(t||'').replace(/[\;,]/g,function(c){return '\\'+c}).replace(/\n/g,'\\n')}
+function ics(list){
+ var stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
+ var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Zola Corpus//Exam dates//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Zola Corpus exam dates'];
+ list.forEach(function(e){var a=e.date.replace(/-/g,''),n=new Date(e.date+'T00:00:00');n.setDate(n.getDate()+1);
+  var b=n.getFullYear()+String(n.getMonth()+1).padStart(2,'0')+String(n.getDate()).padStart(2,'0');
+  L.push('BEGIN:VEVENT','UID:'+String(e.id||a).replace(/[^\w.-]/g,'')+'@zola-corpus','DTSTAMP:'+stamp,'DTSTART;VALUE=DATE:'+a,'DTEND;VALUE=DATE:'+b,
+   'SUMMARY:'+esc(e.label),'DESCRIPTION:'+esc((e.status?'Status: '+e.status+'. ':'')+(e.source&&e.source.url?'Source: '+e.source.url+' ':'')+'Added from Zola Corpus.'),'TRANSP:TRANSPARENT');
+  [['-P7D','One week to go'],['-P1D','Tomorrow']].forEach(function(al){L.push('BEGIN:VALARM','ACTION:DISPLAY','TRIGGER:'+al[0],'DESCRIPTION:'+esc(e.label+': '+al[1]),'END:VALARM')});
+  L.push('END:VEVENT')});
+ L.push('END:VCALENDAR');return L.join('\r\n')+'\r\n'}
+function download(list){var blob=new Blob([ics(list)],{type:'text/calendar;charset=utf-8'}),u=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=u;a.download=list.length===1?'zola-'+list[0].date+'.ics':'zola-exam-dates.ics';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}
+var dlg=null;
+function sheet(){
+ if(!dlg){dlg=document.createElement('dialog');dlg.id='zcal';dlg.setAttribute('aria-labelledby','zcal-h');
+  dlg.innerHTML='<header><h2 id="zcal-h">Exam dates</h2><button type="button" class="btn ghost" data-x>Close</button></header><div class="zc-body"><p class="zc-note">Loading…</p></div>';
+  dlg.querySelector('[data-x]').addEventListener('click',function(){dlg.close()});
+  dlg.addEventListener('click',function(e){if(e.target===dlg)dlg.close()});document.body.appendChild(dlg)}
+ var body=dlg.querySelector('.zc-body');
+ if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');
+ getExams().then(function(ex){
+  ex=(ex||[]).filter(function(e){return e&&ymd(e.date)&&e.label}).sort(function(a,b){return a.date<b.date?-1:1});
+  var up=ex.filter(function(e){return daysTo(e.date)>=0});
+  if(!up.length){body.innerHTML='<p class="zc-note">No upcoming exam dates in the feed yet.</p>';return}
+  body.innerHTML='';var ul=document.createElement('ul');
+  up.forEach(function(e){var li=document.createElement('li');if(e.primary)li.className='zc-primary';var n=daysTo(e.date);
+   li.innerHTML='<b></b><span class="zc-left"></span><span class="zc-when"></span>';
+   li.querySelector('b').textContent=e.label;li.querySelector('.zc-when').textContent=fmt(e.date)+(e.status&&e.status!=='scheduled'?' · '+e.status:'');
+   li.querySelector('.zc-left').innerHTML=n+'<small>'+(n===1?'day':'days')+'</small>';ul.appendChild(li)});
+  body.appendChild(ul);
+  var acts=document.createElement('div');acts.className='zc-acts';
+  var all=document.createElement('button');all.type='button';all.className='btn';all.textContent='Add all '+up.length+' to my calendar';
+  all.addEventListener('click',function(){download(up)});acts.appendChild(all);
+  var prim=up.filter(function(e){return e.primary})[0];
+  if(prim&&up.length>1){var one=document.createElement('button');one.type='button';one.className='btn ghost';one.textContent='Only Prelims';one.addEventListener('click',function(){download([prim])});acts.appendChild(one)}
+  body.appendChild(acts);
+  var note=document.createElement('p');note.className='zc-note';note.textContent='Opens in your calendar app with reminders a week and a day before. Dates come from the official calendar via the Zola feed; check them against the source if they change.';body.appendChild(note);
+ }).catch(function(){body.innerHTML='<p class="zc-note">Connect to the internet once so Zola can fetch the exam dates, then try again.</p>'});
+}
+// The countdown opens it
+var clock=document.getElementById('clock');
+if(clock){clock.setAttribute('role','button');clock.tabIndex=0;clock.title='Exam dates · add to calendar';
+ clock.addEventListener('click',sheet);clock.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();sheet()}})}
+// …and so does a button under any exam list the app shows
+function addButtons(){[].forEach.call(document.querySelectorAll('li.exam'),function(li){var list=li.parentElement;
+ if(!list||list.dataset.zcal)return;list.dataset.zcal='1';var b=document.createElement('button');b.type='button';b.className='btn ghost zcal-add';
+ b.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M12 14v4M10 16h4"/></svg>Add exam dates to my calendar';
+ b.addEventListener('click',sheet);list.insertAdjacentElement('afterend',b)})}
+if(window.MutationObserver){var t=0;new MutationObserver(function(){clearTimeout(t);t=setTimeout(addButtons,120)}).observe(document.getElementById('catA')||document.body,{childList:true,subtree:true})}
+addButtons();
 })();
 </script>
 <!-- /zola-pwa:body -->

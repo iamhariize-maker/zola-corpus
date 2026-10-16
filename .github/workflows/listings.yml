@@ -1,0 +1,39 @@
+name: Daily listings
+
+# Pulls official listings (PIB, Supreme Court, PRS, Bar & Bench) into data/candidates/YYYY-MM-DD.json.
+# Metadata only. A run fails when no source answers, so a silent outage shows up as a red run.
+on:
+  schedule:
+    - cron: '30 2 * * *'     # 08:00 IST, daily
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: listings
+  cancel-in-progress: false
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Pull listings
+        run: node tools/fetch-listings.mjs
+      - name: Commit candidate file
+        run: |
+          git config user.name "zola-listings-bot"
+          git config user.email "zola-listings-bot@users.noreply.github.com"
+          git add data/candidates
+          if git diff --cached --quiet; then
+            echo "No new candidates."
+          else
+            git commit -m "Daily listings $(date -u +%F)"
+            git pull --rebase origin "$GITHUB_REF_NAME"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          fi

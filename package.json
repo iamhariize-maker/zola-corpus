@@ -12,7 +12,8 @@
     "screenshots": "node tools/screenshots.mjs",
     "articles": "node tools/articles.mjs build",
     "articles:check": "node tools/articles.mjs check",
-    "test": "node tests/run.mjs"
+    "test": "node tests/run.mjs",
+    "listings": "node tools/fetch-listings.mjs"
   },
   "engines": {
     "node": ">=18"

@@ -61,6 +61,10 @@ ok(!allowed(specificCase, '/news/today') && allowed(specificCase, '/billtrack'),
 const other = parseRobots('User-agent: OtherBot\nDisallow: /\n\nUser-agent: *\nAllow: /\n');
 ok(allowed(other, '/anything'), 'a rule for another bot does not apply to us');
 
+const wild = parseRobots('User-agent: *\nDisallow: /*.json$\nDisallow: /private/*\nAllow: /private/open/\nCrawl-delay: 10\n');
+ok(!allowed(wild, '/a/b.json') && allowed(wild, '/a/b.json?x=1'), 'a "$" anchor matches the end of the path only');
+ok(!allowed(wild, '/private/x/y') && allowed(wild, '/private/open/x'), 'a "*" pattern blocks, and a longer Allow wins');
+ok(wild.crawlDelay === 10, 'Crawl-delay is read from our group');
 console.log('Listing engine: fetch, redirects and robots (fake requests, no network)');
 const fakeRequest = routes => url => {
   const r = routes[url];
@@ -68,6 +72,18 @@ const fakeRequest = routes => url => {
   return { code: r.code, body: r.body || '', location: r.location || '' };
 };
 const noPause = async () => {};
+clearRobotsCache();
+{
+  const waits = [];
+  const req = fakeRequest({
+    'https://slow.gov.in/robots.txt': { code: 200, body: 'User-agent: *\nAllow: /\nCrawl-delay: 10\n' },
+    'https://slow.gov.in/a': { code: 200, body: '<html></html>' },
+    'https://slow.gov.in/b': { code: 200, body: '<html></html>' },
+  });
+  await fetchListing('https://slow.gov.in/a', { hosts: ['slow.gov.in'], request: req, pause: async ms => { waits.push(ms); } });
+  await fetchListing('https://slow.gov.in/b', { hosts: ['slow.gov.in'], request: req, pause: async ms => { waits.push(ms); } });
+  ok(waits.some(ms => ms >= 9000), 'a second request to the same host waits for the Crawl-delay');
+}
 clearRobotsCache();
 {
   const hosts = ['pib.gov.in', 'www.pib.gov.in'];
@@ -141,6 +157,10 @@ T('PM-AJAY drives inclusive development', 'polity-governance');
 T('NHRC takes suo motu cognizance of the reported assault', 'polity-bodies');
 T('Taxation and Other Laws (Amendment) Bill, 2026', 'economy-macro');
 ok(!topicsFor('Foreign Contribution (Regulation) Amendment Rules, 2026').includes('polity-constitution'), 'an amendment to rules is not tagged as constitution');
+ok(!topicsFor('INDIAN NAVY COMMISSIONS INS SAMARTHAK, THE FIRST INDIGENOUS MULTI-PURPOSE VESSEL').includes('polity-bodies'), 'the verb commissions is not a commission body');
+ok(!topicsFor('K. MADHUSUDHAN RAO VS. M/S LODHA HEALTHY CONSTRUCTIONS AND DEVELOPER PRIVATE LIMITED').includes('science-health-biotech'), 'Healthy in a company name is not a health topic');
+T('The Micro, Small and Medium Enterprises Development (Amendment) Bill, 2026', 'economy-macro');
+T('National Commission for Women reviews complaints', 'polity-bodies');
 ok(topicsFor('').length === 0, 'an empty title gets no tags');
 ok(RULES.every(([id]) => id in TOPICS), 'every tag rule points to a taxonomy id');
 

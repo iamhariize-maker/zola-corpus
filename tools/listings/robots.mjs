@@ -1,9 +1,7 @@
-// robots.txt reader (RFC 9309 group rules, simplified). Our crawler token is the product name below.
-// Rules:
-//  - A group whose User-agent equals our token (case-insensitive) is used, and only those groups.
-//  - Otherwise every "User-agent: *" group is merged. Duplicate "*" groups are combined, not ignored.
-//  - Longest matching rule wins; Allow wins a tie.
-// Anything we cannot interpret is the caller's problem: fetch.mjs treats a missing or broken file conservatively.
+// robots.txt reader: a subset of RFC 9309. Implemented: groups, our product token, "*" groups merged, "*" and "$" in
+// paths, the longest matching rule wins (Allow wins a tie), and Crawl-delay. Not implemented: the Sitemap line
+// (not needed) and percent-encoding normalisation (paths here are plain ASCII). Anything unclear is treated as blocked
+// by the caller (see fetch.mjs).
 
 export const TOKEN = 'zolapersonalstudy';
 
@@ -20,32 +18,52 @@ export function parseGroups(text = '') {
     if (key === 'user-agent') {
       // Consecutive User-agent lines share one group. A User-agent line after rules starts a new group.
       if (!current || current.rulesStarted) {
-        current = { agents: [], allow: [], disallow: [], rulesStarted: false };
+        current = { agents: [], allow: [], disallow: [], crawlDelay: 0, rulesStarted: false };
         groups.push(current);
       }
       current.agents.push(val.toLowerCase());
     } else if (current && (key === 'allow' || key === 'disallow')) {
       current.rulesStarted = true;
       if (val !== '') current[key].push(val);
+    } else if (current && key === 'crawl-delay') {
+      current.rulesStarted = true;
+      const n = Number(val);
+      if (Number.isFinite(n) && n >= 0) current.crawlDelay = n;
     }
   }
   return groups;
 }
 
-// The rules that apply to our token.
+// The rules that apply to our token: a group naming our token is used alone; otherwise all "*" groups are merged.
 export function parseRobots(text = '', token = TOKEN) {
   const groups = parseGroups(text);
   const specific = groups.filter(g => g.agents.includes(token.toLowerCase()));
   const pick = specific.length ? specific : groups.filter(g => g.agents.includes('*'));
-  const rules = { allow: [], disallow: [] };
-  for (const g of pick) { rules.allow.push(...g.allow); rules.disallow.push(...g.disallow); }
+  const rules = { allow: [], disallow: [], crawlDelay: 0 };
+  for (const g of pick) {
+    rules.allow.push(...g.allow);
+    rules.disallow.push(...g.disallow);
+    rules.crawlDelay = Math.max(rules.crawlDelay, g.crawlDelay || 0);
+  }
   return rules;
 }
 
-// True when the path may be fetched. The longest matching rule wins; Allow wins a tie.
+// Compile one robots path pattern. "*" matches any run of characters; a trailing "$" anchors the end.
+export function patternToRegex(pattern) {
+  const anchored = pattern.endsWith('$');
+  const body = anchored ? pattern.slice(0, -1) : pattern;
+  const src = body.split('*').map(s => s.replace(/[.+?^${}()|[\]\\]/g, '\\$&')).join('.*');
+  return new RegExp('^' + src + (anchored ? '$' : ''));
+}
+
+// True when the path may be fetched. The longest matching pattern wins; Allow wins a tie.
 export function allowed(rules, path) {
   let best = { len: -1, allow: true };
-  for (const p of rules.disallow) if (path.startsWith(p) && p.length > best.len) best = { len: p.length, allow: false };
-  for (const p of rules.allow) if (path.startsWith(p) && p.length >= best.len) best = { len: p.length, allow: true };
+  for (const p of rules.disallow) {
+    if (patternToRegex(p).test(path) && p.length > best.len) best = { len: p.length, allow: false };
+  }
+  for (const p of rules.allow) {
+    if (patternToRegex(p).test(path) && p.length >= best.len) best = { len: p.length, allow: true };
+  }
   return best.allow;
 }

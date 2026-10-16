@@ -26,6 +26,7 @@ export function curlOnce(url) {
 export function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 const robotsCache = new Map();
+const lastRequestAt = new Map();
 
 // Rules for one origin. A missing robots.txt (4xx) means no rules. Anything unclear means blocked.
 export function robotsFor(url, request = curlOnce, hosts = []) {
@@ -67,7 +68,13 @@ export async function fetchListing(url, {
     let parsed;
     try { parsed = new URL(current); } catch (_) { return fail('invalid URL'); }
     if (!hosts.includes(parsed.host)) return fail(`redirect or link to ${parsed.host} is not an allowed host`);
-    if (!allowed(getRobots(current), parsed.pathname)) return fail('blocked by robots.txt');
+    const rules = getRobots(current);
+    if (!allowed(rules, parsed.pathname)) return fail('blocked by robots.txt');
+    // Honour Crawl-delay between requests to the same host.
+    const gap = (rules.crawlDelay || 0) * 1000;
+    const wait = (lastRequestAt.get(parsed.host) || 0) + gap - Date.now();
+    if (gap > 0 && wait > 0) await pause(wait);
+    lastRequestAt.set(parsed.host, Date.now());
     let r;
     try { r = request(current); } catch (e) {
       if (tries++ < retries) { await pause(delayMs * tries); continue; }

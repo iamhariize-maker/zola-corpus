@@ -1,20 +1,24 @@
-// Gates for the current-affairs engine (ZC-02 review, Codex Task A). Pure functions, no network, no file writes.
-// A gate can block or flag a draft. None of them authorises publication. Publication needs a human approval record
-// that is tied to the exact draft and evidence bytes (approvalGate).
+// Gates for the current-affairs engine (ZC-02/ZC-03). Pure functions, no network, no file writes.
+// A gate blocks or flags a draft. None of them authorises publication by itself. Publication needs an approval
+// record that a named approver signed with a shared secret (approvalGate). Nothing here is wired to a publish path yet.
 //
-//   licenceGate      the candidate's reuse flag allows reproduction; "link-only" items never give text
-//   similarityGate   a draft shares no long word run and few 5-word shingles with its reference text
-//   numberGate       every number and year in the draft appears in the reference text
-//   approvalGate     an approval record matches the draft and every evidence text it names, byte for byte
-//   volumeGate       per-source counts did not collapse, and no source went silent
-//   freshnessGate    the candidate file is recent enough to publish from
+//   licenceGate     the candidate has a recorded rights basis (terms and check date) and its reuse flag allows reproduction
+//   similarityGate  no copied run of four or more words, and few 5-word shingles, against the reference text
+//   numberGate      every number in the draft appears in the reference together with the same next word
+//   approvalGate    an HMAC-signed approval names this exact draft and these exact evidence texts, by a listed approver
+//   volumeGate      no source failed, went empty, fell to zero, dropped by half, or is missing from the new pull
+//   freshnessGate   the candidate file was generated recently, and not in the future
+//   checkDraft      runs every gate that has its inputs and names each failure
 import crypto from 'node:crypto';
 
-export const SIMILARITY_LIMITS = { shingle: 5, maxShingleShare: 0.2, maxRunWords: 12 };
+// No copied run of four or more words. Institution names of two or three words pass.
+export const SIMILARITY_LIMITS = { shingle: 5, maxShingleShare: 0.2, maxSharedRun: 3 };
+export const MAX_CLOCK_SKEW_MS = 5 * 60 * 1000;
 
 export const sha256 = text => crypto.createHash('sha256').update(String(text), 'utf8').digest('hex');
 
-const words = text => String(text).toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim().split(/\s+/).filter(Boolean);
+// Decimals stay one word (5.50 is one token), so a fact with its number is not split into a false copy.
+const words = text => String(text).toLowerCase().replace(/(\d)\.(\d)/g, '$1_$2').replace(/[^\p{L}\p{N}_]+/gu, ' ').trim().split(/\s+/).filter(Boolean);
 
 function shingles(list, n) {
   const out = new Set();
@@ -22,7 +26,7 @@ function shingles(list, n) {
   return out;
 }
 
-// Longest run of consecutive words that the draft shares with the reference (whole words only).
+// Longest run of consecutive draft words that appears, whole word for whole word, in the reference.
 function longestSharedRun(draft, reference) {
   const ref = ' ' + words(reference).join(' ') + ' ';
   let best = 0;
@@ -35,9 +39,11 @@ function longestSharedRun(draft, reference) {
 }
 
 export function licenceGate(candidate) {
-  if (!candidate || candidate.fact_text === undefined) return { ok: false, reason: 'not a candidate record' };
-  if (candidate.reuse === 'allowed') return { ok: true, reason: 'reuse allowed by the source record (a hint: the note still needs its own citation)' };
-  return { ok: false, reason: `reuse is "${candidate.reuse}": link to the source, do not reproduce its text` };
+  if (!candidate) return { ok: false, reason: 'no candidate record' };
+  if (candidate.reuse !== 'allowed') return { ok: false, reason: `reuse is "${candidate.reuse}": link to the source, do not reproduce its text` };
+  const rights = candidate.rights;
+  if (!rights || !rights.terms || !rights.checked_on) return { ok: false, reason: 'no recorded rights basis (terms and check date); the reuse flag alone is not enough' };
+  return { ok: true, reason: `rights basis: ${rights.terms} (checked ${rights.checked_on})` };
 }
 
 export function similarityGate(draft, reference, limits = SIMILARITY_LIMITS) {
@@ -50,63 +56,100 @@ export function similarityGate(draft, reference, limits = SIMILARITY_LIMITS) {
   const run = longestSharedRun(d, reference);
   const problems = [];
   if (share > limits.maxShingleShare) problems.push(`${Math.round(share * 100)}% of 5-word shingles match the reference (limit ${Math.round(limits.maxShingleShare * 100)}%)`);
-  if (run > limits.maxRunWords) problems.push(`a run of ${run} words matches the reference (limit ${limits.maxRunWords})`);
+  if (run > limits.maxSharedRun) problems.push(`a copied run of ${run} words matches the reference (limit ${limits.maxSharedRun}; reword it)`);
   return { ok: problems.length === 0, share: Number(share.toFixed(3)), longestRun: run, problems };
 }
 
-// Numbers and years in the draft must appear in the reference (commas and spaces inside numbers are ignored).
+// Each number is checked together with the word after it, so "298 members" must not be explained by "298 votes" or by
+// "230 members". Commas inside a number are ignored (1,000 = 1000).
+function numberPairs(text) {
+  const clean = String(text).replace(/(\d),(?=\d{3}\b)/g, '$1');
+  const toks = clean.split(/\s+/);
+  const out = [];
+  toks.forEach((t, i) => {
+    const m = t.match(/^(\d+(?:\.\d+)?)/);
+    if (!m) return;
+    const next = (toks[i + 1] || '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
+    out.push(`${m[1]} ${next}`);
+  });
+  return out;
+}
+
 export function numberGate(draft, reference) {
-  const norm = s => String(s).replace(/(\d),(?=\d{2,3}\b)/g, '$1');
-  const refNumbers = new Set([...norm(reference).matchAll(/\d+(?:\.\d+)?/g)].map(m => m[0]));
-  const missing = [...new Set([...norm(draft).matchAll(/\d+(?:\.\d+)?/g)].map(m => m[0]))].filter(n => !refNumbers.has(n));
+  const have = new Set(numberPairs(reference));
+  const missing = [...new Set(numberPairs(draft))].filter(p => !have.has(p));
   return { ok: missing.length === 0, missing };
 }
 
-// The approval must name this exact draft and these exact evidence texts. Any edit after approval fails the gate.
-export function approvalGate({ draft, evidence = [], approval }) {
+// The approval must be signed by a listed approver with the shared secret, and name this exact draft and these exact
+// evidence texts. Any change after approval breaks the signature.
+export function approvalSignature(secret, { draft_sha256, evidence_sha256, approved_by, approved_at }) {
+  const canonical = [draft_sha256, [...evidence_sha256].join(','), approved_by, approved_at].join('|');
+  return crypto.createHmac('sha256', secret).update(canonical, 'utf8').digest('hex');
+}
+
+export function approvalGate({ draft, evidence = [], approval, secret, approvers = ['owner'], now = new Date() }) {
   if (!approval) return { ok: false, problems: ['no approval record'] };
+  if (!secret) return { ok: false, problems: ['no approval secret configured, so approval cannot be verified'] };
   const problems = [];
-  if (!approval.approved_by) problems.push('approved_by is missing');
-  if (!approval.approved_at) problems.push('approved_at is missing');
+  if (!approvers.includes(approval.approved_by)) problems.push(`approved_by "${approval.approved_by}" is not a listed approver`);
+  const at = Date.parse(approval.approved_at);
+  if (!Number.isFinite(at)) problems.push('approved_at is not a valid timestamp');
+  else if (at - now.getTime() > MAX_CLOCK_SKEW_MS) problems.push('approved_at is in the future');
   if (approval.draft_sha256 !== sha256(draft)) problems.push('the draft changed after approval');
   const want = Array.isArray(approval.evidence_sha256) ? approval.evidence_sha256 : [];
   const have = evidence.map(sha256);
   if (want.length !== have.length || want.some((h, i) => h !== have[i])) problems.push('the evidence changed after approval (or a different set was supplied)');
+  const expected = approvalSignature(secret, { ...approval, evidence_sha256: want });
+  const given = String(approval.signature || '');
+  const ok = given.length === expected.length && crypto.timingSafeEqual(Buffer.from(given), Buffer.from(expected));
+  if (!ok) problems.push('the signature does not verify with the configured secret');
   return { ok: problems.length === 0, problems };
 }
 
-// Compare today's per-source counts with the previous file's. Alerts: a source that failed or is empty, a source
-// that fell to zero, or a drop of more than half. Input: arrays of { source, status, count }.
+// Compare the new pull with the previous one. Alerts: a source that failed or is empty, a source that is missing from
+// the new pull, fell to zero, or dropped by more than half. Input: arrays of { source, status, count }.
 export function volumeGate(current, previous = [], { maxDrop = 0.5 } = {}) {
   const alerts = [];
-  const before = new Map(previous.map(s => [s.source, s.count]));
+  const now = new Map(current.map(s => [s.source, s]));
   for (const s of current) {
     if (s.status !== 'ok') alerts.push(`${s.source}: status ${s.status}`);
-    const prev = before.get(s.source);
-    if (prev > 0 && s.count === 0) alerts.push(`${s.source}: fell to zero items (was ${prev})`);
-    else if (prev > 0 && s.count < prev * (1 - maxDrop)) alerts.push(`${s.source}: dropped from ${prev} to ${s.count}`);
+  }
+  for (const p of previous) {
+    const s = now.get(p.source);
+    if (!s) { alerts.push(`${p.source}: missing from the new pull (was ${p.count})`); continue; }
+    if (p.count > 0 && s.count === 0) alerts.push(`${p.source}: fell to zero items (was ${p.count})`);
+    else if (p.count > 0 && s.count < p.count * (1 - maxDrop)) alerts.push(`${p.source}: dropped from ${p.count} to ${s.count}`);
   }
   return { ok: alerts.length === 0, alerts };
 }
 
-// The candidate file must have been generated within maxAgeHours of now.
+// The candidate file must have been generated within maxAgeHours, and must not be dated in the future.
 export function freshnessGate(generatedAt, now = new Date(), maxAgeHours = 24) {
   const t = Date.parse(generatedAt);
   if (!Number.isFinite(t)) return { ok: false, reason: 'generated_at is missing or invalid' };
+  const skew = t - now.getTime();
+  if (skew > MAX_CLOCK_SKEW_MS) return { ok: false, reason: 'generated_at is in the future' };
   const hours = (now.getTime() - t) / 36e5;
   return hours <= maxAgeHours ? { ok: true, hours: Number(hours.toFixed(1)) } : { ok: false, reason: `${hours.toFixed(1)} hours old (limit ${maxAgeHours})` };
 }
 
-// Run every gate that applies to one draft. Returns { ok, failures }. Each failure names the gate.
-export function checkDraft({ draft, reference, referenceTexts = [], candidate, approval, evidence = [], now = new Date() }) {
+// Run every gate that has its inputs. Missing optional inputs are reported as skipped, never as passed silently.
+export function checkDraft({ draft, reference, referenceTexts = [], candidate, approval, approvalSecret, approvers, evidence = [], candidateDoc, previousDoc, now = new Date() }) {
   const failures = [];
-  const lic = candidate ? licenceGate(candidate) : null;
-  if (lic && !lic.ok) failures.push({ gate: 'licence', reason: lic.reason });
+  const skipped = [];
+  if (candidate) { const r = licenceGate(candidate); if (!r.ok) failures.push({ gate: 'licence', reason: r.reason }); } else skipped.push('licence');
   const sim = similarityGate(draft, reference);
   if (!sim.ok) failures.push({ gate: 'similarity', reason: sim.problems.join('; ') });
-  const nums = numberGate(draft, referenceTexts.join(' ') || reference);
-  if (!nums.ok) failures.push({ gate: 'number', reason: `numbers not in the reference: ${nums.missing.join(', ')}` });
-  const appr = approvalGate({ draft, evidence, approval });
-  if (!appr.ok) failures.push({ gate: 'approval', reason: appr.problems.join('; ') || appr.reason });
-  return { ok: failures.length === 0, failures, checkedAt: now.toISOString() };
+  const nums = numberGate(draft, referenceTexts.length ? referenceTexts.join(' ') : reference);
+  if (!nums.ok) failures.push({ gate: 'number', reason: `numbers not in the reference with the same next word: ${nums.missing.join(', ')}` });
+  const appr = approvalGate({ draft, evidence, approval, secret: approvalSecret, approvers, now });
+  if (!appr.ok) failures.push({ gate: 'approval', reason: appr.problems.join('; ') });
+  if (candidateDoc) {
+    const f = freshnessGate(candidateDoc.generated_at, now);
+    if (!f.ok) failures.push({ gate: 'freshness', reason: f.reason });
+    const v = volumeGate(candidateDoc.sources || [], previousDoc?.sources || []);
+    if (!v.ok) failures.push({ gate: 'volume', reason: v.alerts.join('; ') });
+  } else skipped.push('freshness', 'volume');
+  return { ok: failures.length === 0, failures, skipped, checkedAt: now.toISOString() };
 }

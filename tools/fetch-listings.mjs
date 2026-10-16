@@ -44,6 +44,7 @@ export function buildDocument(results, { now = new Date(), previous = null } = {
         published: it.published,
         first_seen: firstSeen.get(id) || nowIso,
         reuse: r.source.reuse,
+        rights: r.source.reuse === 'allowed' ? { terms: r.source.terms, checked_on: r.source.checked_on } : null,
         topics: topicsFor(it.title),
         fact_text: null,
       });
@@ -75,6 +76,7 @@ export function validateDocument(doc) {
     ids.add(i.id);
     if (!/^https:\/\/|^http:\/\//.test(i.url)) problems.push(`${i.id}: url is not http(s)`);
     if (!['allowed', 'link-only'].includes(i.reuse)) problems.push(`${i.id}: reuse must be allowed or link-only`);
+    if (i.reuse === 'allowed' && !(i.rights && i.rights.terms && i.rights.checked_on)) problems.push(`${i.id}: reuse allowed needs a recorded rights basis`);
     if (i.fact_text !== null) problems.push(`${i.id}: fact_text must stay null until a person writes it`);
     if (!Array.isArray(i.topics)) problems.push(`${i.id}: topics must be an array`);
   }

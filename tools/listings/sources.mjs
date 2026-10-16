@@ -18,6 +18,7 @@ export const SOURCES = [
     hosts: ['pib.gov.in', 'www.pib.gov.in'],
     parse: parseRss,
     reuse: 'allowed',
+    checked_on: '2026-10-16',
     terms: 'https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)',
   },
   {
@@ -28,6 +29,7 @@ export const SOURCES = [
     hosts: ['www.sci.gov.in', 'sci.gov.in'],
     parse: parseScHome,
     reuse: 'allowed',
+    checked_on: '2026-10-16',
     terms: 'Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.',
   },
   {

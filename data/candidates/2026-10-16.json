@@ -1,6 +1,6 @@
 {
   "schema": "zola-candidates/1",
-  "generated_at": "2026-10-16T18:48:19.743Z",
+  "generated_at": "2026-10-16T19:16:20.461Z",
   "sources": [
     {
       "source": "pib",
@@ -19,12 +19,6 @@
       "status": "ok",
       "count": 27,
       "reason": ""
-    },
-    {
-      "source": "barandbench",
-      "status": "ok",
-      "count": 4,
-      "reason": ""
     }
   ],
   "items": [
@@ -35,7 +29,7 @@
       "title": "ITRA Jamnagar Hosts National Conference “Ayu-Tech Navonmesh 2026” on the Integration of Ayurveda and Artificial Intelligence",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324601",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [
         "science-health-biotech"
@@ -49,7 +43,7 @@
       "title": "Secretary, Department of Urban Development, MoHUA chairs 10th meeting of CSMC under PMAY-U 2.0",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324593",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [
         "polity-governance"
@@ -63,9 +57,10 @@
       "title": "INDIAN NAVY COMMISSIONS INS SAMARTHAK, THE FIRST INDIGENOUS MULTI-PURPOSE VESSEL",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324581",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [
+        "polity-bodies",
         "security-defence"
       ],
       "fact_text": null
@@ -77,7 +72,7 @@
       "title": "COMBINED GEO-SCIENTIST EXAMINATION, 2026",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324560",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -89,7 +84,7 @@
       "title": "CAQM expands PTZ Camera-based Remote Monitoring to all Industries covered under Direction No. 98 in NCR",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324557",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [
         "polity-bodies"
@@ -103,7 +98,7 @@
       "title": "CAQM team visits Punjab’s Moga District to review Enforcement Measures during Paddy Harvesting Season 2026",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324555",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [
         "polity-bodies",
@@ -118,7 +113,7 @@
       "title": "Union Minister Shri Hardeep Singh Puri Addresses Valedictory Session of SRCC’s Centenary Conclave ‘Pathways to Viksit Bharat’",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324548",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -130,7 +125,7 @@
       "title": "AIIA Marks a Decade of Service with Over 37.74 Lakh Patients Treated Across Its Healthcare Network",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324520",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [
         "science-health-biotech"
@@ -144,7 +139,7 @@
       "title": "Union Minister Ashwini Vaishnaw Meets Asian Games 2026 Gold Medal-Winning Indian Women’s Kabaddi Team at Rail Bhawan",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324508",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -156,7 +151,7 @@
       "title": "Vice-President Inaugurates Navaratri Sargotsavam 2026 in Kozhikode",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324497",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [
         "art-culture-heritage"
@@ -170,9 +165,11 @@
       "title": "Union Minister of Culture and Tourism Shri Gajendra Singh Shekhawat will confer the Ustad Bismillah Khan Yuva Puraskar for the years 2024 and 2025 on 19th October 2026 in New Delhi",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324489",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
-      "topics": [],
+      "topics": [
+        "art-culture-heritage"
+      ],
       "fact_text": null
     },
     {
@@ -182,7 +179,7 @@
       "title": "Prime Minister extends greetings to National Security Guard personnel on Raising Day",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324485",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -194,7 +191,7 @@
       "title": "Two-day National Conference on e-Governance Reforms begins in Dharamshala",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324475",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [
         "polity-governance"
@@ -208,9 +205,11 @@
       "title": "PM-AJAY Drives Inclusive Development Through Adarsh Grams, Socio-Economic Projects and Educational Infrastructure",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324472",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
-      "topics": [],
+      "topics": [
+        "polity-governance"
+      ],
       "fact_text": null
     },
     {
@@ -220,7 +219,7 @@
       "title": "DARE/ ICAR raises awareness of cleanliness in Swachhata Special Campaign 6",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324471",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -232,7 +231,7 @@
       "title": "ECL generates ₹2.21 crore through scrap disposal under Special Campaign 6",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324455",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -244,9 +243,11 @@
       "title": "NHRC, India takes suo motu cognizance of the reported assault and inhuman treatment of a woman by her husband and family members enraged by her living with another man in Surendranagar district, Gujarat",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324440",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
-      "topics": [],
+      "topics": [
+        "polity-bodies"
+      ],
       "fact_text": null
     },
     {
@@ -256,9 +257,11 @@
       "title": "NHRC, India takes suo motu cognizance of the reported injuries to three students after a portion of the ceiling plaster of a classroom collapsed on them in a dilapidated government school in Udaipur district, Rajasthan",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324436",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
-      "topics": [],
+      "topics": [
+        "polity-bodies"
+      ],
       "fact_text": null
     },
     {
@@ -268,9 +271,11 @@
       "title": "NHRC, India takes suo motu cognizance of the reported borewell water contamination due to seepage of chemical-laden factory effluents near Ambad Industrial Area in Nashik district, Maharashtra",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324434",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
-      "topics": [],
+      "topics": [
+        "polity-bodies"
+      ],
       "fact_text": null
     },
     {
@@ -280,7 +285,7 @@
       "title": "NHAI Successfully Defends Arbitration Case in Chittorgarh–Udaipur National Highway Project to Safeguard Public Funds",
       "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324416",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -292,7 +297,7 @@
       "title": "Foreign Contribution (Regulation) Amendment Rules, 2026",
       "url": "https://prsindia.org/billtrack/foreign-contribution-regulation-amendment-rules-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -306,7 +311,7 @@
       "title": "The National Co-operative Development Corporation (Amendment) Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-national-co-operative-development-corporation-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -320,7 +325,7 @@
       "title": "The Mines and Minerals (Development and Regulation) Amendment Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-mines-and-minerals-development-and-regulation-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -334,10 +339,11 @@
       "title": "The Tribunals Reforms Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-tribunals-reforms-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
-        "polity-governance"
+        "polity-governance",
+        "polity-bodies"
       ],
       "fact_text": null
     },
@@ -348,7 +354,7 @@
       "title": "The Kerala (Alteration of Name) Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-kerala-alteration-of-name-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -362,10 +368,11 @@
       "title": "The Taxation and Other Laws (Amendment) Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-taxation-and-other-laws-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
-        "polity-governance"
+        "polity-governance",
+        "economy-macro"
       ],
       "fact_text": null
     },
@@ -376,7 +383,7 @@
       "title": "The Indian Statistical Institute Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-indian-statistical-institute-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -390,7 +397,7 @@
       "title": "The Bankers’ Books Evidence Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-bankers%E2%80%99-books-evidence-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -404,7 +411,7 @@
       "title": "The Registration of Births and Deaths (Amendment) Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-registration-of-births-and-deaths-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -418,7 +425,7 @@
       "title": "The Micro, Small and Medium Enterprises Development (Amendment) Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-micro-small-and-medium-enterprises-development-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -432,7 +439,7 @@
       "title": "The Public Examinations (Prevention of Unfair Means) Amendment Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-public-examinations-prevention-of-unfair-means-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -446,7 +453,7 @@
       "title": "The Prevention of Insults to National Honour (Amendment) Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-prevention-of-insults-to-national-honour-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -460,7 +467,7 @@
       "title": "The Supreme Court (Number of Judges) Amendment Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-supreme-court-number-of-judges-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -474,10 +481,11 @@
       "title": "The Income-tax (Amendment) Ordinance, 2026",
       "url": "https://prsindia.org/billtrack/the-income-tax-amendment-ordinance-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
-        "polity-governance"
+        "polity-governance",
+        "economy-macro"
       ],
       "fact_text": null
     },
@@ -488,7 +496,7 @@
       "title": "Industrial Relations (Central) Rules, 2026",
       "url": "https://prsindia.org/billtrack/industrial-relations-central-rules-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -502,7 +510,7 @@
       "title": "Code on Wages (Central) Rules, 2026",
       "url": "https://prsindia.org/billtrack/code-on-wages-central-rules-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -516,7 +524,7 @@
       "title": "The Supreme Court (Number of Judges) Amendment Ordinance, 2026",
       "url": "https://prsindia.org/billtrack/supreme-court-number-of-judges-amendment-ordinance-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -530,7 +538,7 @@
       "title": "The Delimitation Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-delimitation-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -544,7 +552,7 @@
       "title": "The Union Territories Laws (Amendment) Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-union-territories-laws-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -558,7 +566,7 @@
       "title": "The Constitution (131st Amendment) Bill, 2026 [Delimitation Bills of 2026]",
       "url": "https://prsindia.org/billtrack/the-constitution-131st-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-constitution",
@@ -573,7 +581,7 @@
       "title": "The Andhra Pradesh Reorganisation (Amendment) Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-andhra-pradesh-reorganisation-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -587,7 +595,7 @@
       "title": "The Jan Vishwas (Amendment of Provisions) Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-jan-vishwas-amendment-of-provisions-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -601,10 +609,11 @@
       "title": "The Central Armed Police Forces (General Administration) Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-central-armed-police-forces-general-administration-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
-        "polity-governance"
+        "polity-governance",
+        "security-defence"
       ],
       "fact_text": null
     },
@@ -615,7 +624,7 @@
       "title": "The Foreign Contribution (Regulation) Amendment Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-foreign-contribution-regulation-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -629,7 +638,7 @@
       "title": "The Corporate Laws (Amendment) Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-corporate-laws-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -643,7 +652,7 @@
       "title": "The Transgender Persons (Protection of Rights) Amendment Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-transgender-persons-protection-of-rights-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
@@ -657,59 +666,11 @@
       "title": "The Industrial Relations Code (Amendment) Bill, 2026",
       "url": "https://prsindia.org/billtrack/the-industrial-relations-code-amendment-bill-2026",
       "published": null,
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "link-only",
       "topics": [
         "polity-governance"
       ],
-      "fact_text": null
-    },
-    {
-      "id": "barandbench:50d3cc9d503c",
-      "source": "barandbench",
-      "tier": 3,
-      "title": "Court sentences Tahir Hussain to 2 years in jail for abetment in Delhi riots case",
-      "url": "https://www.barandbench.com/news/litigation/court-sentences-tahir-hussain-to-2-years-in-jail-for-abetment-in-delhi-riots-case",
-      "published": "2026-10-16T15:07:12.000Z",
-      "first_seen": "2026-10-16T18:48:19.743Z",
-      "reuse": "link-only",
-      "topics": [],
-      "fact_text": null
-    },
-    {
-      "id": "barandbench:66d8e3e05dc3",
-      "source": "barandbench",
-      "tier": 3,
-      "title": "Detained on arrival: Section 172 BNSS and the borrowed power to stop a protest",
-      "url": "https://www.barandbench.com/columns/detained-for-arriving-section-172-bnss-and-the-borrowed-power-to-stop-a-protest",
-      "published": "2026-10-16T15:03:31.000Z",
-      "first_seen": "2026-10-16T18:48:19.743Z",
-      "reuse": "link-only",
-      "topics": [],
-      "fact_text": null
-    },
-    {
-      "id": "barandbench:60acb3de8751",
-      "source": "barandbench",
-      "tier": 3,
-      "title": "The void marriage and the invisible widow: Why the law needs an equitable answer",
-      "url": "https://www.barandbench.com/columns/the-void-marriage-and-the-invisible-widow-why-the-law-needs-an-equitable-answer-not-a-legal-fiction",
-      "published": "2026-10-16T14:53:51.000Z",
-      "first_seen": "2026-10-16T18:48:19.743Z",
-      "reuse": "link-only",
-      "topics": [],
-      "fact_text": null
-    },
-    {
-      "id": "barandbench:dc1290e52ace",
-      "source": "barandbench",
-      "tier": 3,
-      "title": "We will sit on dharna till you fix pedestrian crossing issue on Mathura road: Supreme Court in lighter vein",
-      "url": "https://www.barandbench.com/news/we-will-sit-on-dharna-till-you-fix-pedestrian-crossing-issue-on-mathura-road-supreme-court-in-lighter-vein",
-      "published": "2026-10-16T14:51:56.000Z",
-      "first_seen": "2026-10-16T18:48:19.743Z",
-      "reuse": "link-only",
-      "topics": [],
       "fact_text": null
     },
     {
@@ -719,7 +680,7 @@
       "title": "TEJARAM VS. STATE OF RAJASTHAN (Crl.A. No. 4988/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=384712025&type=j&order_date=2026-10-16&from=latest_judgements_order",
       "published": "2026-10-16T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -731,7 +692,7 @@
       "title": "S. GURURAJ VS. THE ADDITIONAL CHIEF SECRETARY/ COMMISSIONER OF LAND ADMINISTRATION (C.A. No. 13629/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=128262025&type=j&order_date=2026-10-16&from=latest_judgements_order",
       "published": "2026-10-16T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -743,7 +704,7 @@
       "title": "K. RAMALINGAM VS. GOVERNMENT OF TAMIL NADU REP. BY ITS SECRETARY (C.A. No. 13857-13858/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=265612019&type=j&order_date=2026-10-16&from=latest_judgements_order",
       "published": "2026-10-16T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -755,7 +716,7 @@
       "title": "SATINDER PAL SINGH VS. BEDI HOSPITAL (C.A. No. 13855/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=496872025&type=j&order_date=2026-10-16&from=latest_judgements_order",
       "published": "2026-10-16T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [
         "science-health-biotech"
@@ -769,7 +730,7 @@
       "title": "MAHESH CHANDRA JOSHI VS. STATE OF RAJASTHAN (Crl.A. No. 4995/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=515042026&type=j&order_date=2026-10-16&from=latest_judgements_order",
       "published": "2026-10-16T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -781,7 +742,7 @@
       "title": "SENIOR INTELLIGENCE OFFICER VS. MOHAMMED KAMRAN (Crl.A. No. 4994/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=142792026&type=j&order_date=2026-10-16&from=latest_judgements_order",
       "published": "2026-10-16T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -793,7 +754,7 @@
       "title": "NAGENDRA RAY VS. THE STATE OF BIHAR (Crl.A. No. 4991/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=7672025&type=j&order_date=2026-10-16&from=latest_judgements_order",
       "published": "2026-10-16T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -805,7 +766,7 @@
       "title": "RAJKUMAR MADKI VS. SHAILENDRA BELDALE (Crl.A. No. 3387/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=266202025&type=j&order_date=2026-10-16&from=latest_judgements_order",
       "published": "2026-10-16T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -817,7 +778,7 @@
       "title": "SMT. RANO SINGH . VS. SH. GURBAX SINGH (D) TH LRS (C.A. No. 7025/2012)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=211782012&type=j&order_date=2026-10-16&from=latest_judgements_order",
       "published": "2026-10-16T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -829,7 +790,7 @@
       "title": "R. SARAVANAN VS. PERIYAR UNIVERSITY REP BY ITS REGISTRAR (C.A. No. 13812/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=45652020&type=j&order_date=2026-10-16&from=latest_judgements_order",
       "published": "2026-10-16T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -841,7 +802,7 @@
       "title": "SUNIL KUMAR (TOTALLY DISABLE REPRESENTED BY WIFE) VS. IFFCO TOKIO GENERAL INSURANCE COMPANY LTD. (C.A. No. 13542/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=252522026&type=j&order_date=2026-10-15&from=latest_judgements_order",
       "published": "2026-10-15T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -853,7 +814,7 @@
       "title": "MS SHARMA ENTERPRISES VS. NATIONAL BUILDING CONSTRUCTION CORPORATION (C.A. No. 13782/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=215762026&type=j&order_date=2026-10-15&from=latest_judgements_order",
       "published": "2026-10-15T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -865,7 +826,7 @@
       "title": "DEEPAK RAHEJA VS. OMKARA ASSETS RECONSTRUCTION PRIVATE LTD. (C.A. No. 12195/2025)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=535492025&type=j&order_date=2026-10-15&from=latest_judgements_order",
       "published": "2026-10-15T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -877,7 +838,7 @@
       "title": "YES BANK LIMITED VS. AXIS TRUSTEE SERVICES LIMITED (C.A. No. 3182/2025)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=62452023&type=j&order_date=2026-10-15&from=latest_judgements_order",
       "published": "2026-10-15T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [
         "economy-banking-markets"
@@ -891,7 +852,7 @@
       "title": "K. MADHUSUDHAN RAO VS. M/S LODHA HEALTHY CONSTRUCTIONS AND DEVELOPER PRIVATE LIMITED (LHCPL) (C.A. No. 8994/2022)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=315612022&type=j&order_date=2026-10-15&from=latest_judgements_order",
       "published": "2026-10-15T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [
         "science-health-biotech"
@@ -905,7 +866,7 @@
       "title": "THE SECRETARY TO GOVERNMENT, VS. SAMEER AHAMED N (SLP(C) No. 25507/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=396242026&type=j&order_date=2026-10-15&from=latest_judgements_order",
       "published": "2026-10-15T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -917,7 +878,7 @@
       "title": "DR. B.C. ROY ENGINEERING COLLEGE VS. THE STATE OF WEST BENGAL (C.A. No. 13769/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=205492026&type=j&order_date=2026-10-14&from=latest_judgements_order",
       "published": "2026-10-14T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -929,7 +890,7 @@
       "title": "SANJAY PRASAD VS. MADHUSUDAN DWIVEDI (C.A. No. 13745/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=569462026&type=j&order_date=2026-10-14&from=latest_judgements_order",
       "published": "2026-10-14T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -941,7 +902,7 @@
       "title": "MOHD. ASAD CHOUDHARY VS. STATE OF HIMACHAL PRADESH (C.A. No. 13767/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=437132025&type=j&order_date=2026-10-14&from=latest_judgements_order",
       "published": "2026-10-14T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -953,7 +914,7 @@
       "title": "B. ANASUYAMMA (DIED) PER LRS VS. B. MADHUSUDHAN REDDY (DIED) AS PER LRS (C.A. No. 13759/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=91732023&type=j&order_date=2026-10-14&from=latest_judgements_order",
       "published": "2026-10-14T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -965,7 +926,7 @@
       "title": "M/S DHANLAXMI MERCHANDISE PVT. LTD. VS. STATE OF MADHYA PRADESH (C.A. No. 13749/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=180142026&type=j&order_date=2026-10-14&from=latest_judgements_order",
       "published": "2026-10-14T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -977,7 +938,7 @@
       "title": "SANJAY SUREKA @SANJAY KUMAR SUREKA VS. DIRECTORATE OF ENFORCEMENT (Crl.A. No. 4904/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=107292026&type=j&order_date=2026-10-14&from=latest_judgements_order",
       "published": "2026-10-14T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -989,7 +950,7 @@
       "title": "ALLADIN CHARITIES AND ZAKAT WAKF VS. MOHAMMAD SALEEM ALIAS MOHD WAJID ALI (C.A. No. 13762/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=456392025&type=j&order_date=2026-10-14&from=latest_judgements_order",
       "published": "2026-10-14T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null
@@ -1001,9 +962,11 @@
       "title": "THE ASSISTANT COMMISSIONER OF CENTRAL TAX CGST DIVISION VS. SREENIVASA RAO RAVINUTHALA (C.A. No. 7882/2023)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=482462023&type=j&order_date=2026-10-14&from=latest_judgements_order",
       "published": "2026-10-14T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
-      "topics": [],
+      "topics": [
+        "economy-macro"
+      ],
       "fact_text": null
     },
     {
@@ -1013,7 +976,7 @@
       "title": "KUSUMLAL SAO VS. STATE OF CHHATTISGARH (Crl.A. No. 4894/2026)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=336442026&type=j&order_date=2026-10-13&from=latest_judgements_order",
       "published": "2026-10-13T00:00:00+05:30",
-      "first_seen": "2026-10-16T18:48:19.743Z",
+      "first_seen": "2026-10-16T19:16:20.461Z",
       "reuse": "allowed",
       "topics": [],
       "fact_text": null

@@ -5,7 +5,10 @@
 //   node tools/fetch-listings.mjs            fetch every source and write today's file
 //   node tools/fetch-listings.mjs --dry      fetch and print a summary, write nothing
 //
-// Exit codes: 0 when at least one source answered; 1 when none did (so a scheduled run fails loudly).
+// Exit codes:
+//   0  every source answered with items
+//   3  partial: at least one source failed or came back empty (the file is still written, with per-source status)
+//   1  nothing answered (nothing written)
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -55,6 +58,12 @@ export function buildDocument(results, { now = new Date(), previous = null } = {
   };
 }
 
+// The exit code for a run, from per-source statuses ("ok", "empty" or "failed").
+export function exitCodeFor(results) {
+  if (!results.some(r => r.status === 'ok')) return 1;
+  return results.every(r => r.status === 'ok') ? 0 : 3;
+}
+
 // Schema check used by the tests and by any reader of the file.
 export function validateDocument(doc) {
   const problems = [];
@@ -72,15 +81,23 @@ export function validateDocument(doc) {
   return problems;
 }
 
+function summary(results) {
+  const rows = results.map(r => `| ${r.source.id} | ${r.status} | ${r.items.length} | ${r.reason || '-'} |`);
+  return ['### Listing pull', '', '| source | status | items | note |', '|---|---|---|---|', ...rows, ''].join('\n');
+}
+
 async function run(argv) {
   const dry = argv.includes('--dry');
   const results = [];
   for (const source of SOURCES) {
-    const r = await fetchListing(source.url);
-    if (!r.ok) { results.push({ source, status: 'failed', reason: r.reason, items: [] }); continue; }
+    const r = await fetchListing(source.url, { hosts: source.hosts });
+    if (!r.ok) { results.push({ source, status: 'failed', reason: r.reason, items: [] }); await sleep(1000); continue; }
     let items = [];
-    try { items = validItems(source.parse(r.body, source.url)).filter(source.keep || (() => true)); } catch (e) {
+    try {
+      items = validItems(source.parse(r.body, r.finalUrl)).filter(source.keep || (() => true));
+    } catch (e) {
       results.push({ source, status: 'failed', reason: `parse error: ${String(e.message).split('\n')[0]}`, items: [] });
+      await sleep(1000);
       continue;
     }
     const status = items.length ? 'ok' : 'empty';
@@ -88,8 +105,10 @@ async function run(argv) {
     console.log(`${source.id}: ${status}, ${items.length} items`);
     await sleep(1000);
   }
-  const answered = results.some(r => r.status === 'ok');
-  if (!answered) { console.error('No source returned items. Nothing written.'); return 1; }
+  for (const r of results) if (r.status !== 'ok') console.error(`${r.source.id}: ${r.status}: ${r.reason}`);
+  const code = exitCodeFor(results);
+  if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary(results));
+  if (code === 1) { console.error('No source returned items. Nothing written.'); return 1; }
 
   const today = new Date();
   const day = today.toISOString().slice(0, 10);
@@ -98,11 +117,11 @@ async function run(argv) {
   const doc = buildDocument(results, { now: today, previous });
   const problems = validateDocument(doc);
   if (problems.length) { console.error(problems.join('\n')); return 1; }
-  if (dry) { console.log(JSON.stringify({ sources: doc.sources, count: doc.items.length }, null, 2)); return 0; }
+  if (dry) { console.log(JSON.stringify({ sources: doc.sources, count: doc.items.length }, null, 2)); return code; }
   fs.mkdirSync(OUT_DIR, { recursive: true });
   fs.writeFileSync(path.join(OUT_DIR, `${day}.json`), JSON.stringify(doc, null, 2) + '\n');
-  console.log(`wrote data/candidates/${day}.json with ${doc.items.length} items`);
-  return 0;
+  console.log(`wrote data/candidates/${day}.json with ${doc.items.length} items${code === 3 ? ' (partial: see the failed sources above)' : ''}`);
+  return code;
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

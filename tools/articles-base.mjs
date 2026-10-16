@@ -229,7 +229,7 @@ export const BASE_ARTICLES = [
     facts: [
       'Laureate: Navanethem "Navi" Pillay, aged 85. The reports say she was born in Durban, South Africa, to a family of Tamil heritage.',
       'Committee citation: "efforts to promote peace and international law". The committee also praised her "firm moral compass".',
-      'Positions reported: former UN High Commissioner for Human Rights. The reports also mention a role at the International Court of Justice, but the exact role was not confirmed in the latest check.',
+      'Positions: former UN High Commissioner for Human Rights. She has also served as a judge ad hoc at the International Court of Justice in The Gambia v. Myanmar, a case under the Genocide Convention (UN biography).',
       'Nominations: 287 candidates this year, 208 individuals and 79 organisations (as reported).',
     ],
     sections: [
@@ -255,9 +255,10 @@ export const BASE_ARTICLES = [
     ],
     caveats: [
       'The Khaleej Times headline calls Pillay "Indian-origin". The article body says she was born in South Africa to a family with Tamil roots. This note follows the body.',
-      'The exact ICJ role is open. The UN biography page could not be read automatically here, so do not state the role until it is confirmed.',
+      'The UN biography confirms that she sat as a judge ad hoc at the ICJ in The Gambia v. Myanmar. Do not describe her as a permanent ICJ judge.',
     ],
     sources: [
+      { label: 'UN, Nobel Peace Prize 2026: Navanethem Pillay (biography and ICJ role)', url: 'https://www.un.org/en/about-us/nobel-peace-prize/navi-pillay-2026', kind: 'Official' },
       { label: 'Khaleej Times, Navanethem Pillay wins Nobel Peace Prize 2026', url: 'https://www.khaleejtimes.com/world/navanethem-navi-pillay-wins-nobel-peace-prize-2026', kind: 'News report' },
       { label: 'ARY News, Navanethem Pillay named winner of 2026 Nobel peace prize', url: 'https://arynews.tv/navanethem-navi-pillay-named-winner-of-2026-nobel-peace-prize', kind: 'News report' },
       { label: 'SBS, Navi Pillay wins Nobel Peace Prize 2026', url: 'https://www.sbs.com.au/news/article/navi-pillay-wins-nobel-peace-prize-2026/n7nkmsrm1', kind: 'News report' },
@@ -343,10 +344,10 @@ export const BASE_ARTICLES = [
     event: 'Flight in April 2026',
     facts: [
       'Crew: Reid Wiseman, Victor Glover, Christina Koch and Jeremy Hansen.',
-      'Launch on 1 April 2026, per one report. It was the first crewed flight beyond low Earth orbit since Apollo 17 in 1972.',
+      'Launched 1 April 2026. Splashdown was 10 April 2026 (NASA mission page). It was the first crewed flight beyond low Earth orbit since Apollo 17 in 1972.',
       'The lunar flyby used a free-return trajectory. That brings the spacecraft back toward Earth without a major engine burn.',
       'NASA still fired smaller burns. The final one lasted 8 seconds and changed Orion\'s speed by 4.2 feet per second, pushing it toward Earth before splashdown (NASA mission blog).',
-      'Reports say the closest approach was around 6 April, passing about 4,066 miles above the far side.',
+      'At closest approach the crew was 4,067 miles above the lunar surface. At its farthest, the spacecraft was 252,756 miles from Earth (NASA post-mission account).',
       'NASA called it a crewed systems validation test. The data feeds planning for Artemis III, a planned south-pole landing.',
     ],
     sections: [
@@ -360,8 +361,7 @@ export const BASE_ARTICLES = [
       {
         heading: 'Caveats',
         paragraphs: [
-          'Reports disagree on the splashdown date. One says 10 April and another says 11 April in Pacific time. Check NASA\'s mission page before quoting a date.',
-          'Reports also differ on details. One gives 6 April as the closest approach. Another gives a record distance of more than 252,000 miles from Earth. Treat both as reported, not verified.',
+          'NASA\'s mission page gives splashdown on 10 April 2026. Some news reports said 11 April. Use NASA\'s date.',
         ],
       },
     ],
@@ -369,6 +369,8 @@ export const BASE_ARTICLES = [
       'Most of these reports are news and aggregator pieces. NASA\'s own mission pages are the primary source for dates and distances.',
     ],
     sources: [
+      { label: 'NASA, Artemis II mission page', url: 'https://www.nasa.gov/mission/artemis-ii/', kind: 'Official' },
+      { label: 'NASA, Artemis II astronauts back in Houston (post-mission account)', url: 'https://www.nasa.gov/blogs/missions/2026/04/11/artemis-ii-astronauts-back-in-houston-reunite-with-families/', kind: 'Official' },
       { label: 'NASA mission blog, Artemis II crew completes final burn before splashdown', url: 'https://www.nasa.gov/blogs/missions/2026/04/10/artemis-ii-flight-day-10-crew-completes-final-burn-before-splashdown/', kind: 'Official' },
       { label: 'IOL, After milestone-rich lunar flyby, astronauts start trip home', url: 'https://iol.co.za/news/world/2026-04-07-after-milestone-rich-lunar-flyby-astronauts-start-trip-home/', kind: 'News report' },
       { label: 'Interesting Engineering, NASA Artemis II returns safely on Earth', url: 'https://interestingengineering.com/space/nasa-artemis-ii-returns-safely-on-earth', kind: 'News report' },

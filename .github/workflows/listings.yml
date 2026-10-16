@@ -1,7 +1,7 @@
 name: Daily listings
 
-# Pulls official listings (PIB, Supreme Court, PRS, Bar & Bench) into data/candidates/YYYY-MM-DD.json.
-# Metadata only. A run fails when no source answers, so a silent outage shows up as a red run.
+# Pulls official listings (PIB, Supreme Court judgments, PRS bill tracker) into data/candidates/YYYY-MM-DD.json.
+# Metadata only. A partial outage still commits what was pulled, then the run is marked failed so it is noticed.
 on:
   schedule:
     - cron: '30 2 * * *'     # 08:00 IST, daily
@@ -24,8 +24,11 @@ jobs:
         with:
           node-version: '22'
       - name: Pull listings
+        id: pull
+        continue-on-error: true
         run: node tools/fetch-listings.mjs
       - name: Commit candidate file
+        if: always()
         run: |
           git config user.name "zola-listings-bot"
           git config user.email "zola-listings-bot@users.noreply.github.com"
@@ -37,3 +40,8 @@ jobs:
             git pull --rebase origin "$GITHUB_REF_NAME"
             git push origin "HEAD:$GITHUB_REF_NAME"
           fi
+      - name: Fail the run on a partial or total outage
+        if: steps.pull.outcome == 'failure'
+        run: |
+          echo "::error::A listing source failed or came back empty. See the 'Listing pull' summary and the committed status block."
+          exit 1

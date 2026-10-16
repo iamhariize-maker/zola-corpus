@@ -332,4 +332,49 @@ export const CURRENT_ARTICLES = [
       { label: 'PIB English feed (where this release was listed on 16 October 2026)', url: 'https://pib.gov.in/RssMain.aspx?ModId=6&Reg=3&Lang=1', kind: 'Government' },
     ],
   },
+  {
+    slug: 'constitution-131st-amendment-bill-2026',
+    category: 'polity',
+    title: 'Constitution (131st Amendment) Bill, 2026: defeated in the Lok Sabha',
+    dek: 'The bill to expand the Lok Sabha and change the delimitation framework failed to get the two-thirds majority it needed. The linked bills were withdrawn.',
+    event: 'Introduced 16 April 2026; defeated 17 April 2026',
+    facts: [
+      'Introduced in Lok Sabha on 16 April 2026, with the Delimitation Bill, 2026 and the Union Territories Laws (Amendment) Bill, 2026 (PRS).',
+      'Defeated in Lok Sabha on 17 April 2026: 298 members voted for and 230 against, out of 528 present and voting. It fell short of the two-thirds majority needed for a constitutional amendment (LiveLaw and Vision IAS reports).',
+      'After the defeat, the Union Minister withdrew the Delimitation Bill, 2026 and the Union Territories Laws (Amendment) Bill, 2026 (LiveLaw and Vision IAS reports).',
+      'As introduced, the bill raised the maximum size of the Lok Sabha to 850: up to 815 members from the States and up to 35 from the Union Territories (PRS).',
+      'As introduced, the next delimitation would have used the latest published census, which is the 2011 census (PRS).',
+    ],
+    sections: [
+      {
+        heading: 'What the bill was for',
+        paragraphs: [
+          'The 106th Constitution Amendment (2023) reserves one-third of seats in the Lok Sabha and State Assemblies for women. That reservation starts after the first census following the 2023 Act. The census reference date is 1 March 2027 (PRS). PRS notes that the next Lok Sabha election, in 2029, is unlikely to come after a delimitation based on the 2027 census. PRS says the bill removes the census-linked requirement for the reservation to start.',
+          'The last Delimitation Commission was set up in 2002, and its orders were finalised in 2008 (PRS).',
+        ],
+      },
+      {
+        heading: 'Prelims lines',
+        paragraphs: [
+          'A constitutional amendment needs a special majority: a majority of the total membership of the House and two-thirds of the members present and voting (background: Article 368). A simple majority is not enough, which is why a bill with 298 votes in favour can still fail.',
+          'Delimitation is the redrawing of constituency boundaries. The Delimitation Commission does this work, and its orders are final (background).',
+        ],
+      },
+      {
+        heading: 'Mains angle',
+        paragraphs: [
+          'Representation against federal balance. Critics said a seat increase based on the 2011 census would cut the share of southern and north-eastern states (reports). Ask how the Constitution balances population-based representation with the interests of states that have controlled population growth. Then ask how women\'s reservation fits into that.',
+        ],
+      },
+    ],
+    caveats: [
+      'The defeat and the vote count come from two news reports (LiveLaw, Vision IAS). The PRS page gives the bill content and introduction date, but not the outcome. Check the Lok Sabha division record on Sansad before you quote the numbers.',
+      'Reports talked about a revised bill in the Monsoon Session. None of the sources read here confirm that a revised bill was introduced or voted on. Do not write that a revised bill passed.',
+    ],
+    sources: [
+      { label: 'PRS Legislative Research, The Constitution (131st Amendment) Bill, 2026 [Delimitation Bills of 2026]', url: 'https://prsindia.org/billtrack/the-constitution-131st-amendment-bill-2026', kind: 'Research' },
+      { label: 'LiveLaw, Lok Sabha rejects Constitution (131st) Amendment Bill 2026 on delimitation', url: 'https://www.livelaw.in/amp/top-stories/lok-sabha-rejects-constitution-131st-bill-2026-on-delimitation-530736', kind: 'News report' },
+      { label: 'Vision IAS, Constitution (131st) Amendment Bill 2026 defeated in Lok Sabha', url: 'https://visionias.in/current-affairs/news-today/2026-04-18/polity-and-governance/constitution-131st-amendment-bill-2026-defeated-in-lok-sabha', kind: 'News report' },
+    ],
+  },
 ];

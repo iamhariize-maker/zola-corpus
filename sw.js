@@ -16,7 +16,8 @@ const SHELL = [INDEX,
   './articles/nobel-2026-at-a-glance.html', './articles/nobel-physics-2026.html', './articles/nobel-medicine-2026.html',
   './articles/nobel-chemistry-2026.html', './articles/nobel-literature-2026.html', './articles/nobel-peace-2026.html',
   './articles/nobel-economics-2026.html', './articles/fields-medal-2026.html', './articles/artemis-ii-2026.html',
-  './articles/ai-impact-summit-2026.html', './articles/union-budget-2026-27.html', './articles/padma-awards-2026.html'
+  './articles/ai-impact-summit-2026.html', './articles/union-budget-2026-27.html', './articles/padma-awards-2026.html',
+  './articles/rbi-repo-hike-october-2026.html', './articles/public-examinations-amendment-bill-2026.html', './articles/supreme-court-judges-bill-2026.html', './articles/tribunals-reforms-bill-2026.html', './articles/mines-minerals-amendment-bill-2026.html', './articles/ins-samarthak-commissioned-2026.html', './articles/caqm-ptz-cameras-ncr-2026.html', './articles/pmay-urban-2-csmc-october-2026.html'
 ].map(p => new URL(p, SCOPE).href);
 
 const tell = async msg => (await self.clients.matchAll({type: 'window'})).forEach(c => c.postMessage(msg));

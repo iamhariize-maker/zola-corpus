@@ -2,6 +2,10 @@
 
 Status: draft for owner decision (16 October 2026). Owner decisions are marked in the ledger.
 
+## Owner's use basis (16 October 2026)
+
+The owner uses Zola for personal study and does not plan to sell it or publish it on a store before the Prelims. A few friends have the app. The priority is correct, detailed, well-sourced notes. Copying text verbatim is not done. Every note cites its primary source and is written in the owner's own words. The rules below stay in place for accuracy and attribution, and the no-republish rule for newspaper text still holds.
+
 ## The position in one paragraph
 
 The engine may use facts from any public source. It may copy text only from sources that allow reuse. It never

@@ -9,14 +9,18 @@
 
 export const VERIFIED = '16 October 2026';
 
+import { CURRENT_ARTICLES } from './articles-current.mjs';
+
 export const CATEGORIES = [
   { id: 'nobel', title: 'Nobel Prizes 2026' },
   { id: 'science', title: 'Science, technology and space' },
   { id: 'economy', title: 'Economy and governance' },
   { id: 'honours', title: 'Awards and honours' },
+  { id: 'polity', title: 'Polity and Parliament' },
+  { id: 'governance', title: 'Government schemes, defence and environment' },
 ];
 
-export const ARTICLES = [
+const BASE_ARTICLES = [
   // ---------------------------------------------------------------- Nobel Prizes 2026
   {
     slug: 'nobel-2026-at-a-glance',
@@ -480,3 +484,5 @@ export const ARTICLES = [
     ],
   },
 ];
+
+export const ARTICLES = [...BASE_ARTICLES, ...CURRENT_ARTICLES];

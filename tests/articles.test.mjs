@@ -28,7 +28,7 @@ for (const name of Object.keys(files)) {
   const html = read(path.join('articles', name));
   ok(!/<script\b[^>]*\bsrc=/i.test(html), `${name}: no external scripts`);
   ok(!/@import|url\(\s*['"]?https?:/i.test(html), `${name}: no external stylesheets or fonts`);
-  const hrefs = [...html.matchAll(/href="(https?:\/\/[^"]+)"/g)].map(m => m[1]);
+  const hrefs = [...html.matchAll(/href="(https?:\/\/[^"]+)"/g)].map(m => m[1].replace(/&amp;/g, '&'));
   const allowed = new Set(ARTICLES.flatMap(a => a.sources.map(s => s.url)));
   ok(hrefs.every(h => allowed.has(h)), `${name}: every external link is a listed source`);
 }

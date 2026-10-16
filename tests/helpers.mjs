@@ -15,7 +15,7 @@ export async function playwright() {
   throw new Error('Playwright not found. Run: npm i -D playwright && npx playwright install chromium');
 }
 
-const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.webmanifest': 'application/manifest+json', '.png': 'image/png',
+const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript', '.webmanifest': 'application/manifest+json', '.png': 'image/png',
   '.svg': 'image/svg+xml', '.webp': 'image/webp', '.woff2': 'font/woff2', '.json': 'application/json', '.txt': 'text/plain', '.md': 'text/plain' };
 
 /** Serve _site like GitHub Pages does (404.html for unknown paths, ETag so update checks work). */

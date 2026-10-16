@@ -3,6 +3,10 @@
 Read this first. It is the contract for any coding agent (Codex, Claude, or a person) taking over this repo.
 The roadmap with ready-to-pick tasks is in [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
+## Reusable Supersymmetry startup
+
+Read [`SUPERSYMMETRY.md`](SUPERSYMMETRY.md) before implementation. It defines the owner's expert/worker allocation, bounded claims, reciprocal review, escalation and evidence rules. Claude also starts from [`CLAUDE.md`](CLAUDE.md). Refresh counterpart replies and acknowledge the protocol before claiming execution. Current owner instructions and this file's safety, privacy and honesty rules remain authoritative. The article acceptance ledger is [`docs/handoff/ACCEPTANCE_LEDGER.md`](docs/handoff/ACCEPTANCE_LEDGER.md).
+
 ## What this is
 
 Zola Corpus is an installable, offline-first web app (PWA) for UPSC and APSC Prelims 2027, published at

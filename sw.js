@@ -11,7 +11,12 @@ const SHELL = [INDEX,
   './icons/icon.svg', './icons/favicon.svg', './icons/icon-192.png', './icons/icon-512.png',
   './icons/maskable-192.png', './icons/maskable-512.png',
   './icons/apple-touch-icon.png', './icons/favicon-32.png',
-  './fonts/space-grotesk.woff2', './fonts/jetbrains-mono.woff2'
+  './fonts/space-grotesk.woff2', './fonts/jetbrains-mono.woff2',
+  './articles/index.html', './articles/articles.css',
+  './articles/nobel-2026-at-a-glance.html', './articles/nobel-physics-2026.html', './articles/nobel-medicine-2026.html',
+  './articles/nobel-chemistry-2026.html', './articles/nobel-literature-2026.html', './articles/nobel-peace-2026.html',
+  './articles/nobel-economics-2026.html', './articles/fields-medal-2026.html', './articles/artemis-ii-2026.html',
+  './articles/ai-impact-summit-2026.html', './articles/union-budget-2026-27.html', './articles/padma-awards-2026.html'
 ].map(p => new URL(p, SCOPE).href);
 
 const tell = async msg => (await self.clients.matchAll({type: 'window'})).forEach(c => c.postMessage(msg));
@@ -78,8 +83,9 @@ self.addEventListener('fetch', e => {
   if (req.mode === 'navigate') {
     const page = url.origin + url.pathname;
     if (page !== SCOPE && page !== INDEX) {
-      // Any other address under the app (a mistyped or old link): real files load, everything else goes home.
-      e.respondWith(fetch(req).then(res => res.ok ? res : Response.redirect(SCOPE, 302), () => Response.redirect(SCOPE, 302)));
+      // Any other address under the app (a mistyped or old link): real files load (from cache first, so they open
+      // offline), everything else goes home.
+      e.respondWith(caches.match(req, {ignoreSearch: true}).then(hit => hit || fetch(req).then(res => res.ok ? res : Response.redirect(SCOPE, 302), () => Response.redirect(SCOPE, 302))));
       return;
     }
     e.respondWith((async () => {

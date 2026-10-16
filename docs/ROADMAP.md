@@ -24,6 +24,13 @@ Fix details and verification: [`FIX-LOG.md`](FIX-LOG.md).
 
 ## Next
 
+### 1. Study articles on recent events (high, ZC-00)
+**Why:** the app had no explanatory content on important recent events. Notes on the 2026 Nobel Prizes and other 2026 events
+now live in `articles/` (generated from `tools/articles-data.mjs`).
+**Done when:** every article's facts are checked against the official page it cites (nobelprize.org, PIB, NASA, ICM, the
+Ministry of Home Affairs list), at least 20 events are covered, and the owner decides whether the app links to the hub.
+Progress and evidence: [`docs/handoff/ACCEPTANCE_LEDGER.md`](handoff/ACCEPTANCE_LEDGER.md).
+
 ### 2. Faster first open (high)
 **Why:** the first open took 3.2 s to become usable, with one 289 ms freeze (later opens 1.5 s). The whole app,
 including Hacking's roughly 1 MB of data (`script#zolaBData` plus `#zolaBExtra`) and the base64 CSAT document (`script#srcC`), is downloaded and parsed as outer HTML up front. CSAT decoding and execution already wait for first entry. The later local audit measured 1.17–1.21 s with no startup task above 83 ms; establish comparable production conditions before treating these figures as a target regression (see `INITIAL-AUDIT.md`).

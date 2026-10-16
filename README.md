@@ -26,6 +26,8 @@ with the link and the install steps (deliberately no QR code, so people can read
 
 **Live feed:** [`iamhariize-maker/Zola-feed`](https://github.com/iamhariize-maker/Zola-feed) (exam dates, news inbox, notices)
 
+**Study articles:** [`articles/`](articles/index.html) has detailed notes on important recent events (the 2026 Nobel Prizes, the Fields Medal, Artemis II, the AI Impact Summit, the Union Budget and the Padma Awards). Each article lists its sources, what is still unverified, and works offline. Edit `tools/articles-data.mjs`, then run `npm run articles`.
+
 ## What the app layer gives you
 
 | | |

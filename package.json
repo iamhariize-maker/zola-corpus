@@ -10,6 +10,8 @@
     "build": "node tools/pwa.mjs build _site",
     "serve": "node tools/pwa.mjs build _site && npx --yes http-server _site -p 8080 -c-1",
     "screenshots": "node tools/screenshots.mjs",
+    "articles": "node tools/articles.mjs build",
+    "articles:check": "node tools/articles.mjs check",
     "test": "node tests/run.mjs"
   },
   "engines": {

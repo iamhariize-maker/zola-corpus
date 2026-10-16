@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 import { applyAppFixes } from './app-fixes.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SITE_FILES = ['index.html', 'manifest.webmanifest', 'sw.js', '404.html', '.nojekyll', 'icons', 'screenshots', 'fonts'];
+const SITE_FILES = ['index.html', 'manifest.webmanifest', 'sw.js', '404.html', '.nojekyll', 'icons', 'screenshots', 'fonts', 'articles'];
 const HEAD_RX = /[ \t]*<!-- zola-pwa:head[\s\S]*?<!-- \/zola-pwa:head -->\n?/g;
 const BODY_RX = /[ \t]*<!-- zola-pwa:body[\s\S]*?<!-- \/zola-pwa:body -->\n?/g;
 // Tags the layer owns. A fresh build's own copies are dropped so the layer's win.

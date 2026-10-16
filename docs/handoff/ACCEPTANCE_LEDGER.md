@@ -1,0 +1,17 @@
+# Acceptance ledger: ZC-00 (study articles and Supersymmetry adoption)
+
+Branch: `ccr-b52689a2-c86o8j`. Protocol: [`SUPERSYMMETRY.md`](../../SUPERSYMMETRY.md) (version 3, Zola binding).
+States: posted → acknowledged → claimed → implemented → independently reviewed → integrated → verified.
+Rows are updated in place. A row moves to a later state only with evidence in its last column.
+
+Roles in this session: Claude Haiku (bulk implementation, research packets, validation). Sonnet/Opus expert review:
+MODEL_ROLE_BLOCKED (no expert lane attached). Codex: lane not yet named; expert (Sol/Astra) and worker (Luna) roles
+are unassigned until the owner switches it on and it acknowledges.
+
+| Task | Requirement | Actual models | Baseline | Claimed paths | Design / experiment | Implementation | Independent findings | Integration | Exact-head evidence | Remaining gap | Next owner / action |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| ZC-00.1 Protocol adoption | SUPERSYMMETRY.md copied with a Zola binding; startup pointers in AGENTS.md and CLAUDE.md; ledger created | Claude Haiku | Equalizer-app SUPERSYMMETRY.md v3 (12 Oct 2026) | `SUPERSYMMETRY.md`, `AGENTS.md`, `CLAUDE.md`, `docs/handoff/` | Copy file, replace only the Svan binding section | Working tree, committed on this branch | MODEL_ROLE_BLOCKED: no Sonnet/Opus lane | pending commit | `tests/articles.test.mjs` (protocol section) | Codex acknowledgement not received | Codex: acknowledge actual model, branch and tools, then post its reply |
+| ZC-00.2 Nobel Prizes 2026 articles | Detailed exam-oriented articles for all six 2026 Nobel prizes plus an overview; each sourced and dated | Claude Haiku (research and writing) | None (no Nobel content existed) | `tools/articles-data.mjs`, `tools/articles.mjs`, `articles/nobel-*.html` | Facts from news reports that quote the committees; official nobelprize.org pages returned HTTP 403 to automated reading | Working tree | MODEL_ROLE_BLOCKED for expert fact review; Codex review requested | pending | `node tools/articles.mjs check`; content tests | Official pages not re-read; expert/Codex fact review not done | Owner or Codex: check each citation on nobelprize.org before exam use |
+| ZC-00.3 Other 2026 events | Articles on Fields Medal 2026, Artemis II, AI Impact Summit 2026, Union Budget 2026-27, Padma Awards 2026 | Claude Haiku | None | `tools/articles-data.mjs`, `articles/*.html` | Same method; secondary explainers flagged as such in caveats | Working tree | MODEL_ROLE_BLOCKED for expert fact review | pending | content tests | Several sources are aggregators; PIB, NASA, ICM and the official Padma list not re-read | Check primary sources; add more events from the ROADMAP list |
+| ZC-00.4 Offline and navigation | New pages precached in `sw.js` `SHELL`; article navigation served from cache first; `articles/` published by `tools/pwa.mjs` | Claude Haiku | `sw.js` navigation fetched network only | `sw.js`, `tools/pwa.mjs`, `package.json` | Cache-first only for real article files; non-app addresses still go home | Working tree | MODEL_ROLE_BLOCKED | pending | `npm test` (contracts + articles) | Offline behaviour not yet tested in a browser | Run `npm test` with Playwright; add an offline browser test |
+| ZC-00.5 Hub link from the app | A link from the app to the article hub | Not started | None | Would touch `pwa/body.html` (app UI) | Not in this change | None | None | None | None | Owner decision: AGENTS.md says app content changes need the owner's approval | Owner to say whether to add a link from the app |

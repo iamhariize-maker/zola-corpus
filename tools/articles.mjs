@@ -15,7 +15,7 @@ const OUT = path.join(ROOT, 'articles');
 
 // Phrases that would predict exam questions or hype the content (AGENTS.md: voice and honesty).
 const FORBIDDEN = /likely (to be )?(asked|appear)|will be asked|expected question|predicted question|guaranteed|\bfree\b(?!-return)|must[- ]read|most important question/i;
-const KINDS = ['Official', 'News report', 'Government'];
+const KINDS = ['Official', 'News report', 'Government', 'Research'];
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const categoryTitle = id => CATEGORIES.find(c => c.id === id)?.title ?? '';

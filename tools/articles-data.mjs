@@ -146,7 +146,7 @@ export const ARTICLES = [
     dek: 'Two chemists honoured for showing how small chemical effects can amplify into a strong one-sided outcome.',
     event: 'Chemistry prize announced 7 October 2026',
     facts: [
-      'Laureates (shared): Henri B. Kagan (Université Paris-Sud, Orsay, France) and Kenso Soai (Tokyo University of Science; aged 95).',
+      'Laureates (shared): Henri B. Kagan (Université Paris-Sud, Orsay, France; aged 95) and Kenso Soai (Tokyo University of Science; aged 76).',
       'Official citation, as quoted: "for the discovery of non-linear effects and autocatalysis in asymmetric organic synthesis".',
       'Prize: 12 million Swedish crowns (about $1.2 million). Medals are presented in Stockholm on 10 December.',
     ],
@@ -222,7 +222,7 @@ export const ARTICLES = [
     facts: [
       'Laureate: Navanethem "Navi" Pillay, aged 85. Reports describe her as born in Durban, South Africa, into a family of Tamil heritage.',
       'Committee citation: "efforts to promote peace and international law". The committee also cited her "firm moral compass".',
-      'Positions reported: former UN High Commissioner for Human Rights, and a judge of the International Court of Justice.',
+      'Positions reported: former UN High Commissioner for Human Rights. Reports also mention a role at the International Court of Justice; the exact role was not confirmed in the latest check.',
       'Nominations: 287 candidates this year, of whom 208 were individuals and 79 organisations (as reported).',
     ],
     sections: [
@@ -298,7 +298,7 @@ export const ARTICLES = [
       'Announced at the opening ceremony of the International Congress of Mathematicians (ICM), Philadelphia, 23 July 2026. The congress ran until 30 July.',
       'Winners: Yu Deng (University of Chicago), John Pardon (Stony Brook University), Jacob Tsimerman (University of Toronto), Hong Wang (New York University and IHÉS, France).',
       'Reported ages: Deng and Pardon 37, Tsimerman 38, Wang 35.',
-      'Work areas as reported: Deng in partial differential equations; Pardon in symplectic geometry; Tsimerman in algebraic geometry. Sources differ on Wang\'s field, so none is given here.',
+      'Work areas: Hong Wang in harmonic analysis and geometric measure theory (IMU citation). Deng in partial differential equations, Pardon in symplectic geometry and Tsimerman in algebraic geometry (as reported).',
     ],
     sections: [
       {
@@ -317,7 +317,7 @@ export const ARTICLES = [
     ],
     caveats: [
       'One aggregator report says the names surfaced early through a glitch on the ICM website. That report was not verified, so it is not stated as fact here.',
-      'Sources differ on Hong Wang\'s field, so this article does not state it.',
+      'The Deng, Pardon and Tsimerman work areas come from news reports. Hong Wang\'s field is from the IMU citation.',
     ],
     sources: [
       { label: 'Simons Foundation, 2026 Fields Medals awarded to four of the world\'s top mathematicians', url: 'https://www.simonsfoundation.org/2026/07/23/2026-fields-medals-awarded-to-four-of-worlds-top-mathematicians/', kind: 'News report' },
@@ -334,7 +334,7 @@ export const ARTICLES = [
     facts: [
       'Crew: Reid Wiseman, Victor Glover, Christina Koch and Jeremy Hansen.',
       'Launch: 1 April 2026, per one report. It was the first crewed flight beyond low Earth orbit since Apollo 17 in 1972.',
-      'The crew flew a lunar flyby on a free-return trajectory, which brings the spacecraft back to Earth without major engine burns after the flyby.',
+      'The crew flew a lunar flyby on a free-return trajectory, which brings the spacecraft back toward Earth without a major engine burn. NASA still fired smaller burns, including a final 8-second burn that changed Orion\'s speed by 4.2 feet per second before splashdown.',
       'Reports say the closest approach to the Moon was around 6 April, and the spacecraft passed about 4,066 miles above the far side.',
       'NASA called it a crewed systems validation test. Its data is being used to plan Artemis III, a planned south-pole landing.',
     ],
@@ -343,7 +343,7 @@ export const ARTICLES = [
         heading: 'Why it matters',
         paragraphs: [
           'Apollo 17 in 1972 was the last crewed lunar mission (background). Artemis II is the first crewed mission since then to go beyond low Earth orbit, meaning out to the Moon and back.',
-          'A free-return trajectory uses the Moon\'s gravity to send a spacecraft back to Earth (background). The reports say the return needed no major engine burn after the flyby.',
+          'A free-return trajectory uses the Moon\'s gravity to send a spacecraft back to Earth (background). NASA\'s own mission blog reports smaller burns, not a major one.',
         ],
       },
       {
@@ -370,9 +370,9 @@ export const ARTICLES = [
     dek: 'India hosted a global AI summit in February 2026. Its main outcome is a non-binding declaration with seven pillars.',
     event: 'Summit held in February 2026, New Delhi',
     facts: [
-      'Venue: Bharat Mandapam, New Delhi. One account gives the summit dates as 16 to 21 February 2026, and the declaration as adopted on 19 February.',
+      'Venue: Bharat Mandapam, New Delhi. The PIB release gives the summit dates as 18 to 19 February 2026, and says the declaration was gathered in New Delhi on 19 February.',
       'Outcome: the New Delhi Declaration on AI Impact, built on the principle "Welfare for all, Happiness for all".',
-      'Endorsements: reports citing the official release say 88 countries and international organisations. Other reports say 89 or 91.',
+      'Endorsements: 92 countries and international organisations, according to the PIB release on the outcome.',
       'Seven pillars: democratising AI resources; economic growth and social good; secure and trusted AI; AI for science; access for social empowerment; human capital development; resilient, efficient and innovative AI systems.',
       'Framing: three "Sutras": People, Planet and Progress.',
     ],
@@ -392,10 +392,11 @@ export const ARTICLES = [
       },
     ],
     caveats: [
-      'Endorsement counts differ across reports (88, 89 and 91). Use the official government release for the number.',
+      'Earlier news reports gave 88, 89 or 91 endorsers. This article uses the PIB figure of 92.',
       'One source names follow-on platforms that came from the declaration. Only one source reports them, so they are left out here.',
     ],
     sources: [
+      { label: 'PIB, AI Impact Summit 2026 concludes with adoption of New Delhi Declaration', url: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=2231208', kind: 'Government' },
       { label: 'WAM, AI Impact Summit 2026 adopts New Delhi Declaration', url: 'https://www.wam.ae/en/article/byup8rk-impact-summit-2026-adopts-new-delhi-declaration', kind: 'News report' },
       { label: 'AIR (All India Radio), India AI Impact Summit 2026 adopts New Delhi Declaration', url: 'https://www.newsonair.gov.in/india-ai-impact-summit-2026-adopts-new-delhi-declaration', kind: 'Government' },
       { label: 'Free Press Journal, AI Impact Summit 2026: 88 countries adopt New Delhi Declaration', url: 'https://www.freepressjournal.in/amp/india/ai-impact-summit-2026-88-countries-adopt-new-delhi-declaration-on-trusted-resilient-efficient-ai-read-full-statement', kind: 'News report' },
@@ -422,7 +423,7 @@ export const ARTICLES = [
       {
         heading: 'Key initiatives reported',
         paragraphs: [
-          'Biopharma SHAKTI, an expansion of the India Semiconductor Mission 2.0, and dedicated rare-earth corridors. Customs duties on select medicines were exempted to support affordability (Foxmandal report).',
+          'Biopharma SHAKTI is a separate flagship. The India Semiconductor Mission 2.0 is expanded. Dedicated rare-earth corridors are announced. Customs duties on select medicines were exempted to support affordability (Foxmandal report).',
           'Devolution to states is held at 41%, and the government accepted the 16th Finance Commission\'s recommendations, per the Basis Point Insight report. The defence allocation is reported at about ₹5.95 trillion.',
         ],
       },
@@ -438,7 +439,7 @@ export const ARTICLES = [
     ],
     sources: [
       { label: 'PIB, Union Budget 2026 (official)', url: 'https://www.pib.gov.in/unionbudget/2026/en', kind: 'Government' },
-      { label: 'PRS Legislative Research, Union Budget Analysis 2026-27', url: 'https://prsindia.org/files/budget/budget_parliament/2026/Union_Budget_Analysis-2026-27.pdf', kind: 'Government' },
+      { label: 'PRS Legislative Research, Union Budget Analysis 2026-27', url: 'https://prsindia.org/files/budget/budget_parliament/2026/Union_Budget_Analysis-2026-27.pdf', kind: 'Research' },
       { label: 'Finnovate, India Union Budget 2026-27 key highlights', url: 'https://www.finnovate.in/learn/blog/india-union-budget-2026-27-key-highlights', kind: 'News report' },
       { label: 'Foxmandal, Union budget highlights 2026-27', url: 'https://foxmandal.in/Insights/union-budget-highlights-2026-27/', kind: 'News report' },
       { label: 'Basis Point Insight, Highlights of Union Budget for 2026-27', url: 'https://www.basispointinsight.com/Story/highlights-of-union-budget-for-2026-27-_a9114e3145ae.html', kind: 'News report' },
@@ -453,7 +454,7 @@ export const ARTICLES = [
     dek: 'Announced on 25 January 2026, on the eve of Republic Day. The list covers the three civilian tiers and includes posthumous honours.',
     event: 'Announced 25 January 2026',
     facts: [
-      'Total: 131 awards. Five Padma Vibhushan, 13 Padma Bhushan (one report says 12) and 113 Padma Shri.',
+      'Total: 131 awards. Five Padma Vibhushan, 13 Padma Bhushan and 113 Padma Shri, per the MHA list.',
       'Padma Vibhushan (as reported): Dharmendra Singh Deol and V S Achuthanandan, both posthumously; K T Thomas (public affairs); N Rajam (art); P Narayanan (literature and education).',
       'Padma Bhushan (as reported): Alka Yagnik (singer), Mammootty (actor), Uday Kotak (industrialist), Vijay Amritraj (tennis), Bhagat Singh Koshyari, and Piyush Pandey and Shibu Soren, both posthumously.',
       'Breakdown reported: 19 women, 16 posthumous awardees and 6 foreigners, NRIs, PIOs or OCI cardholders.',
@@ -462,16 +463,17 @@ export const ARTICLES = [
       {
         heading: 'Terms to know',
         paragraphs: [
-          'The Padma awards are civilian honours in four tiers: Padma Vibhushan, Padma Bhushan and Padma Shri (background). The Bharat Ratna is the highest civilian honour and is a separate award. The reports read here did not say whether a Bharat Ratna was conferred this year.',
+          'The Padma awards are civilian honours in three tiers: Padma Vibhushan, Padma Bhushan and Padma Shri (background). The Bharat Ratna is the highest civilian honour and is a separate award. The reports read here did not say whether a Bharat Ratna was conferred this year.',
           'The Statesman\'s headline frames the list as honouring "unsung heroes" for extraordinary contributions (news report wording, not the official citation).',
         ],
       },
     ],
     caveats: [
-      'Counts differ by source (Bhushan 12 or 13), so quote the official list from the Ministry of Home Affairs before using numbers.',
+      'The MHA list (25 January 2026) gives 131 awards, with two duo cases counted as one award each. Names above come from news reports, so check the MHA list before quoting one.',
       'The names above are from news reports. Confirm each name and category on the official list.',
     ],
     sources: [
+      { label: 'Ministry of Home Affairs, Padma Awards 2026 list (official PDF)', url: 'https://www.mha.gov.in/sites/default/files/Padma_Awards2026W_25012026.pdf', kind: 'Government' },
       { label: 'ETV Bharat, Padma Awards 2026 announced', url: 'https://www.etvbharat.com/en/bharat/padma-awards-2026-announced-enn26012504247', kind: 'News report' },
       { label: 'The News Minute, Padma Awards 2026: 131 recipients named', url: 'https://www.thenewsminute.com/amp/story/news/padma-awards-2026-131-recipients-named-mammootty-alka-yagnik-among-awardees', kind: 'News report' },
       { label: 'The Statesman, Padma Awards 2026 honours unsung heroes', url: 'https://www.thestatesman.com/india/padma-awards-2026-nation-honours-unsung-heroes-for-extraordinary-contributions-1503546337.html', kind: 'News report' },

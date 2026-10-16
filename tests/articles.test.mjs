@@ -4,6 +4,7 @@ import path from 'node:path';
 import { ROOT, ok, failures } from './helpers.mjs';
 import { ARTICLES } from '../tools/articles-data.mjs';
 import { validate, render } from '../tools/articles.mjs';
+import { validateTaxonomy, TAXONOMY_STATUS } from '../tools/upsc-taxonomy.mjs';
 
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
 const exists = f => fs.existsSync(path.join(ROOT, f));
@@ -41,6 +42,10 @@ ok(/caches\.match\(req, \{ignoreSearch: true\}\)\.then\(hit => hit \|\| fetch\(r
 ok(/SITE_FILES = \[[^\]]*'articles'/.test(read('tools/pwa.mjs')), 'tools/pwa.mjs publishes the articles folder');
 ok(read('articles/index.html').includes('Study articles on recent events'), 'hub page is generated');
 for (const a of ARTICLES) ok(read('articles/index.html').includes(`${a.slug}.html`), `hub links to ${a.slug}`);
+
+console.log('UPSC taxonomy draft');
+ok(validateTaxonomy().length === 0, 'taxonomy ids and papers are valid');
+ok(TAXONOMY_STATUS === 'draft-unverified', 'taxonomy is marked unverified until checked against the UPSC notification');
 
 console.log('Supersymmetry process files');
 ok(exists('SUPERSYMMETRY.md'), 'SUPERSYMMETRY.md is in the repo');

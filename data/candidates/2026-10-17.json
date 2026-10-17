@@ -1,6 +1,6 @@
 {
   "schema": "zola-candidates/1",
-  "generated_at": "2026-10-17T00:51:06.500Z",
+  "generated_at": "2026-10-17T07:09:09.831Z",
   "sources": [
     {
       "source": "pib",
@@ -22,6 +22,54 @@
     }
   ],
   "items": [
+    {
+      "id": "pib:fe47b5d73bfd",
+      "source": "pib",
+      "tier": 1,
+      "title": "Connecting Kashmir: Building the Infrastructure for Growth",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324629",
+      "published": null,
+      "first_seen": "2026-10-17T07:09:09.831Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:9e1438063b63",
+      "source": "pib",
+      "tier": 1,
+      "title": "Prime Minister offers prayers to Maa Kalaratri during Navratri",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324616",
+      "published": null,
+      "first_seen": "2026-10-17T07:09:09.831Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:a3d1ab51dd94",
+      "source": "pib",
+      "tier": 1,
+      "title": "Clarification on Legislative Developments concerning Government’s shareholding in IDBI",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324612",
+      "published": null,
+      "first_seen": "2026-10-17T07:09:09.831Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
     {
       "id": "pib:76db8e98c905",
       "source": "pib",
@@ -316,58 +364,6 @@
       "topics": [
         "polity-bodies"
       ],
-      "fact_text": null
-    },
-    {
-      "id": "pib:629167ca885f",
-      "source": "pib",
-      "tier": 1,
-      "title": "NHRC, India takes suo motu cognizance of the reported injuries to three students after a portion of the ceiling plaster of a classroom collapsed on them in a dilapidated government school in Udaipur district, Rajasthan",
-      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324436",
-      "published": null,
-      "first_seen": "2026-10-16T23:57:59.341Z",
-      "reuse": "allowed",
-      "rights": {
-        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
-        "checked_on": "2026-10-16"
-      },
-      "topics": [
-        "polity-bodies"
-      ],
-      "fact_text": null
-    },
-    {
-      "id": "pib:2101b425675b",
-      "source": "pib",
-      "tier": 1,
-      "title": "NHRC, India takes suo motu cognizance of the reported borewell water contamination due to seepage of chemical-laden factory effluents near Ambad Industrial Area in Nashik district, Maharashtra",
-      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324434",
-      "published": null,
-      "first_seen": "2026-10-16T23:57:59.341Z",
-      "reuse": "allowed",
-      "rights": {
-        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
-        "checked_on": "2026-10-16"
-      },
-      "topics": [
-        "polity-bodies"
-      ],
-      "fact_text": null
-    },
-    {
-      "id": "pib:3f46b65f1b9e",
-      "source": "pib",
-      "tier": 1,
-      "title": "NHAI Successfully Defends Arbitration Case in Chittorgarh–Udaipur National Highway Project to Safeguard Public Funds",
-      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2324416",
-      "published": null,
-      "first_seen": "2026-10-16T23:57:59.341Z",
-      "reuse": "allowed",
-      "rights": {
-        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
-        "checked_on": "2026-10-16"
-      },
-      "topics": [],
       "fact_text": null
     },
     {
@@ -943,6 +939,22 @@
       "fact_text": null
     },
     {
+      "id": "sci-judgments:3af47e4f5a2e",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "JUST RIGHTS FOR CHILDREN ALLIANCE VS. S. HARISH (MA 2553-2554/2026 in Crl.A. No. 2161-2162/2024)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=410282026&type=j&order_date=2026-10-15&from=latest_judgements_order",
+      "published": "2026-10-15T00:00:00+05:30",
+      "first_seen": "2026-10-17T07:09:09.831Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
       "id": "sci-judgments:1b847a83fbac",
       "source": "sci-judgments",
       "tier": 1,
@@ -1157,22 +1169,6 @@
       "title": "THE ASSISTANT COMMISSIONER OF CENTRAL TAX CGST DIVISION VS. SREENIVASA RAO RAVINUTHALA (C.A. No. 7882/2023)",
       "url": "https://www.sci.gov.in/view-pdf/?diary_no=482462023&type=j&order_date=2026-10-14&from=latest_judgements_order",
       "published": "2026-10-14T00:00:00+05:30",
-      "first_seen": "2026-10-16T23:57:59.341Z",
-      "reuse": "allowed",
-      "rights": {
-        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
-        "checked_on": "2026-10-16"
-      },
-      "topics": [],
-      "fact_text": null
-    },
-    {
-      "id": "sci-judgments:65f8cf1f066e",
-      "source": "sci-judgments",
-      "tier": 1,
-      "title": "KUSUMLAL SAO VS. STATE OF CHHATTISGARH (Crl.A. No. 4894/2026)",
-      "url": "https://www.sci.gov.in/view-pdf/?diary_no=336442026&type=j&order_date=2026-10-13&from=latest_judgements_order",
-      "published": "2026-10-13T00:00:00+05:30",
       "first_seen": "2026-10-16T23:57:59.341Z",
       "reuse": "allowed",
       "rights": {

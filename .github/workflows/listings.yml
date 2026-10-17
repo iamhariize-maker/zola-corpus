@@ -16,6 +16,8 @@ concurrency:
 
 jobs:
   pull:
+    # Writes candidate data, so it runs only on main, even when dispatched from a lane branch.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

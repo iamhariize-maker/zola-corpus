@@ -2,7 +2,7 @@
 
 A reusable cooperation protocol for AI coding agents from several providers and a human owner who work on shared repositories.
 
-Version 5.0.0 · drafted 17 October 2026 · canonical copy: this repository
+Version 5.1.0 · drafted 17 October 2026 · canonical copy: this repository
 
 **Purpose.** The owner's core goal is supreme next-generation quality of work, achieved with extreme efficiency through cooperation and coordination, held together by a sibling-like team culture. Quality and efficiency are measured as defined in `docs/MEASURES.md`. Efficiency means cost per verified change, never activity: a change that lowers quality is a regression. The team culture is set out as observable functions in `docs/FAMILY.md`.
 
@@ -44,6 +44,7 @@ Rules:
 - When a tier is unavailable, record `MODEL_ROLE_BLOCKED` with a ready-to-run packet and continue the independent work.
 - Tiers are task-scoped. The owner or the binding attaches and releases them.
 - Nobody reviews their own work. Worker self-review cannot close a task.
+- **Lane identity.** A project either separates its lanes by GitHub identity (each active sender has its own numeric user ID, and the cards check runs), or it declares a shared identity in its binding. In a declared shared identity the owner's login speaks for every lane. The project's Safeguards must say so, and it must not claim that channel authority separates its lanes. Claims, leases, exact-SHA acceptance and the integration gates apply in full in both modes.
 
 ## 4. Work loop
 
@@ -144,7 +145,7 @@ reply-wanted: yes | no
 
 Optional lines may follow: `act` (one of cfp, propose, accept, reject, refuse, inform, failure, cancel), `reply-by` (a real date, YYYY-MM-DD) and `verdict` (accept, revise or blocked).
 
-- **Authority comes from the authenticated account, not from the header.** A message counts as the sender's only if its authenticated author's numeric user ID is the one on that sender's card, and that card is active. Logins can be renamed, so they are for display only. The export carries `author_id`, `author_login` and, if the message was edited, `edited_by`; a message edited by another account counts for nothing. The export is built by a non-model step. The `from:` header is informational. `scripts/check.mjs channel <file> <cards-dir> --owner=<id>` checks the mapping. A ledger update counts as acceptance only if it is made in an authenticated message, or in a commit with a verified signature. Git author and committer names are not authentication.
+- **Authority comes from the authenticated account, not from the header.** A message counts as the sender's only if its authenticated author's numeric user ID is the one on that sender's card, and that card is active. Logins can be renamed, so they are for display only. The export carries `author_id`, `author_login` and, if the message was edited, `edited_by`; a message edited by another account counts for nothing. The export is built by a non-model step. The `from:` header is informational. `scripts/check.mjs channel <file> <cards-dir> --owner=<id>` checks the mapping. A ledger update counts as acceptance only if it is made in an authenticated message, or in a commit with a verified signature. Git author and committer names are not authentication. In a declared shared identity (section 3), the authority rule above is replaced by that declaration, and the checker's cards check does not run.
 - **IDs are unique per sender.** The ID is the sender identity, a hyphen, and a number of at least three digits. The number is higher than the sender's last number. Never reuse a number. Before posting, read the channel and take the next number. If two messages share an ID, the later sender re-posts under its next number and says why.
 - **Hop** counts consecutive messages on one task. The first message on a task is hop 1. A message that cites a full SHA the task has not cited before starts again at hop 1. A message that cites a SHA already cited on the task, or cites none, is one hop further. A new commit with the same tree as a SHA already cited does not reset the hop. Hop 6 is the last message allowed on a task without a new SHA. After it, write the blocker in the ledger and name the owner as the decider (section 11).
 - A `verdict` line is `accept`, `revise` or `blocked`. An `accept` names the full SHA. `to: all` is the owner's alone. A header key that appears twice is rejected.
@@ -199,14 +200,14 @@ The owner decides priorities, default-branch merges (unless the binding delegate
 - The canonical copy is this repository. Changes go to the designated branch first.
 - A change is proposed with its evidence: the message IDs, SHAs or run IDs that show the problem, the proposed text, the risk, and what adopters must change.
 - An expert-tier reviewer from another lane reviews the proposal. If no other lane is attached, the owner reviews it and says so.
-- Versioning: MAJOR changes a gate (section 6), a non-waivable rule (section 10), a role, the ledger schema, or a binding field. MINOR adds an optional section or check. PATCH clarifies wording. Each version has a CHANGELOG entry that names the evidence behind it. Version 5.0.0 is MAJOR: it changes authority, claims, the model record and the binding fields.
+- Versioning: MAJOR changes a gate (section 6), a non-waivable rule (section 10), a role, the ledger schema, or a binding field. MINOR adds an optional section or check. PATCH clarifies wording. Each version has a CHANGELOG entry that names the evidence behind it. Version 5.0.0 is MAJOR: it changes authority, claims, the model record and the binding fields. Version 5.1.0 is MINOR: it adds the declared shared identity mode and the ledger transition clause.
 - Adopters pin a version and name it in their binding. They upgrade by reading the CHANGELOG, not by copying silently.
 
 ## 14. Adopting
 
 1. Copy this file into the project at the pinned version. Keep its text unchanged.
-2. Add a `## Project binding` section (template: `templates/BINDING.md`). Every field there is required, and the checker enforces them. It must name the provider policy, the allowed routes and the budget. Its Required checks must run the ledger check with a lease date (`--today=`), and the cards check.
-3. Create the ledger from `templates/ACCEPTANCE_LEDGER.md`.
+2. Add a `## Project binding` section (template: `templates/BINDING.md`). Every field there is required, and the checker enforces them. The Lane identity field is `separated` or `declared shared`. It must name the provider policy, the allowed routes and the budget. Its Required checks must run the ledger check with a lease date (`--today=`), and the cards check.
+3. Create the ledger from `templates/ACCEPTANCE_LEDGER.md`. When a project moves from an earlier ledger, the old ledger is frozen: tasks already in flight finish in it under its rules, and new tasks open only in the new ledger.
 4. Create a lane card for each lane (`schemas/agent-card.schema.json`), check each with `node <checker>/scripts/check.mjs card <file>`, and check the set against the binding with `node <checker>/scripts/check.mjs cards <dir> <binding>`.
 5. Add a startup pointer to the project's agent instruction files, keeping their existing rules.
 6. Run `node <checker>/scripts/check.mjs binding <file>` and `node <checker>/scripts/check.mjs ledger <file>`, where `<checker>` is a checkout of this repository.

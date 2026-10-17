@@ -32,6 +32,9 @@ ok(!numberGate('the repo rate is 6.00 per cent', REF).ok, 'a number missing from
 ok(!numberGate('298 votes were cast', '298 members voted for and 230 members against').ok, 'a number with the wrong meaning is flagged (Codex bypass: 298 votes vs 298 members)');
 ok(numberGate('230 members against', '298 members voted for and 230 members against').ok, 'the same number with the same meaning passes');
 ok(!numberGate('298 votes in favour', '298 votes against; 230 votes in favour').ok, 'a reversed vote direction is flagged (Codex bypass: the number alone passed)');
+ok(!numberGate('298 votes in favour', '298 votes in opposition; 230 votes in favour').ok, 'a vote direction reversed by a different word is flagged (Sol bypass)');
+ok(!numberGate('₹99 lakh crore', '₹53.47 lakh crore').ok, 'a currency amount with a different value is flagged (Sol bypass)');
+ok(!numberGate('-5 per cent', '5 per cent').ok, 'a number whose sign differs is flagged (Sol bypass)');
 ok(numberGate('a total of 1,000 lakh', 'the total was 1000 lakh').ok, 'digit grouping with commas is ignored');
 ok(numberGate('in 2026', 'in 2026').ok && !numberGate('in 2027', 'in 2026').ok, 'years are checked like other numbers');
 

@@ -1,6 +1,6 @@
 // robots.txt reader: a subset of RFC 9309. Implemented: groups, our product token, "*" groups merged, "*" and "$" in
 // paths, the longest matching rule wins (Allow wins a tie), and Crawl-delay. Not implemented: the Sitemap line
-// (not needed) and percent-encoding normalisation (paths here are plain ASCII). Anything unclear is treated as blocked
+// (not needed) and escapes of unreserved characters are decoded before matching; other escapes are compared as written. Anything unclear is treated as blocked
 // by the caller (see fetch.mjs).
 
 export const TOKEN = 'zolapersonalstudy';
@@ -57,18 +57,31 @@ export function patternToRegex(pattern) {
 }
 
 // Specificity is the number of octets in the pattern itself, not the wildcard syntax (RFC 9309 section 2.2.2).
+// "*" is syntax and never counts. A "$" is syntax only at the end; anywhere else it is a literal octet and counts.
 export function specificity(pattern) {
-  return pattern.replace(/[*$]/g, '').length;
+  return pattern.replace(/\*/g, '').replace(/\$$/, '').length;
+}
+
+// Escapes of unreserved characters (RFC 3986 section 2.3) decode before matching, so /%62illtrack is /billtrack.
+// Other escapes are left as written.
+function plainEscapes(s) {
+  return s.replace(/%([0-9A-Fa-f]{2})/g, (m, h) => {
+    const c = String.fromCharCode(parseInt(h, 16));
+    return /[A-Za-z0-9._~-]/.test(c) ? c : '%' + h.toUpperCase();
+  });
 }
 
 // True when the path (with its query, if any) may be fetched. The most specific matching pattern wins. Allow wins a tie.
 export function allowed(rules, path) {
+  const target = plainEscapes(path);
   let best = { len: -1, allow: true };
-  for (const p of rules.disallow) {
-    if (patternToRegex(p).test(path) && specificity(p) > best.len) best = { len: specificity(p), allow: false };
+  for (const raw of rules.disallow) {
+    const p = plainEscapes(raw);
+    if (patternToRegex(p).test(target) && specificity(p) > best.len) best = { len: specificity(p), allow: false };
   }
-  for (const p of rules.allow) {
-    if (patternToRegex(p).test(path) && specificity(p) >= best.len) best = { len: specificity(p), allow: true };
+  for (const raw of rules.allow) {
+    const p = plainEscapes(raw);
+    if (patternToRegex(p).test(target) && specificity(p) >= best.len) best = { len: specificity(p), allow: true };
   }
   return best.allow;
 }

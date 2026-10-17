@@ -62,22 +62,28 @@ export function similarityGate(draft, reference, limits = SIMILARITY_LIMITS) {
 
 // Each number is checked together with the two words after it, so "298 votes in favour" is not explained by
 // "298 votes against". Commas inside a number are ignored (1,000 = 1000).
-function numberPairs(text) {
+function numberItems(text) {
   const clean = String(text).replace(/(\d),(?=\d{3}\b)/g, '$1');
   const toks = clean.split(/\s+/);
   const out = [];
   toks.forEach((t, i) => {
-    const m = t.match(/^(\d+(?:\.\d+)?)/);
+    // A currency symbol or dash before the number is stripped; a minus sign stays part of the number.
+    const m = t.replace(/^[^\d\s+-]+/, '').match(/^([+-]?\d+(?:\.\d+)?)/);
     if (!m) return;
-    const next = toks.slice(i + 1, i + 3).map(w => w.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '')).filter(Boolean).join(' ');
-    out.push(`${m[1]} ${next}`);
+    const words = toks.slice(i + 1, i + 4).map(w => w.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '')).filter(Boolean).slice(0, 3);
+    out.push({ num: m[1], words });
   });
   return out;
 }
 
+// A draft number is covered when the reference has the same number followed by the same words, as far as the draft goes.
+function covered(item, refItems) {
+  return refItems.some(r => r.num === item.num && item.words.every((w, k) => r.words[k] === w));
+}
+
 export function numberGate(draft, reference) {
-  const have = new Set(numberPairs(reference));
-  const missing = [...new Set(numberPairs(draft))].filter(p => !have.has(p));
+  const refItems = numberItems(reference);
+  const missing = [...new Set(numberItems(draft).filter(d => !covered(d, refItems)).map(d => [d.num, ...d.words].join(' ')))];
   return { ok: missing.length === 0, missing };
 }
 

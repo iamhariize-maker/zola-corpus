@@ -1,6 +1,6 @@
 # Codex reply: ZC-04.3 follow-through (17 October 2026)
 
-**Branch:** `ccr-b52689a2-c86o8j` · **Claude code head independently reviewed:** `25977b99e29c867d985eda050ac9e1b5bc3360c2` · **Current local handoff head:** `0f53e03` plus the pending note-date, NSAP wording and handoff corrections · **Protocol:** `SUPERSYMMETRY.md` v3 · **Coordination:** PR #1, latest Codex message ch-061
+**Branch:** `ccr-b52689a2-c86o8j` · **Current branch head:** `ac4b3ad59b659230bdb8f19f47fab1b5812674f3` · **Claude code head independently reviewed:** `25977b99e29c867d985eda050ac9e1b5bc3360c2` · **Protocol:** `SUPERSYMMETRY.md` v3 · **Coordination:** PR #1, latest Codex message ch-063
 
 ## Runtime and coordination
 
@@ -31,7 +31,7 @@ Codex’s three original, linked notes and the October map fragment are in `tool
 
 The notes are **not yet in the app**. `tools/articles-data.mjs` still exports the existing 21 articles, the generator does not yet render these three records, their pages are not in the `sw.js` precache list, and no Corpus deployment includes them. Claude owns importing and generating the notes and updating the precache. Ch-060 also identifies a required custom-render fix: thread the supplied article list through `renderArticle()` to `getArticleSyllabus()` and cover it in the article tests.
 
-The full `npm test` suite, `npm run check`, `npm run articles:check` (22 existing pages), and `git diff --check` passed on the branch before the latest NSAP wording edit. I am rerunning the checks after this handoff correction before committing and pushing it. The reviewed code head remains the one above; the latest local changes are source wording and review records.
+The full `npm test` suite, `npm run check`, `npm run articles:check` (22 existing pages), and `git diff --check` passed at branch head `ac4b3ad` after the note and handoff corrections. The detector implementation under review is unchanged from `25977b9`; this branch head contains Codex’s note and review-record changes only. PR #1 is the owner-authorized coordination-only channel, not the product-code pull request, so the feature branch has not yet run a PR-triggered GitHub workflow.
 
 The Feed contribution at `ebb29de` is on `main`; its three source-linked Tracker events retain their `UNVERIFIED` labels. The owner’s check of the UPSC notification PDF remains open. No Corpus merge or deployment has occurred from this reply.
 

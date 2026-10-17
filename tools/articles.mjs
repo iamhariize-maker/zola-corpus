@@ -23,7 +23,10 @@ const KINDS = ['Official', 'News report', 'Government', 'Research'];
 // a clause is checked, and clause breaks stop a cue from reaching into an unrelated clause.
 // Each cue attaches a prediction directly to a question or to an exam term. A bare "likely to appear in the Gazette"
 // or "guaranteed by Article 19" carries no exam term or question, so it is not a prediction.
-const SYLLABUS_EXAM = /(?:prelims?|mains|exams?|examinations?|upsc|papers?)/;
+// Exam words that make an appear or come-up claim an exam prediction. "UPSC" and "examination" are left out:
+// "appear in the UPSC examination" and "in the UPSC calendar" are ordinary notice wording.
+const SYLLABUS_EXAM = /(?:prelims?|mains|exams?|papers?)/;
+// A cue attaches a prediction to a question, a topic, or an exam term. Generic "to", "will" and "asked" do not count alone.
 const SYLLABUS_PREDICTION = new RegExp([
   /\bguaranteed\s+(?:(?:a|an|the|this)\s+)?(?:questions?|to be asked)\b/,
   /\bexpected\s+(?:(?:a|an|the)\s+)?(?:questions?|to be asked)\b/,
@@ -32,24 +35,30 @@ const SYLLABUS_PREDICTION = new RegExp([
   /\b(?:definitely|certainly|surely)\s+be asked\b/,
   /\bwill\s+(?:definitely\s+|certainly\s+)?be asked\b/,
   /\b(?:likely|certain)\s+to\s+be asked\b/,
-  new RegExp(String.raw`\b(?:guaranteed|likely|expected|certain|sure|going|will|definitely|certainly|surely|to)\b[^;:,.!?]{0,20}?\b(?:appear|come up)\s+(?:in|at)\s+(?:the\s+)?${SYLLABUS_EXAM.source}\b`),
+  new RegExp(String.raw`\b(?:guaranteed|likely|expected|certain|sure|going|will|definitely|certainly|surely)\b[^;:,.!?]{0,20}?\b(?:appear|come up)\s+(?:in|at)\s+(?:the\s+)?${SYLLABUS_EXAM.source}\b`),
+  new RegExp(String.raw`\bexpect\s+(?:(?:a|an|the|these|some|more)\s+)?(?:questions?|topics?)\b[^;:,.!?]{0,30}?\b(?:in|at|for)\s+(?:the\s+)?${SYLLABUS_EXAM.source}\b(?!\s+(?:GS|syllabus|syllabi))`),
+  new RegExp(String.raw`\b(?:questions?|topics?)\b[^;:,.!?]{0,30}?\b(?:will|is|are)\s+(?:(?:likely|certain|expected|sure|bound)\s+)?(?:to\s+)?(?:be\s+)?(?:in|for|at)\s+(?:the\s+)?${SYLLABUS_EXAM.source}\b(?!\s+(?:GS|syllabus|syllabi))`),
   /\bmost important (?:question|topic)\b/,
   /\bimportant for (?:the )?exam\b/,
   /\bmust[- ]read\b/,
 ].map(r => r.source).join('|'), 'gi');
 // A cue is exempt only when a negation directly governs it: "not/no/never" before it (with an optional article),
-// "does not predict" followed by a short question phrase, or "does not claim that" within three words.
+// "does not predict" followed by a short question phrase, "does not claim that" within six words, or a subject
+// negated by no or none within two words.
 const DIRECT_NEGATION = /(?:\bnot|n't|\bnever|\bno)\s+(?:(?:a|an|the)\s+)?$/i;
 const PREDICT_NEGATION = /\bnot\s+predict\s+(?:(?:which|what|whether|how|when|the|many|much|few|some|all|any|these|those)\s+)*(?:questions?\s+)?$/i;
-const CLAIM_NEGATION = /\bnot\s+(?:claim|say|state|suggest|imply)\s+(?:that\s+)?(?:\S+\s+){0,3}$/i;
-// A subject negated by no or none governs the predicate: "No question is expected to appear" is a direct negative.
+const CLAIM_NEGATION = /\bnot\s+(?:claim|say|state|suggest|imply)\s+that\s+(?:\S+\s+){0,6}$/i;
 const SUBJECT_NEGATION = /\b(?:no|none)\s+(?:\S+\s+){0,2}(?:is|are|was|were|will be|be)?\s*$/i;
-const SYLLABUS_CLAUSE_BREAK = /[;:,]|\s(?:but|though|while|whereas|yet)\s/i;
+// "will be asked" and "definitely be asked" are predictions only for a question or topic subject, so a notice that
+// applicants will be asked to produce identification stays accepted.
+const SUBJECT_WORD = /\b(?:questions?|topics?|subjects?|items?|this|these)\b/i;
+const SYLLABUS_CLAUSE_BREAK = /[;:,]|\s(?:and|but|though|while|whereas|yet)\s/i;
 function predictionIn(text) {
   for (const sentence of text.split(/(?<=[.!?])\s+/)) {
     for (const clause of sentence.split(SYLLABUS_CLAUSE_BREAK)) {
       for (const hit of clause.matchAll(SYLLABUS_PREDICTION)) {
         const before = clause.slice(0, hit.index);
+        if (/^(?:will|definitely|certainly|surely)\b/i.test(hit[0]) && !SUBJECT_WORD.test(before)) continue;
         if (!DIRECT_NEGATION.test(before) && !PREDICT_NEGATION.test(before) && !CLAIM_NEGATION.test(before) && !SUBJECT_NEGATION.test(before)) return hit[0];
       }
     }

@@ -112,6 +112,15 @@ ok(predicts('No question is expected to appear in Prelims.') === false, 'accepts
 ok(predicts('No questions are expected in Prelims.') === false, 'accepts: No questions are expected in Prelims.');
 ok(predicts('No questions will be asked in Prelims.') === false, 'accepts: No questions will be asked in Prelims.');
 ok(predicts('No topic is likely to come up in the exam.') === false, 'accepts: No topic is likely to come up in the exam.');
+ok(predicts('Candidates are required to appear in the UPSC examination.') === false, 'accepts: Candidates are required to appear in the UPSC examination.');
+ok(predicts('The UPSC notice directs candidates to appear in the examination.') === false, 'accepts: The UPSC notice directs candidates to appear in the examination.');
+ok(predicts('The timetable will appear in the UPSC calendar.') === false, 'accepts: The timetable will appear in the UPSC calendar.');
+ok(predicts('The notice says applicants will be asked to produce identification.') === false, 'accepts: The notice says applicants will be asked to produce identification.');
+ok(predicts('The article does not claim that any of these topics is guaranteed to be asked.') === false, 'accepts: The article does not claim that any of these topics is guaranteed to be asked.');
+ok(predicts('We do not claim otherwise and offer guaranteed questions.') === true, 'rejects: We do not claim otherwise and offer guaranteed questions.');
+ok(predicts('This question will be in Prelims.') === true, 'rejects: This question will be in Prelims.');
+ok(predicts('Expect a question on this topic in Prelims.') === true, 'rejects: Expect a question on this topic in Prelims.');
+ok(predicts('A question on this topic is certain for Prelims.') === true, 'rejects: A question on this topic is certain for Prelims.');
 ok(predicts('There is no doubt this is a guaranteed question.') === true, 'rejects: There is no doubt this is a guaranteed question.');
 ok(predicts('This does not predict how many questions will be asked.') === false, 'accepts: This does not predict how many questions will be asked.');
 ok(predicts('The article does not claim that this topic is guaranteed to be asked.') === false, 'accepts: The article does not claim that this topic is guaranteed to be asked.');

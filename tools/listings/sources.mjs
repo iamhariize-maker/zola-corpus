@@ -28,6 +28,8 @@ export const SOURCES = [
     url: 'https://www.sci.gov.in/',
     hosts: ['www.sci.gov.in', 'sci.gov.in'],
     parse: parseScHome,
+    // Case names are poor subject signals ("Bedi Hospital" is a party, not a health topic), so judgments are not tagged.
+    tagTopics: false,
     reuse: 'allowed',
     checked_on: '2026-10-16',
     terms: 'Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.',

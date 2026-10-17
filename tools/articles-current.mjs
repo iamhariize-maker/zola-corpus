@@ -49,67 +49,66 @@ export const CURRENT_ARTICLES = [
   {
     slug: 'public-examinations-amendment-act-2026',
     category: 'polity',
-    title: 'Public Examinations (Prevention of Unfair Means) Amendment: from bill to Act',
-    dek: 'Parliament passed the amendment in the Monsoon Session, and the President gave assent. It covers UPSC, so every aspirant should know it.',
-    event: 'Passed both Houses, Monsoon Session 2026',
+    title: 'Public Examinations (Prevention of Unfair Means) Amendment Act, 2026',
+    dek: 'Parliament passed the amendment in the Monsoon Session and the President gave assent on 31 July 2026. It covers UPSC, so every aspirant should know what it does.',
+    event: 'Act No. 10 of 2026, assent 31 July 2026',
     facts: [
-      'Introduced in Lok Sabha on 27 July 2026 (PRS). It amends the Public Examinations (Prevention of Unfair Means) Act, 2024.',
-      'The PIB summary of the Monsoon Session says the bill was passed by both Houses and assented to by the President (PIB, 13 August 2026).',
-      'Gazette record cited in the review: Act No. 10 of 2026, assent on 31 July 2026. Not reached from the build environment, so confirm it on the Gazette.',
-      'The 2024 Act covers public examination authorities that include the Union Public Service Commission (PRS).',
+      'Act No. 10 of 2026, assented to on 31 July 2026. It amends the Public Examinations (Prevention of Unfair Means) Act, 2024 (Gazette text, as transcribed by a non-government site; the e-Gazette PDF was not reachable from the build environment).',
+      'The Act amends section 12 so that investigation can be handed to a Special Task Force that the Central Government constitutes by notification. Where a Special Task Force is constituted, only it investigates.',
+      'Investigations must be completed within two months, counted from the date of the information (or the reference or notification to the Central Investigating Agency or the Special Task Force).',
+      'Each State and Union Territory designates a Special Fast Track Court, after consulting the High Court Chief Justice. Trials must be completed within three months.',
+      'Appeals from these courts go to a bench of two High Court judges.',
+      'The penalties are revised. The figures in the bill as introduced are in the PRS summary. Check the enacted sections 10 to 12 for the final numbers.',
     ],
     sections: [
       {
-        heading: 'What the bill proposed',
+        heading: 'What it changes',
         paragraphs: [
-          'The PRS summary of the bill as introduced describes higher penalties. For example, its table lists a minimum jail term for persons in charge of a service provider involved in unfair means rising from 3 years to 5 years, and a fine of Rs 5 crore. Organised crime was to carry a minimum of 7 years and a minimum fine of Rs 10 crore.',
-          'The bill also set up special fast track courts in every state and union territory, with appeals to a bench of two High Court judges. It extended the debarment of a defaulting service provider from 4 years to 8 years.',
-        ],
-      },
-      {
-        heading: 'Be careful here',
-        paragraphs: [
-          'The figures above are from the bill as introduced. The Act can differ from the bill. Before you write a penalty or a period in an answer, check it against the Act text. The PRS summary is also cut off on the investigation provisions, so do not write those from it.',
-        ],
-      },
-      {
-        heading: 'Mains angle',
-        paragraphs: [
-          'Is a heavier penalty enough to stop paper leaks? Look at the other side too: the speed of trials, the role of the central government in investigation, and whether fast track courts can keep up. This is a good governance answer on accountability in recruitment.',
-        ],
-      },
-    ],
-    caveats: [
-      'Act number and assent date come from the Gazette record cited in the review. They are not confirmed from the build environment.',
-    ],
-    sources: [
-      { label: 'PIB, Monsoon Session 2026 summary (13 August 2026): bill passed by both Houses, assented', url: 'https://pib.gov.in/PressReleasePage.aspx?PRID=2298901', kind: 'Government' },
-      { label: 'PRS Legislative Research, Public Examinations (Prevention of Unfair Means) Amendment Bill, 2026', url: 'https://prsindia.org/billtrack/the-public-examinations-prevention-of-unfair-means-amendment-bill-2026', kind: 'Research' },
-      { label: 'Gazette of India record cited in the ZC-02 review (not reached from the build environment)', url: 'https://egazette.gov.in/WriteReadData/2026/275035.pdf', kind: 'Official' },
-    ],
-  },
-  {
-    slug: 'supreme-court-judges-amendment-2026',
-    category: 'polity',
-    title: 'Supreme Court (Number of Judges) Amendment: passed to replace the May ordinance',
-    dek: 'Parliament passed the bill that replaces the ordinance of 16 May 2026. It raises the number of judges, not counting the Chief Justice.',
-    event: 'Passed both Houses, Monsoon Session 2026',
-    facts: [
-      'Introduced in Lok Sabha on 20 July 2026 (PRS). It replaces the Supreme Court (Number of Judges) Amendment Ordinance, 2026, issued on 16 May 2026.',
-      'The PIB summary says both ordinances, this one and the Income-tax (Amendment) Ordinance, were considered and passed by both Houses (PIB, 13 August 2026).',
-      'The bill as introduced takes the number of judges, excluding the Chief Justice of India, from 33 to 37 (PRS).',
-      'Gazette record cited in the review: Act No. 14 of 2026, assent on 11 August 2026, deemed in force from 16 May 2026. Not reached from the build environment.',
-    ],
-    sections: [
-      {
-        heading: 'Why the ordinance route',
-        paragraphs: [
-          'An ordinance is promulgated by the President when Parliament is not in session (background). It lapses six weeks after Parliament reassembles, unless a law replaces it first (background). That is why the bill had to pass in the Monsoon Session.',
+          'The 2024 Act was passed after paper leaks in recruitment exams (background). The 2026 amendment keeps that structure and adds three things: a Special Task Force route for investigation, short time limits for investigation and trial, and a High Court appeal route with a two-judge bench.',
+          'The Act covers public examination authorities that include the Union Public Service Commission (PRS summary of the 2024 Act\'s scope).',
         ],
       },
       {
         heading: 'Prelims lines',
         paragraphs: [
+          'Know the Act number and the date of assent: Act No. 10 of 2026, 31 July 2026. The bill was introduced in Lok Sabha on 27 July 2026 (PRS), so it was enacted within days of introduction.',
+          'A Special Task Force, a Special Fast Track Court and a two-judge High Court bench are the three new institutions to remember.',
+        ],
+      },
+      {
+        heading: 'Mains angle',
+        paragraphs: [
+          'Is a heavier penalty enough to stop paper leaks? Look at the other side too: the time limits for investigation and trial, the role of the Centre in investigation, and whether fast track courts can keep up. This is a good governance answer on accountability in recruitment.',
+        ],
+      },
+    ],
+    caveats: [
+      'The Act text here is a transcription on a non-government site. The official Gazette record is CG-DL-E-31072026-275035 (egazette.gov.in). Use the official PDF for exact wording before quoting it in an answer.',
+    ],
+    sources: [
+      { label: 'Gazette of India, Act No. 10 of 2026 (official record, not reached from the build environment)', url: 'https://egazette.gov.in/WriteReadData/2026/275035.pdf', kind: 'Official' },
+      { label: 'Gazette text of the Act, transcribed (non-government site)', url: 'https://www.policyindex.ai/in/gazette/the-public-examinations-prevention-of-unfair-means-amendment-act-2026-0kz057', kind: 'Research' },
+      { label: 'PIB, Monsoon Session 2026 summary (13 August 2026): bill passed by both Houses, assented', url: 'https://pib.gov.in/PressReleasePage.aspx?PRID=2298901', kind: 'Government' },
+      { label: 'PRS Legislative Research, the bill as introduced', url: 'https://prsindia.org/billtrack/the-public-examinations-prevention-of-unfair-means-amendment-bill-2026', kind: 'Research' },
+    ],
+  },
+  {
+    slug: 'supreme-court-judges-amendment-2026',
+    category: 'polity',
+    title: 'Supreme Court (Number of Judges) Amendment Act, 2026',
+    dek: 'Raises the maximum number of Supreme Court judges from 33 to 37. It replaces the ordinance of 16 May 2026, and it was deemed in force from that date.',
+    event: 'Act No. 14 of 2026, assent 11 August 2026, deemed in force from 16 May 2026',
+    facts: [
+      'Act No. 14 of 2026, assented to on 11 August 2026. Deemed to have come into force on 16 May 2026 (Gazette text, as transcribed by a non-government site).',
+      'Amends section 2 of the Supreme Court (Number of Judges) Act, 1956, replacing "thirty-three" with "thirty-seven". The maximum number of Supreme Court judges goes from 33 to 37.',
+      'Repeals the Supreme Court (Number of Judges) Amendment Ordinance, 2026. Anything done under the ordinance is treated as done under the 1956 Act as amended.',
+      'Introduced in Lok Sabha on 20 July 2026 (PRS). PIB\'s Monsoon Session summary says both Houses passed it (PIB, 13 August 2026).',
+    ],
+    sections: [
+      {
+        heading: 'Act and ordinance: keep them apart',
+        paragraphs: [
+          'An ordinance is issued by the President when Parliament is not in session (background). It lapses six weeks after Parliament reassembles, unless a law replaces it first (background). This Act replaced the May ordinance, and it is deemed to have come into force on the ordinance\'s date.',
           'The Chief Justice of India is not counted in the number that Parliament fixes for the other judges (PRS). Article 124 lets Parliament change the number by law (background).',
         ],
       },
@@ -121,39 +120,38 @@ export const CURRENT_ARTICLES = [
       },
     ],
     caveats: [
-      'The 33 to 37 figure is from the bill as introduced. Check the Act for the final number.',
-      'Act number and deemed-in-force date come from the Gazette record cited in the review, not from the build environment.',
+      'The Act text is a transcription on a non-government site. The official Gazette record is CG-DL-E-11082026-275379 (egazette.gov.in), which was not reachable from the build environment.',
     ],
     sources: [
+      { label: 'Gazette of India, Act No. 14 of 2026 (official record, not reached from the build environment)', url: 'https://egazette.gov.in/WriteReadData/2026/275379.pdf', kind: 'Official' },
+      { label: 'Gazette text of the Act, transcribed (non-government site)', url: 'https://gazettetracker.com/g/CG-DL-E-11082026-275379', kind: 'Research' },
       { label: 'PIB, Monsoon Session 2026 summary (13 August 2026)', url: 'https://pib.gov.in/PressReleasePage.aspx?PRID=2298901', kind: 'Government' },
-      { label: 'PRS Legislative Research, Supreme Court (Number of Judges) Amendment Bill, 2026', url: 'https://prsindia.org/billtrack/the-supreme-court-number-of-judges-amendment-bill-2026', kind: 'Research' },
-      { label: 'Gazette of India record cited in the ZC-02 review (not reached from the build environment)', url: 'https://egazette.gov.in/WriteReadData/2026/275379.pdf', kind: 'Official' },
     ],
   },
   {
     slug: 'tribunals-reforms-act-2026',
     category: 'polity',
     title: 'Tribunals Reforms Act, 2026: the National Tribunals Commission',
-    dek: 'Began as a bill on 10 August 2026. It repeals the 2021 tribunals law and sets up a National Tribunals Commission.',
-    event: 'Introduced 10 August 2026; enacted and in force from 25 August 2026 (per the review)',
+    dek: 'Assent on 13 August 2026. It repeals the 2021 tribunals law and provides for a National Tribunals Commission, which the Centre must still set up by notification.',
+    event: 'Act No. 17 of 2026, assent 13 August 2026; all provisions in force 25 August 2026',
     facts: [
-      'Introduced in Lok Sabha on 10 August 2026 (PRS). It seeks to repeal the Tribunals Reforms Act, 2021.',
-      'Establishes the National Tribunals Commission (bill as introduced).',
-      'Commission composition as introduced: a chairperson who has been a Supreme Court judge or a Chief Justice of a High Court; two judicial members who have been Chief Justices or judges of a High Court; and two technical members with at least 25 years of experience in fields such as public administration and finance.',
-      'Functions: selection for tribunal vacancies, review of tribunal performance, inquiries into complaints about members\' conduct, and a National Tribunals Data Grid.',
-      'Gazette and tracker records cited in the review: Act No. 17 of 2026, assent on 13 August 2026; all provisions commenced on 25 August 2026. Not reached from the build environment.',
+      'Act No. 17 of 2026, assented to on 13 August 2026 (Gazette text, as transcribed by a non-government site).',
+      'All provisions came into force on 25 August 2026 under notification S.O. 4713(E) of the same date.',
+      'Section 3 provides that the National Tribunals Commission is established from a date that the Central Government appoints by notification in the Official Gazette. The notices read here do not give that establishment date.',
+      'Chairperson: a Supreme Court judge or a Chief Justice of a High Court. Judicial members: a Chief Justice or a judge of a High Court. Technical members: at least 25 years of special knowledge and experience in public administration, finance, law, accountancy, banking, management or technology.',
+      'Functions include selection for tribunal vacancies, review of tribunal performance, inquiry into complaints about members\' conduct, and a National Tribunals Data Grid (bill as introduced, PRS).',
     ],
     sections: [
       {
         heading: 'Background',
         paragraphs: [
-          'Tribunals decide disputes in fields such as tax, service matters and environment, outside the regular courts (background). The PRS summary says the Supreme Court struck down some provisions of the 2021 Act. The bill was written to follow the Court\'s directions.',
+          'Tribunals decide disputes in fields such as tax, service matters and environment, outside the regular courts (background). The PRS summary says the Supreme Court struck down some provisions of the 2021 Act. The 2026 Act repeals that law and rewrites the rules to follow the Court\'s directions.',
         ],
       },
       {
-        heading: 'Why it matters',
+        heading: 'Commencement and establishment: two different things',
         paragraphs: [
-          'The commission would put selection and supervision of tribunal members in one body. That is the main structural change. Who chooses the technical members, and how independent that process is, is the point of the debate.',
+          'The Act came into force on 25 August 2026. The Commission itself is established only from the date the Central Government fixes under section 3. Do not write that the 25 August notice established the Commission.',
         ],
       },
       {
@@ -164,33 +162,35 @@ export const CURRENT_ARTICLES = [
       },
     ],
     caveats: [
-      'The composition and functions are from the bill as introduced. The Act may differ. The PRS summary does not give the full list of technical-member fields, so check the Act for it.',
-      'Act number and commencement date come from the review. Not reached from the build environment.',
+      'The Act text is a transcription on a non-government site. The official Gazette record is CG-DL-E-13082026-275447 (egazette.gov.in), not reached from the build environment.',
+      'The establishment date under section 3 is not in the notices read here. The October rules notice (G.S.R. 856(E)) refers to the Commission but does not set that date, per the ZC-03 review.',
     ],
     sources: [
-      { label: 'PRS Legislative Research, The Tribunals Reforms Bill, 2026', url: 'https://prsindia.org/billtrack/the-tribunals-reforms-bill-2026', kind: 'Research' },
-      { label: 'PIB, Monsoon Session 2026 summary (lists the bill among those introduced)', url: 'https://pib.gov.in/PressReleasePage.aspx?PRID=2298901', kind: 'Government' },
-      { label: 'Gazette of India record cited in the ZC-02 review (not reached from the build environment)', url: 'https://egazette.gov.in/WriteReadData/2026/275749.pdf', kind: 'Official' },
+      { label: 'Gazette of India, Act No. 17 of 2026 (official record, not reached from the build environment)', url: 'https://egazette.gov.in/WriteReadData/2026/275447.pdf', kind: 'Official' },
+      { label: 'Gazette text of the Act, transcribed (non-government site)', url: 'https://gazettetracker.com/g/CG-DL-E-13082026-275447', kind: 'Research' },
+      { label: 'Gazette notification S.O. 4713(E), commencement on 25 August 2026, transcribed (non-government site)', url: 'https://gazettetracker.com/g/CG-DL-E-25082026-275749', kind: 'Research' },
+      { label: 'PRS Legislative Research, the bill as introduced', url: 'https://prsindia.org/billtrack/the-tribunals-reforms-bill-2026', kind: 'Research' },
     ],
   },
   {
     slug: 'mines-minerals-amendment-act-2026',
     category: 'polity',
     title: 'Mines and Minerals (Development and Regulation) Amendment Act, 2026: state levies on mineral rights',
-    dek: 'Limits state levies on mineral rights and mineral-bearing land. It raises a federalism question and a question of equality.',
-    event: 'Introduced 10 August 2026; enacted and in force from 22 August 2026 (per the review)',
+    dek: 'Assent on 17 August 2026. It limits state levies on mineral rights and mineral-bearing land, with a new section 9D. It raises a federalism question and an equality question.',
+    event: 'Act No. 20 of 2026, assent 17 August 2026; in force 22 August 2026 (per the ZC-03 review)',
     facts: [
-      'Introduced in Lok Sabha on 10 August 2026 (PRS). It amends the Mines and Minerals (Development and Regulation) Act, 1957 (MMDR Act).',
-      'Stated aim (PIB summary): certainty, stability and predictability in the fiscal regime for the mineral sector.',
-      'Constitutional entries cited by PRS: Entry 54 of the Union List (Parliament regulates mines and minerals in the public interest) and Entry 23 of the State List, subject to the Union List.',
-      'Act record cited in the review: Act No. 20 of 2026, assent on 17 August 2026, in force from 22 August 2026. The enacted section 9D makes specified state levies on mineral rights invalid if not deposited or recovered before commencement. Sums already paid are not refundable.',
+      'Act No. 20 of 2026, assented to on 17 August 2026 (Gazette text, as transcribed by a non-government site).',
+      'Inserts section 9D. A State levy on mineral rights or mineral-bearing land, whether based on quantity, value or royalty, is allowed only under conditions the Central Government prescribes.',
+      'Section 9D deems invalid any such levy that the State had not deposited or recovered before the Act\'s commencement. Amounts already deposited or recovered are not refundable.',
+      'Section 13(2) is amended to cover the conditions or restrictions on levies under section 9D. A new definition of "mineral bearing land" is added to section 3.',
+      'Commencement: 22 August 2026 under S.O. 4642(E), per the ZC-03 review (not checked against the notification here).',
     ],
     sections: [
       {
         heading: 'What is at stake',
         paragraphs: [
-          'States earn revenue from minerals through taxes and levies. The Act limits that for certain levies. The government says uneven state levies caused problems for the sector. The states say taxing their own resources is part of their financial autonomy.',
-          'PRS raised an equality point about the bill. Companies that still owed dues would not have to pay them, while companies that had paid could not get a refund. That is PRS\'s analysis of the bill, not a finding by any court or by the Act.',
+          'States earn revenue from minerals through taxes and levies. Section 9D takes away a State\'s power to levy on mineral rights except within Centre-set conditions, and makes unpaid levies invalid. The government says uneven State levies caused problems for the sector. The States say taxing their own resources is part of their financial autonomy.',
+          'PRS raised an equality point about the bill as introduced: companies that still owed dues would not have to pay them, while companies that had paid could not get a refund. That is PRS\'s analysis of the bill, not a finding by any court or by the Act.',
         ],
       },
       {
@@ -207,12 +207,12 @@ export const CURRENT_ARTICLES = [
       },
     ],
     caveats: [
-      'The section 9D wording and the Act number come from the Gazette record cited in the review. Not reached from the build environment. Quote the Act itself.',
+      'The Act text is a transcription on a non-government site. The official Gazette record is CG-DL-E-17082026-275519 (egazette.gov.in), not reached from the build environment. Quote the Act itself for exact wording.',
     ],
     sources: [
-      { label: 'PRS Legislative Research, The Mines and Minerals (Development and Regulation) Amendment Bill, 2026', url: 'https://prsindia.org/billtrack/the-mines-and-minerals-development-and-regulation-amendment-bill-2026', kind: 'Research' },
-      { label: 'PIB, Monsoon Session 2026 summary (lists the bill among those introduced)', url: 'https://pib.gov.in/PressReleasePage.aspx?PRID=2298901', kind: 'Government' },
-      { label: 'Gazette of India record cited in the ZC-02 review (not reached from the build environment)', url: 'https://egazette.gov.in/WriteReadData/2026/275519.pdf', kind: 'Official' },
+      { label: 'Gazette of India, Act No. 20 of 2026 (official record, not reached from the build environment)', url: 'https://egazette.gov.in/WriteReadData/2026/275519.pdf', kind: 'Official' },
+      { label: 'Gazette text of the Act, transcribed (non-government site)', url: 'https://gazettetracker.com/g/CG-DL-E-17082026-275519', kind: 'Research' },
+      { label: 'PRS Legislative Research, the bill as introduced', url: 'https://prsindia.org/billtrack/the-mines-and-minerals-development-and-regulation-amendment-bill-2026', kind: 'Research' },
     ],
   },
   {
@@ -357,7 +357,7 @@ export const CURRENT_ARTICLES = [
         heading: 'Prelims lines',
         paragraphs: [
           'A constitutional amendment needs a special majority: a majority of the total membership of the House and two-thirds of the members present and voting (background: Article 368(2)). A simple majority is not enough, which is why a motion with 298 votes in favour can still fail.',
-          'Some amendments also need ratification by at least half of the State legislatures (background: the proviso to Article 368(2)). The review that checked this note says the bill changes Article 55, which is in that proviso. The PRS summary read here does not say so, so check the bill text before you write it down.',
+          'Some amendments also need ratification by at least half of the State legislatures (background: the proviso to Article 368(2)). The Bill as introduced changes Article 55 (clause 2 of the Bill, which amends the Explanation to Article 55). Article 368(2) names Article 55 in its proviso, so a Bill that passed both Houses would have needed ratification by at least half of the State legislatures before it could go for the President\x27s assent. This Bill failed on its Lok Sabha motion, so that stage was never reached.',
           'Delimitation is the redrawing of constituency boundaries. The Delimitation Commission does this work, and its orders are final (background).',
         ],
       },

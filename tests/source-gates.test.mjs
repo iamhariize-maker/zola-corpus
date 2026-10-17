@@ -30,7 +30,8 @@ console.log('Source gates: numbers (value and meaning)');
 ok(numberGate('the repo rate is 5.50 per cent', REF).ok, 'a number with the same next word passes');
 ok(!numberGate('the repo rate is 6.00 per cent', REF).ok, 'a number missing from the reference is flagged');
 ok(!numberGate('298 votes were cast', '298 members voted for and 230 members against').ok, 'a number with the wrong meaning is flagged (Codex bypass: 298 votes vs 298 members)');
-ok(numberGate('230 members voted against', '298 members voted for and 230 members against').ok, 'the same number with the same meaning passes');
+ok(numberGate('230 members against', '298 members voted for and 230 members against').ok, 'the same number with the same meaning passes');
+ok(!numberGate('298 votes in favour', '298 votes against; 230 votes in favour').ok, 'a reversed vote direction is flagged (Codex bypass: the number alone passed)');
 ok(numberGate('a total of 1,000 lakh', 'the total was 1000 lakh').ok, 'digit grouping with commas is ignored');
 ok(numberGate('in 2026', 'in 2026').ok && !numberGate('in 2027', 'in 2026').ok, 'years are checked like other numbers');
 
@@ -50,6 +51,7 @@ ok(!g(approval, { evidence: ['page one text', 'changed'] }).ok, 'changed evidenc
 ok(!g({ ...approval, approved_at: 'not a date' }).ok, 'an invalid timestamp fails');
 ok(!g({ ...approval, approved_at: '2026-10-17T12:00:00Z' }).ok, 'a timestamp in the future fails');
 ok(!g(null).ok, 'no approval record fails');
+ok(!g({ ...approval, signature: '\u{1F600}'.repeat(32) }).ok, 'a 32-emoji signature fails closed instead of throwing (Codex bypass)');
 
 console.log('Source gates: volume (missing sources and collapses)');
 const prev = [{ source: 'pib', status: 'ok', count: 20 }, { source: 'sci', status: 'ok', count: 25 }];
@@ -71,6 +73,8 @@ const good = checkDraft({ draft, reference: REF, referenceTexts: [REF], candidat
 ok(good.ok && good.failures.length === 0 && good.skipped.length === 0, 'a clean, signed, fresh draft passes every gate and skips nothing');
 const stale = checkDraft({ draft, reference: REF, candidate: { reuse: 'allowed', rights }, approval, approvalSecret: SECRET, evidence, candidateDoc: { generated_at: '2026-10-10T08:00:00Z', sources: prev }, previousDoc: { sources: prev }, now: NOW });
 ok(!stale.ok && stale.failures.some(f => f.gate === 'freshness'), 'the combined check fails on a stale candidate file');
+const noBaseline = checkDraft({ draft, reference: REF, candidate: { reuse: 'allowed', rights }, approval, approvalSecret: SECRET, evidence, candidateDoc, now: NOW });
+ok(!noBaseline.ok && noBaseline.failures.some(f => f.gate === 'volume'), 'a fresh candidate with no baseline fails the volume gate, not a silent pass (Codex bypass)');
 const missing = checkDraft({ draft, reference: REF, candidate: { reuse: 'allowed', rights }, approval, approvalSecret: SECRET, evidence, candidateDoc: { generated_at: '2026-10-16T08:00:00Z', sources: [prev[0]] }, previousDoc: { sources: prev }, now: NOW });
 ok(!missing.ok && missing.failures.some(f => f.gate === 'volume'), 'the combined check fails when a source is missing');
 const bad = checkDraft({ draft: REF, reference: REF, referenceTexts: [REF], candidate: { reuse: 'link-only' }, approval: null, evidence: [], now: NOW });

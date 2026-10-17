@@ -45,7 +45,7 @@ export function buildDocument(results, { now = new Date(), previous = null } = {
         first_seen: firstSeen.get(id) || nowIso,
         reuse: r.source.reuse,
         rights: r.source.reuse === 'allowed' ? { terms: r.source.terms, checked_on: r.source.checked_on } : null,
-        topics: topicsFor(it.title),
+        topics: r.source.tagTopics === false ? [] : topicsFor(it.title),
         fact_text: null,
       });
     }

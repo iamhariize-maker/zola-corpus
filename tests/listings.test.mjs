@@ -61,6 +61,10 @@ ok(!allowed(specificCase, '/news/today') && allowed(specificCase, '/billtrack'),
 const other = parseRobots('User-agent: OtherBot\nDisallow: /\n\nUser-agent: *\nAllow: /\n');
 ok(allowed(other, '/anything'), 'a rule for another bot does not apply to us');
 
+const tie = parseRobots('User-agent: *\nDisallow: /a/verylong*pattern*\nAllow: /a/verylongpattern\n');
+ok(allowed(tie, '/a/verylongpattern'), 'an equally specific Allow beats a Disallow whose wildcard syntax is not counted (Codex bypass)');
+const queryRules = parseRobots('User-agent: *\nDisallow: /list?*secret\n');
+ok(!allowed(queryRules, '/list?x=1&secret=2') && allowed(queryRules, '/list'), 'robots rules see the query string, not only the path (Codex bypass)');
 const wild = parseRobots('User-agent: *\nDisallow: /*.json$\nDisallow: /private/*\nAllow: /private/open/\nCrawl-delay: 10\n');
 ok(!allowed(wild, '/a/b.json') && allowed(wild, '/a/b.json?x=1'), 'a "$" anchor matches the end of the path only');
 ok(!allowed(wild, '/private/x/y') && allowed(wild, '/private/open/x'), 'a "*" pattern blocks, and a longer Allow wins');
@@ -156,6 +160,9 @@ T('Central Armed Police Forces Bill, 2026 introduced', 'security-defence');
 T('PM-AJAY drives inclusive development', 'polity-governance');
 T('NHRC takes suo motu cognizance of the reported assault', 'polity-bodies');
 T('Taxation and Other Laws (Amendment) Bill, 2026', 'economy-macro');
+T('CAQM expands PTZ Camera-based Remote Monitoring to all Industries', 'environment-climate');
+T("The Bankers’ Books Evidence Bill, 2026", 'economy-banking-markets');
+ok(buildDocument([{ source: SOURCES[1], status: 'ok', items: [{ title: 'K. X VS. BEDI HOSPITAL (C.A. No. 1/2026)', url: 'https://www.sci.gov.in/view-pdf/?diary_no=1&type=j', published: null }] }]).items[0].topics.length === 0, 'court case titles are not tagged by subject (Codex: Bedi Hospital)');
 ok(!topicsFor('Foreign Contribution (Regulation) Amendment Rules, 2026').includes('polity-constitution'), 'an amendment to rules is not tagged as constitution');
 ok(!topicsFor('INDIAN NAVY COMMISSIONS INS SAMARTHAK, THE FIRST INDIGENOUS MULTI-PURPOSE VESSEL').includes('polity-bodies'), 'the verb commissions is not a commission body');
 ok(!topicsFor('K. MADHUSUDHAN RAO VS. M/S LODHA HEALTHY CONSTRUCTIONS AND DEVELOPER PRIVATE LIMITED').includes('science-health-biotech'), 'Healthy in a company name is not a health topic');

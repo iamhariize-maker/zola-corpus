@@ -60,8 +60,8 @@ export function similarityGate(draft, reference, limits = SIMILARITY_LIMITS) {
   return { ok: problems.length === 0, share: Number(share.toFixed(3)), longestRun: run, problems };
 }
 
-// Each number is checked together with the word after it, so "298 members" must not be explained by "298 votes" or by
-// "230 members". Commas inside a number are ignored (1,000 = 1000).
+// Each number is checked together with the two words after it, so "298 votes in favour" is not explained by
+// "298 votes against". Commas inside a number are ignored (1,000 = 1000).
 function numberPairs(text) {
   const clean = String(text).replace(/(\d),(?=\d{3}\b)/g, '$1');
   const toks = clean.split(/\s+/);
@@ -69,7 +69,7 @@ function numberPairs(text) {
   toks.forEach((t, i) => {
     const m = t.match(/^(\d+(?:\.\d+)?)/);
     if (!m) return;
-    const next = (toks[i + 1] || '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
+    const next = toks.slice(i + 1, i + 3).map(w => w.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '')).filter(Boolean).join(' ');
     out.push(`${m[1]} ${next}`);
   });
   return out;
@@ -102,8 +102,9 @@ export function approvalGate({ draft, evidence = [], approval, secret, approvers
   if (want.length !== have.length || want.some((h, i) => h !== have[i])) problems.push('the evidence changed after approval (or a different set was supplied)');
   const expected = approvalSignature(secret, { ...approval, evidence_sha256: want });
   const given = String(approval.signature || '');
-  const ok = given.length === expected.length && crypto.timingSafeEqual(Buffer.from(given), Buffer.from(expected));
-  if (!ok) problems.push('the signature does not verify with the configured secret');
+  // Fixed-length hex only, checked before the constant-time comparison, so malformed input fails closed.
+  if (!/^[0-9a-f]{64}$/i.test(given)) problems.push('the signature is not a 64-character hex value');
+  else if (!crypto.timingSafeEqual(Buffer.from(given, 'hex'), Buffer.from(expected, 'hex'))) problems.push('the signature does not verify with the configured secret');
   return { ok: problems.length === 0, problems };
 }
 
@@ -148,8 +149,8 @@ export function checkDraft({ draft, reference, referenceTexts = [], candidate, a
   if (candidateDoc) {
     const f = freshnessGate(candidateDoc.generated_at, now);
     if (!f.ok) failures.push({ gate: 'freshness', reason: f.reason });
-    const v = volumeGate(candidateDoc.sources || [], previousDoc?.sources || []);
-    if (!v.ok) failures.push({ gate: 'volume', reason: v.alerts.join('; ') });
+    if (!previousDoc) failures.push({ gate: 'volume', reason: 'no previous candidate file to compare against, so missing sources and drops cannot be checked' });
+    else { const v = volumeGate(candidateDoc.sources || [], previousDoc.sources || []); if (!v.ok) failures.push({ gate: 'volume', reason: v.alerts.join('; ') }); }
   } else skipped.push('freshness', 'volume');
   return { ok: failures.length === 0, failures, skipped, checkedAt: now.toISOString() };
 }

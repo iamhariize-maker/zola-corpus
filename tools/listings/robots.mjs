@@ -56,14 +56,19 @@ export function patternToRegex(pattern) {
   return new RegExp('^' + src + (anchored ? '$' : ''));
 }
 
-// True when the path may be fetched. The longest matching pattern wins; Allow wins a tie.
+// Specificity is the number of octets in the pattern itself, not the wildcard syntax (RFC 9309 section 2.2.2).
+export function specificity(pattern) {
+  return pattern.replace(/[*$]/g, '').length;
+}
+
+// True when the path (with its query, if any) may be fetched. The most specific matching pattern wins. Allow wins a tie.
 export function allowed(rules, path) {
   let best = { len: -1, allow: true };
   for (const p of rules.disallow) {
-    if (patternToRegex(p).test(path) && p.length > best.len) best = { len: p.length, allow: false };
+    if (patternToRegex(p).test(path) && specificity(p) > best.len) best = { len: specificity(p), allow: false };
   }
   for (const p of rules.allow) {
-    if (patternToRegex(p).test(path) && p.length >= best.len) best = { len: p.length, allow: true };
+    if (patternToRegex(p).test(path) && specificity(p) >= best.len) best = { len: specificity(p), allow: true };
   }
   return best.allow;
 }

@@ -69,7 +69,7 @@ export async function fetchListing(url, {
     try { parsed = new URL(current); } catch (_) { return fail('invalid URL'); }
     if (!hosts.includes(parsed.host)) return fail(`redirect or link to ${parsed.host} is not an allowed host`);
     const rules = getRobots(current);
-    if (!allowed(rules, parsed.pathname)) return fail('blocked by robots.txt');
+    if (!allowed(rules, parsed.pathname + parsed.search)) return fail('blocked by robots.txt');
     // Honour Crawl-delay between requests to the same host.
     const gap = (rules.crawlDelay || 0) * 1000;
     const wait = (lastRequestAt.get(parsed.host) || 0) + gap - Date.now();

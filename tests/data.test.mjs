@@ -31,8 +31,11 @@ try{
  await page.evaluate(()=>Storage.prototype.setItem=window.__set);
  ok(await page.evaluate(()=>localStorage.getItem('zolaB.v22'))===previous,'failed import storage writes preserve existing progress');
  await click('#tab-csat');await page.waitForTimeout(500);const frame=page.frames().find(f=>f!==page.mainFrame());
- await frame.evaluate(()=>{document.querySelector('#forgeQ .opt').click();document.querySelector('#fconf [data-c="half"]').click();document.querySelector('#fInk').click();document.querySelector('[data-go="mock"]').click();document.querySelector('#mBp').value='sprint';document.querySelector('#mStart').click()});
- ok(await page.evaluate(()=>{try{const s=JSON.parse(localStorage.getItem('zolaCsatForge.v1'));ZOLA_DATA.csat(s);return s.ledger.length===1&&s.live.qs.length===20}catch(e){return false}}),'real CSAT answers and an unfinished paper pass restore validation');
+ await frame.evaluate(()=>{document.querySelector('#forgeQ .opt').click();document.querySelector('#fconf [data-c="half"]').click();document.querySelector('#fInk').click();document.querySelector('[data-go="mock"]').click();document.querySelector('#mBp').value='sprint';document.querySelector('#mCode').value='ABC007';document.querySelector('#mStart').click()});
+ const csatChecks=await page.evaluate(()=>{try{const s=JSON.parse(localStorage.getItem('zolaCsatForge.v1'));const optionsValid=!!(s.live&&Array.isArray(s.live.qs)&&s.live.qs.length===20&&s.live.qs.every(q=>q&&q.o&&Array.isArray(q.o.opts)&&q.o.opts.length===4&&q.o.opts.every(x=>typeof x==='string'&&/\S/.test(x))));ZOLA_DATA.csat(s);ZOLA_BACKUP.validate(ZOLA_BACKUP.snapshot());return {optionsValid:optionsValid,progressValid:s.ledger.length===1&&s.live.qs.length===20,backupValid:true}}catch(e){return {optionsValid:false,progressValid:false,backupValid:false,error:e.message}}});
+ ok(csatChecks.optionsValid,'deterministic sprint paper has four nonempty string options per question');
+ ok(csatChecks.progressValid,'real CSAT answers and an unfinished paper pass restore validation');
+ ok(csatChecks.backupValid,'unfinished CSAT state passes the complete backup validator');
  for(let i=0;i<3;i++){await click('#themeBtn');await page.waitForTimeout(100);ok(await frame.evaluate(()=>document.documentElement.dataset.theme)===await page.evaluate(()=>document.documentElement.dataset.theme),'CSAT theme follows header on toggle '+(i+1));}
  ok(await frame.evaluate(()=>getComputedStyle(document.querySelector('#themeBtn')).display==='none'),'CSAT duplicate theme button remains hidden');
  await click('#tab-forecast');await page.evaluate(()=>location.hash='#forecast/brief');await page.waitForTimeout(300);
@@ -47,7 +50,7 @@ try{
  ok(!Object.hasOwn(backup.storage,'other-app.keep'),'backup excludes unrelated application data');
  await page.evaluate(()=>{Object.keys(localStorage).filter(ZOLA_DATA.storageKey).forEach(k=>localStorage.removeItem(k));localStorage.setItem('zola.pwa.extraAfterBackup','remove on restore')});
  await upload('#zbackup-file',backup);await page.waitForFunction(()=>document.querySelector('#zbackup').open);
- ok((await page.locator('#zbackup-summary').innerText()).includes('one unfinished paper'),'restore previews counts, date, edition and unfinished paper');
+ ok((await page.locator('#zbackup-summary').innerText()).includes('one unfinished paper'),'CSAT backup opens its restore preview with one unfinished paper');
  await click('#zbackup-cancel');
  ok(await page.evaluate(()=>localStorage.getItem('zolaB.v22'))===null,'cancelling restore makes no storage changes');
  const restored=await page.evaluate(v=>{ZOLA_BACKUP.restore(v);return {storage:ZOLA_BACKUP.snapshot().storage,other:localStorage.getItem('other-app.keep')}},backup);

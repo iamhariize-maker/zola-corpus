@@ -122,6 +122,37 @@ await sf.evaluate(() => scrollTo(0, 850)); await studio.waitForTimeout(150);
 ok(await studio.locator('.z-top').isVisible(), 'Back to top follows CSAT frame scrolling');
 await studio.locator('.z-top').click(); await sf.waitForFunction(() => scrollY < 2);
 ok(await studio.locator('.z-top').isHidden(), 'Back to top returns CSAT to its cover');
+const transient = await studio.evaluate(async () => {
+ const frame = document.getElementById('frC'), fd = frame.contentDocument;
+ const keys = ['scrollingElement', 'documentElement'];
+ const saved = keys.map(k => Object.getOwnPropertyDescriptor(fd, k));
+ const reads = { scrollingElement: 0, documentElement: 0 }, errors = [];
+ const onError = e => errors.push(e.message);
+ let hidden = false;
+ window.addEventListener('error', onError);
+ try {
+  keys.forEach(k => Object.defineProperty(fd, k, {
+   configurable: true,
+   get() { reads[k]++; return null; }
+  }));
+  window.dispatchEvent(new Event('scroll'));
+  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  hidden = document.querySelector('.z-top').hidden;
+ } finally {
+  keys.forEach((k, i) => {
+   if (saved[i]) Object.defineProperty(fd, k, saved[i]);
+   else delete fd[k];
+  });
+  window.removeEventListener('error', onError);
+ }
+ return { reads, errors, hidden, intact: frame.contentDocument === fd && !!fd.getElementById('forgeQ') };
+});
+ok(transient.reads.scrollingElement > 0 && transient.reads.documentElement > 0, 'scroll update exercises both missing frame containers');
+ok(transient.errors.length === 0 && transient.hidden, 'missing frame containers cause no error and hide Back to top');
+ok(transient.intact, 'CSAT document remains intact after the empty-scroll-root check');
+await sf.evaluate(() => scrollTo(0, 900));
+await studio.waitForFunction(() => !document.querySelector('.z-top').hidden);
+ok(await studio.locator('.z-top').isVisible(), 'CSAT scroll tracking recovers after its document is restored');
 for (const theme of ['light', 'dark']) {
   await studio.evaluate(t => { localStorage.setItem('zolaV2.theme', JSON.stringify(t)); }, theme);
   await studio.reload(); await studio.waitForTimeout(650);

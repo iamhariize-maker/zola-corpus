@@ -23,45 +23,153 @@ const KINDS = ['Official', 'News report', 'Government', 'Research'];
 // a clause is checked, and clause breaks stop a cue from reaching into an unrelated clause.
 // Each cue attaches a prediction directly to a question or to an exam term. A bare "likely to appear in the Gazette"
 // or "guaranteed by Article 19" carries no exam term or question, so it is not a prediction.
-// Exam words that make an appear or come-up claim an exam prediction. "UPSC" and "examination" are left out:
-// "appear in the UPSC examination" and "in the UPSC calendar" are ordinary notice wording.
-const SYLLABUS_EXAM = /(?:prelims?|mains|exams?|papers?)/;
-// A cue attaches a prediction to a question, a topic, or an exam term. Generic "to", "will" and "asked" do not count alone.
-const SYLLABUS_PREDICTION = new RegExp([
-  /\bguaranteed\s+(?:(?:a|an|the|this)\s+)?(?:questions?|to be asked)\b/,
-  /\bexpected\s+(?:(?:a|an|the)\s+)?(?:questions?|to be asked)\b/,
-  new RegExp(String.raw`\bexpected\s+(?:in|at)\s+(?:the\s+)?${SYLLABUS_EXAM.source}\b`),
-  /\bpredicted\s+(?:questions?|to be asked)\b/,
-  /\b(?:definitely|certainly|surely)\s+be asked\b/,
-  /\bwill\s+(?:definitely\s+|certainly\s+)?be asked\b/,
-  /\b(?:likely|certain)\s+to\s+be asked\b/,
-  new RegExp(String.raw`\b(?:guaranteed|likely|expected|certain|sure|going|will|definitely|certainly|surely)\b[^;:,.!?]{0,20}?\b(?:appear|come up)\s+(?:in|at)\s+(?:the\s+)?${SYLLABUS_EXAM.source}\b`),
-  new RegExp(String.raw`\bexpect\s+(?:(?:a|an|the|these|some|more)\s+)?(?:questions?|topics?)\b[^;:,.!?]{0,30}?\b(?:in|at|for)\s+(?:the\s+)?${SYLLABUS_EXAM.source}\b(?!\s+(?:GS|syllabus|syllabi))`),
-  new RegExp(String.raw`\b(?:questions?|topics?)\b[^;:,.!?]{0,30}?\b(?:will|is|are)\s+(?:(?:likely|certain|expected|sure|bound)\s+)?(?:to\s+)?(?:be\s+)?(?:in|for|at)\s+(?:the\s+)?${SYLLABUS_EXAM.source}\b(?!\s+(?:GS|syllabus|syllabi))`),
-  /\bmost important (?:question|topic)\b/,
-  /\bimportant for (?:the )?exam\b/,
-  /\bmust[- ]read\b/,
-].map(r => r.source).join('|'), 'gi');
-// A cue is exempt only when a negation directly governs it: "not/no/never" before it (with an optional article),
-// "does not predict" followed by a short question phrase, "does not claim that" within six words, or a subject
-// negated by no or none within two words.
-const DIRECT_NEGATION = /(?:\bnot|n't|\bnever|\bno)\s+(?:(?:a|an|the)\s+)?$/i;
-const PREDICT_NEGATION = /\bnot\s+predict\s+(?:(?:which|what|whether|how|when|the|many|much|few|some|all|any|these|those)\s+)*(?:questions?\s+)?$/i;
-const CLAIM_NEGATION = /\bnot\s+(?:claim|say|state|suggest|imply)\s+that\s+(?:\S+\s+){0,6}$/i;
-const SUBJECT_NEGATION = /\b(?:no|none)\s+(?:\S+\s+){0,2}(?:is|are|was|were|will be|be)?\s*$/i;
-// "will be asked" and "definitely be asked" are predictions only for a question or topic subject, so a notice that
-// applicants will be asked to produce identification stays accepted.
-const SUBJECT_WORD = /\b(?:questions?|topics?|subjects?|items?|this|these)\b/i;
-const SYLLABUS_CLAUSE_BREAK = /[;:,]|\s(?:and|but|though|while|whereas|yet)\s/i;
-function predictionIn(text) {
-  for (const sentence of text.split(/(?<=[.!?])\s+/)) {
-    for (const clause of sentence.split(SYLLABUS_CLAUSE_BREAK)) {
-      for (const hit of clause.matchAll(SYLLABUS_PREDICTION)) {
-        const before = clause.slice(0, hit.index);
-        if (/^(?:will|definitely|certainly|surely)\b/i.test(hit[0]) && !SUBJECT_WORD.test(before)) continue;
-        if (!DIRECT_NEGATION.test(before) && !PREDICT_NEGATION.test(before) && !CLAIM_NEGATION.test(before) && !SUBJECT_NEGATION.test(before)) return hit[0];
+// Token recognizer for syllabus reasons and gaps. The text is split into clauses. Each clause is read for its subject
+// (a candidate or applicant, or a question, topic or other item), its predicate (an appearance, a being-asked, or an exam
+// preparation claim) and its negation. A negation counts only when it governs the cue: a not/no/never directly before it, a
+// no or none subject, or a not-claim/not-predict whose complement starts the clause. "No doubt" is an idiom, not a
+// negation, and a coordinating "and" starts a new clause only before a subject. Every cue in every clause is checked.
+const EXAM_WORDS = new Set(['prelims', 'prelim', 'mains', 'exam', 'exams', 'examination', 'examinations', 'paper', 'papers']);
+const NON_EXAM_AFTER_UPSC = new Set(['calendar', 'calendars', 'website', 'notice', 'notices', 'timetable', 'portal', 'office', 'chairman', 'member', 'members', 'circular', 'advertisement', 'notification']);
+const PERSON_WORDS = new Set(['candidate', 'candidates', 'applicant', 'applicants', 'aspirant', 'aspirants', 'examinee', 'examinees', 'student', 'students', 'individual', 'individuals', 'people', 'person', 'persons']);
+const QUESTION_SG = new Set(['question', 'questions']);
+const QUESTION_ANY = new Set(['question', 'questions', 'topic', 'topics', 'subject', 'subjects', 'item', 'items']);
+const ATTR_HEADS = new Set(['guaranteed', 'expected', 'likely', 'predicted']);
+const ADJ_WORDS = new Set(['expected', 'guaranteed', 'likely', 'predicted', 'certain', 'sure', 'definitely', 'certainly', 'surely', 'important']);
+const MODAL_HEADS = new Set(['will', 'going', 'expected', 'likely', 'certain', 'sure', 'guaranteed', 'definitely', 'certainly', 'surely']);
+const CUE_SKIP = new Set(['to', 'be', 'definitely', 'certainly', 'surely', 'going', 'not']);
+const PREP_WORDS = new Set(['in', 'for', 'at']);
+const AUX_WORDS = new Set(['is', 'are', 'was', 'were', 'will', 'would', 'can', 'could', 'may', 'might', 'must', 'shall', 'should', 'does', 'do', 'did', 'has', 'have', 'had', 'be', 'appear', 'appears', 'come', 'comes', 'expect', 'expects', 'offer', 'offers', 'raise', 'raises', 'cover', 'covers', 'discuss', 'discusses', 'list', 'lists', 'listed', 'include', 'includes', 'need', 'needs', 'require', 'requires', 'required', 'draw', 'draws', 'see', 'sees', 'claim', 'claims', 'read']);
+const NEG_SUBJECT = new Set(['no', 'none', 'nothing', 'nobody']);
+const NEG_WORDS = new Set(['not', 'never', 'no', 'nor', 'neither']);
+const DET_WORDS = new Set(['a', 'an', 'the', 'this', 'these', 'those', 'some', 'any']);
+const REPORTING_WORDS = new Set(['predict', 'claim', 'claims', 'claimed', 'say', 'says', 'said', 'state', 'states', 'stated', 'suggest', 'suggests', 'imply', 'implies', 'direct', 'directs', 'mention', 'mentions', 'mentioned']);
+const COMPLEMENT_START = new Set(['that', 'which', 'what', 'how', 'whether', 'any', 'all', 'these', 'this', 'some', 'none', 'no', 'many', 'those', 'the', 'each', 'every']);
+const SUBJECT_START_FOR_AND = new Set(['this', 'it', 'these', 'that', 'they', 'there', 'none', 'no', 'candidates', 'applicants', 'students']);
+const CONTRAST_WORDS = new Set(['but', 'though', 'while', 'whereas', 'yet']);
+const CLAUSE_PUNCT = new Set(['.', ';', ':', '!', '?', ',']);
+
+function tokenizeSyllabus(text) {
+  const expanded = String(text)
+    .replace(/\bwon't\b/gi, 'will not')
+    .replace(/\bcan't\b/gi, 'can not')
+    .replace(/([a-z])n't\b/gi, '$1 not');
+  const raw = expanded.match(/[A-Za-z0-9]+|[.;:!?,]/g) ?? [];
+  const toks = raw.map(t => (CLAUSE_PUNCT.has(t) ? t : t.toLowerCase()));
+  const out = [];
+  for (let i = 0; i < toks.length; i++) {
+    if (toks[i] === 'no' && toks[i + 1] === 'doubt') { i++; continue; }
+    out.push(toks[i]);
+  }
+  return out;
+}
+
+function startsClause(tokens, i) {
+  return SUBJECT_START_FOR_AND.has(tokens[i + 1]);
+}
+
+// Splits into clauses. A clause after a reporting verb records whether that verb is negated and its complement starts a
+// noun phrase or clause (so "does not predict which questions..." is negated, but "do not claim otherwise and..." is not).
+function splitClauses(tokens) {
+  const clauses = [];
+  let cur = [];
+  let curNeg = false;
+  const breakAt = keepNeg => {
+    if (cur.length) clauses.push({ tokens: cur, reportNeg: curNeg });
+    cur = [];
+    curNeg = keepNeg;
+  };
+  for (let i = 0; i < tokens.length; i++) {
+    const t = tokens[i];
+    if (CLAUSE_PUNCT.has(t) || CONTRAST_WORDS.has(t)) { breakAt(false); continue; }
+    if (t === 'and' && startsClause(tokens, i)) { breakAt(false); continue; }
+    if (REPORTING_WORDS.has(t)) {
+      const neg = tokens[i - 1] === 'not' || (['does', 'do', 'did'].includes(tokens[i - 1]) && tokens[i - 2] === 'not');
+      const j = tokens[i + 1] === 'that' ? i + 2 : i + 1;
+      breakAt(neg && COMPLEMENT_START.has(tokens[j]));
+      continue;
+    }
+    cur.push(t);
+  }
+  breakAt(false);
+  return clauses;
+}
+
+function examAt(tokens, idx) {
+  if (idx < 0 || idx >= tokens.length) return false;
+  const w = tokens[idx];
+  if (EXAM_WORDS.has(w)) return true;
+  if (w === 'upsc') return tokens[idx + 1] === undefined || !NON_EXAM_AFTER_UPSC.has(tokens[idx + 1]);
+  return false;
+}
+
+function hasExamFrom(tokens, from) {
+  for (let i = from; i < tokens.length; i++) if (examAt(tokens, i)) return true;
+  return false;
+}
+
+// True when a negation word sits directly before the cue, allowing only determiners between them.
+function negatedBefore(tokens, k) {
+  let m = k - 1;
+  while (m >= 0 && DET_WORDS.has(tokens[m])) m--;
+  return m >= 0 && NEG_WORDS.has(tokens[m]);
+}
+
+function cuesIn(tokens) {
+  const out = [];
+  const n = tokens.length;
+  for (let k = 0; k < n; k++) {
+    const w = tokens[k];
+    if (ATTR_HEADS.has(w)) {
+      let j = k + 1;
+      while (j < n && ADJ_WORDS.has(tokens[j])) j++;
+      if (j < n && QUESTION_SG.has(tokens[j])) out.push({ kind: 'attr', neg: negatedBefore(tokens, k), text: tokens.slice(k, j + 1).join(' ') });
+    }
+    if (w === 'expect' || w === 'expects') {
+      const q = tokens.slice(k + 1, k + 7).findIndex(t => QUESTION_ANY.has(t));
+      if (q >= 0 && hasExamFrom(tokens, k + 1 + q + 1)) out.push({ kind: 'expect', neg: negatedBefore(tokens, k), text: w });
+    }
+    if (MODAL_HEADS.has(w)) {
+      let j = k + 1;
+      let skipNot = false;
+      while (j < n && CUE_SKIP.has(tokens[j])) { if (tokens[j] === 'not') skipNot = true; j++; }
+      if (j < n) {
+        const nx = tokens[j];
+        let kind = null;
+        if (nx === 'appear' || (nx === 'come' && tokens[j + 1] === 'up')) kind = 'appear';
+        else if (nx === 'asked' || nx === 'tested') kind = 'asked';
+        else if (PREP_WORDS.has(nx) && tokens.slice(j + 1, j + 5).some((_, i2) => examAt(tokens, j + 1 + i2))) kind = 'exam-prep';
+        if (kind) out.push({ kind, neg: skipNot || negatedBefore(tokens, k), text: tokens.slice(k, j + 1).join(' ') });
       }
     }
+    if (w === 'read' && tokens[k - 1] === 'must') out.push({ kind: 'hype', neg: negatedBefore(tokens, k - 1), text: 'must read' });
+    if (w === 'important' && QUESTION_ANY.has(tokens[k + 1])) out.push({ kind: 'hype', neg: negatedBefore(tokens, k), text: `important ${tokens[k + 1]}` });
+  }
+  return out;
+}
+
+function clausePredicts(tokens, reportNeg) {
+  const aux = tokens.findIndex(t => AUX_WORDS.has(t));
+  const subject = aux < 0 ? tokens : tokens.slice(0, aux);
+  const person = subject.some(t => PERSON_WORDS.has(t));
+  const subjectNegated = NEG_SUBJECT.has(tokens[0]);
+  for (const cue of cuesIn(tokens)) {
+    if (cue.neg || subjectNegated || reportNeg) continue;
+    if (cue.kind === 'attr' || cue.kind === 'expect' || cue.kind === 'hype') return cue.text;
+    if (person) continue;
+    if (cue.kind === 'appear') {
+      if (tokens.some((_, i) => examAt(tokens, i))) return cue.text;
+      continue;
+    }
+    return cue.text;
+  }
+  return null;
+}
+
+function predictionIn(text) {
+  const tokens = tokenizeSyllabus(text);
+  for (const clause of splitClauses(tokens)) {
+    const hit = clausePredicts(clause.tokens, clause.reportNeg);
+    if (hit) return hit;
   }
   return null;
 }

@@ -26,6 +26,45 @@ export function applyTrackerChecks(html) {
   const json = JSON.stringify(items).replace(/<\//g, '<\\/');
   return html.replace(ITEMS_RX, (_, a, __, b) => a + json + b);
 }
+const CSAT_SCRIPT_RX = /(<script type="text\/plain" id="srcC">)([\s\S]*?)(<\/script>)/g;
+const CSAT_DAY_MARK = 'zola-app-fix: dayOfWeek bounds';
+const CSAT_OPTIONS_MARK = 'zola-app-fix: nonblank CSAT options';
+function applyCsatOptionGuards(html) {
+  const matches = [...html.matchAll(CSAT_SCRIPT_RX)];
+  if (matches.length !== 1) throw new Error('Cannot apply CSAT option guards: script#srcC not found exactly once. Review tools/app-fixes.mjs.');
+  const encoded = matches[0][2].trim();
+  if (!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(encoded)) {
+    throw new Error('Cannot apply CSAT option guards: script#srcC is not valid base64. Review tools/app-fixes.mjs.');
+  }
+  const source = Buffer.from(encoded, 'base64').toString('utf8');
+  if (Buffer.from(source, 'utf8').toString('base64') !== encoded) {
+    throw new Error('Cannot apply CSAT option guards: script#srcC did not round-trip as UTF-8. Review tools/app-fixes.mjs.');
+  }
+  const hasDayGuard = source.includes(CSAT_DAY_MARK), hasOptionGuard = source.includes(CSAT_OPTIONS_MARK);
+  const dayGuard = "valid: function (v) { return typeof v === 'number' && v % 1 === 0 && v >= 0 && v <= 6; }, /* " + CSAT_DAY_MARK + ' */';
+  const optionsGuard = "if (chosen.some(function (x) { return typeof x.t !== 'string' || !/\\S/.test(x.t); })) throw RETRY; // " + CSAT_OPTIONS_MARK;
+  if (hasDayGuard || hasOptionGuard) {
+    if (!hasDayGuard || !hasOptionGuard || source.split(CSAT_DAY_MARK).length !== 2 || source.split(CSAT_OPTIONS_MARK).length !== 2 || source.split(dayGuard).length !== 2 || source.split(optionsGuard).length !== 2) {
+      throw new Error('Cannot apply CSAT option guards: partial or duplicate patch found. Review tools/app-fixes.mjs.');
+    }
+    return html;
+  }
+
+  const dayBefore = 'correct: ans, fmt: function (v) { return DAYS[v]; }, named: [[(d0 + mod) % 7,';
+  const dayAfter = 'correct: ans, fmt: function (v) { return DAYS[v]; }, valid: function (v) { return typeof v === \'number\' && v % 1 === 0 && v >= 0 && v <= 6; }, /* ' + CSAT_DAY_MARK + ' */ named: [[(d0 + mod) % 7,';
+  const optionsBefore = '  if (o.tail) o.tail.forEach(function (tl) { chosen.push({ t: tl.t, ok: !!tl.ok, why: tl.why }); });\n  return build(chosen);';
+  const optionsAfter = '  if (o.tail) o.tail.forEach(function (tl) { chosen.push({ t: tl.t, ok: !!tl.ok, why: tl.why }); });\n  if (chosen.some(function (x) { return typeof x.t !== \'string\' || !/\\S/.test(x.t); })) throw RETRY; // ' + CSAT_OPTIONS_MARK + '\n  return build(chosen);';
+  function replaceOnce(text, before, after, label) {
+    if (text.split(before).length !== 2) throw new Error(`Cannot apply CSAT option guards: ${label} entry point changed. Review tools/app-fixes.mjs.`);
+    return text.replace(before, after);
+  }
+  const patched = replaceOnce(replaceOnce(source, dayBefore, dayAfter, 'dayOfWeek'), optionsBefore, optionsAfter, 'valQ');
+  if (patched.split(CSAT_DAY_MARK).length !== 2 || patched.split(CSAT_OPTIONS_MARK).length !== 2) {
+    throw new Error('Cannot apply CSAT option guards: patched source failed its marker check. Review tools/app-fixes.mjs.');
+  }
+  const patchedBase64 = Buffer.from(patched, 'utf8').toString('base64');
+  return html.replace(CSAT_SCRIPT_RX, (_, open, __, close) => open + patchedBase64 + close);
+}
 function applyTrackerDisplay(html) {
   html = replace(html,
     `(it.st==='verified'?'<span class="tag ver">Source linked · UNVERIFIED</span>':it.st==='check'?'<span class="tag chk">Needs checking</span>':'<span class="tag car">From v1</span>')`,
@@ -58,5 +97,5 @@ export function applyAppFixes(html) {
  try{render('review');updateDue()}catch(err){if(previous===null)localStorage.removeItem(KEY);else localStorage.setItem(KEY,previous);mem=priorMem;render('review');throw err}
  $('#b-io').textContent='Imported. Hacking progress replaced.';
  }).catch(err=>{$('#b-io').textContent='Import failed: '+err.message})};`, 'safe progress import');
-  return html;
+  return applyCsatOptionGuards(html);
 }

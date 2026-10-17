@@ -18,6 +18,7 @@ const OUT = path.join(ROOT, 'articles');
 // Phrases that would predict exam questions or hype the content (AGENTS.md: voice and honesty).
 const FORBIDDEN = /likely (to be )?(asked|appear)|will be asked|expected question|predicted question|guaranteed|\bfree\b(?!-return)|must[- ]read|most important question/i;
 const KINDS = ['Official', 'News report', 'Government', 'Research'];
+const SYLLABUS_PREDICTION = /likely (to be )?(asked|appear)|will be asked|expected question|predicted question|most important question|important for (the )?exam|must[- ]read/i;
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const categoryTitle = id => CATEGORIES.find(c => c.id === id)?.title ?? '';
@@ -48,12 +49,14 @@ export function validate(articles = ARTICLES, syllabusDocument = ARTICLE_SYLLABU
   }
   // The syllabus sidecar must match these exact slugs; a stale or invalid map fails the build.
   problems.push(...validateArticleSyllabusMap({ articles, document: syllabusDocument }));
-  // Reasons and gaps are shown to readers, so they follow the same forbidden-phrase rules as article text.
+  // Reasons and gaps are shown to readers, so they must not predict questions. Only this narrow detector applies
+  // here; ordinary legal and economic wording such as "free trade" stays allowed.
   for (const [slug, entry] of Object.entries(syllabusDocument?.articles ?? {})) {
-    const shown = [entry?.mapping_gap, ...(entry?.mappings ?? []).map(m => m?.reason)].filter(t => typeof t === 'string');
-    for (const text of shown) {
-      const bad = text.match(FORBIDDEN);
-      if (bad) problems.push(`${slug}: syllabus text has forbidden phrase "${bad[0]}"`);
+    const reasons = Array.isArray(entry?.mappings) ? entry.mappings.map(m => m?.reason) : [];
+    for (const text of [entry?.mapping_gap, ...reasons]) {
+      if (typeof text !== 'string') continue;
+      const bad = text.match(SYLLABUS_PREDICTION);
+      if (bad) problems.push(`${slug}: syllabus text predicts questions: "${bad[0]}"`);
     }
   }
   return problems;

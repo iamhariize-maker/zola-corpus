@@ -49,11 +49,19 @@ try { render(ARTICLES, missingDoc); } catch (e) { failedClosed = /no valid sylla
 ok(failedClosed, 'rendering fails closed when an article has no valid syllabus entry');
 const forbiddenReasonDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 forbiddenReasonDoc.articles['nobel-peace-2026'].mappings[0].reason = 'This is a guaranteed expected question.';
-ok(validate(ARTICLES, forbiddenReasonDoc).some(p => /nobel-peace-2026: syllabus text has forbidden phrase/.test(p)), 'a forbidden phrase in a syllabus reason fails the content rules');
+ok(validate(ARTICLES, forbiddenReasonDoc).some(p => /nobel-peace-2026: syllabus text predicts questions/.test(p)), 'a forbidden phrase in a syllabus reason fails the content rules');
 const forbiddenGapDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 forbiddenGapDoc.articles['union-budget-2026-27'] = { mappings: [], mapping_gap: 'Likely to be asked in Prelims.' };
-ok(validate(ARTICLES, forbiddenGapDoc).some(p => /union-budget-2026-27: syllabus text has forbidden phrase/.test(p)), 'a forbidden phrase in a mapping gap fails the content rules');
+ok(validate(ARTICLES, forbiddenGapDoc).some(p => /union-budget-2026-27: syllabus text predicts questions/.test(p)), 'a forbidden phrase in a mapping gap fails the content rules');
 ok(validate(ARTICLES, ARTICLE_SYLLABUS_DOCUMENT).length === 0, 'ordinary factual rationales still pass the content rules');
+const ordinaryDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
+ordinaryDoc.articles['nobel-peace-2026'].mappings[0].reason = 'Covers free trade and freedom of speech, which is guaranteed by Article 19.';
+ok(validate(ARTICLES, ordinaryDoc).length === 0, 'ordinary wording such as "free trade" and "guaranteed by Article 19" is not blocked');
+const nonArrayDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
+nonArrayDoc.articles['nobel-peace-2026'].mappings = {};
+let nonArrayThrew = false, nonArrayProblems = [];
+try { nonArrayProblems = validate(ARTICLES, nonArrayDoc); } catch { nonArrayThrew = true; }
+ok(!nonArrayThrew && nonArrayProblems.some(p => /mappings must be an array/.test(p)), 'a non-array mappings field is reported, not thrown');
 
 console.log('Study articles: pages are self-contained and offline-safe');
 for (const name of Object.keys(files)) {

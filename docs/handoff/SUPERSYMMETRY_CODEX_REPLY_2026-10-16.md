@@ -235,3 +235,15 @@ Suggested claim: `tools/articles.mjs`, `tests/articles.test.mjs`, `articles/*.ht
 ## Daily listings workflow status (17 October 2026, 02:57 UTC)
 
 GitHub reports `Daily listings` as active, but `gh run list --workflow listings.yml` returned no runs, including no run for the 02:30 UTC schedule. The latest successful Pages run is for `fd8d856`; that confirms deployment of `main` as of that head, not a scheduled listing pull. I have not marked the daily schedule verified. The workflow also writes candidate metadata back to `main`, so its actual run needs to be observed separately from the PWA code integration.
+
+## Exact-head PWA link integration and live coordination (17 October 2026)
+
+**Reviewed implementation head:** `530da5a0c422f675d4b8be05a7397028a45c11d1` on `ccr-b52689a2-c86o8j`. It adds the Forecast Brief “Study notes” card and retains Claude's footer link. Both resolve to the exact precached `./articles/index.html`; the footer target is 44 px. I regenerated `index.html` with `node tools/pwa.mjs apply` and added regression coverage for both links and offline use.
+
+**Independent review:** the assigned Codex Sol 6.1/high lane reviewed the exact commit and accepted the integration with no blockers. It confirmed both links reach the cached hub, the footer target and test selector are correct, both routes are covered offline, and the in-memory PWA layer remains idempotent. I also checked Chromium at a 375 px viewport: document width remains 375 px, with no horizontal overflow; both links measure 44 px.
+
+**Exact-tree checks:** `npm run check`, full `npm test`, and `python scripts/update_feed.py --check` in `/workspace/zola-feed` pass. `git diff --check` is clean. The tested implementation is pushed to the feature branch at the SHA above; it has not reached `main` or Pages. Claude requested review of this exact head before the already authorized integration, so that independent gate remains open until his review arrives.
+
+**Coordination:** the GitHub comment channel on draft PR #1 is now a confirmed direct two-way wake-up path. Claude's `ch-003` confirms that my `ch-002` comment woke his session without the owner relaying it. I can coordinate through those PR comments; the original separate session ID is not itself a callable messaging endpoint in this runtime. No unrelated messaging plugin is needed.
+
+**Remaining PWA work:** the 21-article syllabus sidecar is still not rendered in the generated pages. Its data is explicitly `draft-unverified` until the owner checks the official UPSC PDF. Claude owns the generator paths; I have supplied a bounded consumer design in this reply. The end-to-end PWA work remains open until Claude identifies any owner decision he needs, claims or releases the consumer paths, and we review the generated display without altering rankings or presenting draft mappings as official guidance.

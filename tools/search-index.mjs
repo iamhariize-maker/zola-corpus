@@ -43,6 +43,14 @@ function csatRecords(html) {
 
 const clip = (s, n) => (s.length > n ? `${s.slice(0, n - 1).trimEnd()}…` : s);
 
+// The search text is normalised once, here, so the page does not normalise 600 KB of text on every first search.
+// Must match norm() in pwa/search.js.
+export const norm = s => String(s || '').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '');
+const withSearchText = r => {
+  const { text = '', ...rest } = r;
+  return { ...rest, n: norm(`${rest.title} ${text}`) };
+};
+
 // Flatten a field to readable text. Some case fields are objects (a label mapped to a reason) and some are arrays, so
 // nothing is silently dropped, and nothing reaches the page as [object Object].
 export function plain(v) {
@@ -124,12 +132,12 @@ export function buildSearchIndex({
   }
 
   const counts = Object.fromEntries(TYPES.map(t => [t, records.filter(r => r.type === t).length]));
-  return { schema: SEARCH_INDEX_SCHEMA, status: 'static-extract', counts, records };
+  return { schema: SEARCH_INDEX_SCHEMA, status: 'static-extract', counts, records: records.map(withSearchText) };
 }
 
 function main() {
   const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-  const fresh = JSON.stringify(buildSearchIndex({ html }), null, 1) + '\n';
+  const fresh = JSON.stringify(buildSearchIndex({ html })) + '\n';
   const out = path.join(ROOT, SEARCH_INDEX_FILE);
   if (process.argv.includes('--check')) {
     const current = fs.existsSync(out) ? fs.readFileSync(out, 'utf8') : '';

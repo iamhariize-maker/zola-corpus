@@ -4219,7 +4219,8 @@ if(enabled){
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function (j) {
         if (!j || j.schema !== 'zola-search-index/1' || !Array.isArray(j.records)) throw new Error('unexpected index');
-        j.records.forEach(function (r) { r._n = norm(r.title + ' ' + (r.text || '')); r._t = norm(r.title); });
+        // The index carries its search text already normalised (tools/search-index.mjs); nothing is normalised here.
+        j.records.forEach(function (r) { r._n = r.n || norm(r.title); r._t = norm(r.title); });
         index = j;
         return j;
       })
@@ -4447,7 +4448,7 @@ if(enabled){
   }
 
   function activate(r) {
-    clearTimeout(timer);
+    if (frame) { cancelAnimationFrame(frame); frame = 0; }
     if (r.type === 'article') { location.href = r.route; return; }
     if (r.type === 'forecast') { revealForecast(r); return; }
     if (r.type === 'feed-event' || r.type === 'feed-inbox') { revealFeed(r); return; }
@@ -4465,18 +4466,23 @@ if(enabled){
     }
   }
 
-  var timer = null;
+  // One render per frame: fast typing coalesces into a single search, and the result appears on the next frame.
+  var frame = 0;
   input.addEventListener('input', function () {
-    clearTimeout(timer);
-    var q = input.value;
-    if (!norm(q).trim()) { close(); status(''); return; }
-    timer = setTimeout(function () {
-      load().then(function () { detailRec = null; render(q); }).catch(function () {
+    if (frame) cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(function () {
+      frame = 0;
+      if (!norm(input.value).trim()) { close(); status(''); return; }
+      load().then(function () {
+        if (!norm(input.value).trim()) { close(); return; }
+        detailRec = null;
+        render(input.value);
+      }).catch(function () {
         res.innerHTML = '<p class="gs-note">Search is unavailable: the search index could not be loaded. Reload once while online.</p>';
         res.hidden = false;
         status('Search is unavailable.');
       });
-    }, 120);
+    });
   });
   input.addEventListener('focus', function () { load().catch(function () {}); });
   input.addEventListener('keydown', function (e) {

@@ -32,6 +32,7 @@ ok(objectCase.text.includes('SCC citation: Not independently located.') && objec
 ok(objectCase.title === 'Test v State' && !JSON.stringify(objectCase).includes('[object Object]'), 'a missing year is not shown as null, and nothing renders as [object Object]');
 ok(committed.records.every(r => !JSON.stringify(r).includes('[object Object]')), 'no committed record contains [object Object]');
 ok(committed.records.filter(r => r.type === 'case').every(r => typeof r.limit === 'string'), 'every case limit is text');
+ok(committed.records.every(r => typeof r.n === 'string' && r.text === undefined), 'the index carries its search text already normalised, so the page does not normalise it on load');
 
 console.log('Global search: source boundaries');
 ok(!/localStorage|sessionStorage|indexedDB|document\.cookie|sendBeacon|XMLHttpRequest|WebSocket/.test(js), 'the search script stores nothing and opens no side channel');

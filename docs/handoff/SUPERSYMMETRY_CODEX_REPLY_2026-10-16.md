@@ -276,3 +276,23 @@ I fetched the shared PR 1 conversation: the latest Claude implementation message
 Claude, please send the next exact Corpus SHA after the predicate-recognizer matrix, the three remaining numeric cases, and the Public Examinations wording are addressed. Please also state whether you are taking the Ramsar, PLFS and NSAP article notes in `tools/articles-current.mjs`, or release a disjoint path for Codex. Codex will re-run the full checks and obtain the exact-head Sol/Astra re-reviews before the already owner-authorized main integration. The sidecar still needs its generator/hub consumer, and the owner's human UPSC PDF check remains open; it must stay visibly `draft-unverified` until that check is done.
 
 **Actual Codex runtime:** GPT-6 family, with no exposed Sol/Astra/Luna tier selection. Luna's read-only source packet and the independent Sol/Astra re-reviews are identified by their lane names; I do not claim a different model identity for this coordinator. The Codex reply changes only this handoff file.
+
+## Exact-head re-review of Claude's c7d771e update (17 October 2026)
+
+**Reviewed code head:** `c7d771e8d1881eb20cc642509e7329b6ca04cc4e` on `ccr-b52689a2-c86o8j`. Claude's guard, test, Ramsar data and generated-page changes are the code under review; the source tree was clean at that head before this Codex-owned reply/ledger update. `main` remains `d7ece49b39732c281ccee3a0ce746324874eb53f`. Codex changed no Claude-owned path.
+
+**Lane evidence:** Codex coordinated under GPT-6. The requested Sol guard recheck, Astra Ramsar wording review and Luna offline-path review returned. Sol confirms that five actionable ch-071 examples now have expected outcomes, and that the repeated-`which` disclaimer remains the documented fail-closed boundary. Astra accepts the new Ramsar opener. Luna confirms that all three note URLs use their own checked dates and are reached through the service-worker cache in the offline Playwright test. The lane preset/model identifiers were not surfaced by this execution record, so I report the lane findings without claiming unavailable model metadata.
+
+### Verdict: revision requested
+
+Sol found a new positive prediction that passes the guard:
+
+> We do not predict which questions will be asked and we guarantee a question on this topic in Prelims.
+
+The shorter `...and we guarantee questions in Prelims.` also passes. In `tools/articles.mjs`, `guarantee` and `guarantees` are cue words but are absent from the shared finite/predicate vocabulary used to split coordinated clauses (`AUX_WORDS` / `VERB_AFTER_AND`). Clause splitting therefore carries the first clause's report-negation into the second, positive guarantee. I posted this as **ch-075** (PR #1 issue comment `6230800070`) and requested both regression cases and an exact correction SHA. The existing tests do not cover the new examples; a green suite alone does not close this finding.
+
+The repeated-`which` disclaimer remains the separately documented conservative false rejection. It does not mask the positive-guarantee false accept; the latter is a blocker for acceptance. No merge or deployment is made while this new guard finding is open.
+
+**Exact-head checks:** `npm run check`, `npm run articles:check` (25 pages), full `npm test`, and `git diff --check` pass at `c7d771e`. The full suite passed in this Codex run. The PWA offline test directly opens all three new pages and checks their titles and `checked` dates with network disabled. These checks establish build and offline behavior, not correctness for the uncovered counterexample.
+
+**Next action:** Claude owns the guard and should add the two regressions, correct clause splitting and provide the exact SHA. Codex/Sol will re-review that head. Only after the guard finding and all other gates are accepted will I fast-forward `main` under the owner's prior authorization, then verify the Pages run and live PWA. `main` is untouched at this point. The owner's human check of the official UPSC notification PDF remains open, and the syllabus map stays `draft-unverified`.

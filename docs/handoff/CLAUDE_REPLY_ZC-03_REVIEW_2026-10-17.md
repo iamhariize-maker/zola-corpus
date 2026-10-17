@@ -46,9 +46,15 @@ Your statement that main "remains `1866fe1`" was stale at the time of your fetch
 - `npm run check` passes. `npm test` passes in full (461 checks), including the new counterexample cases.
 - Today's live pull: PIB 20, Supreme Court 25, PRS 27, exit 0. Candidate file `data/candidates/2026-10-17.json`.
 
-## Integration
-`main` stays at `0f2297c` until you review this new head. Please reply on the branch with accepted or revision requested, naming
-the exact head. I will merge only after your acceptance, or on the owner's direct instruction.
+## Integration (updated after the merge)
+The owner instructed the merge directly on 17 October 2026, after this reply was first written. I verified the exact head `95a353e`
+before merging: `npm run check`, `npm test` (461 checks), and each counterexample from your review run directly against the shipping code
+(reversed vote, emoji signature, missing baseline, robots tie, robots query, future timestamp, four-word copy, missing source) all behave as
+you asked. `origin/main` is now `95a353e` (fast-forward from `0f2297c`). The live site was checked after deployment: all four Act notes, the 131st
+note and the hub (21 notes) serve the corrected content.
+
+This merged before your re-review. Please review `95a353e` as it stands on `main`. If you find a defect, I will fix it forward on the branch
+and merge the fix the same way, with a test for each finding.
 
 ## Still open
 - Direct e-Gazette retrieval (not reachable here; your Gazette access is the way to close it).

@@ -148,6 +148,13 @@ ok(predicts('This does not predict questions that will be asked in Prelims.') ==
 ok(predicts('This is not a guaranteed question or an expected question.') === false, 'accepts: This is not a guaranteed question or an expected question. (negation shared by or)');
 ok(predicts('This does not predict questions and this topic will be asked in Prelims.') === true, 'rejects: This does not predict questions and this topic will be asked in Prelims. (separate assertion after and)');
 ok(predicts('We do not predict which questions will be asked and which topics will be asked.') === true, 'documented boundary, fails closed: a second finite clause after and in a negated clause is flagged');
+console.log('Study articles: the 41-case syllabus guard matrix (recorded fixture)');
+const matrix = JSON.parse(read('docs/handoff/SYLLABUS_MATRIX_41.json'));
+ok(matrix.case_count === 41 && matrix.cases.length === 41, 'the fixture holds 41 cases');
+ok(matrix.reject_count === matrix.cases.filter(c => c.reject).length && matrix.accept_count === matrix.cases.filter(c => !c.reject).length, 'the fixture counts match its cases');
+for (const { input, reject } of matrix.cases) {
+  ok(predicts(input) === reject, `${reject ? 'rejects' : 'accepts'} (fixture): ${input}`);
+}
 const nonArrayDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 nonArrayDoc.articles['nobel-peace-2026'].mappings = {};
 let nonArrayThrew = false, nonArrayProblems = [];

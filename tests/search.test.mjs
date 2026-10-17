@@ -21,6 +21,8 @@ ok(committed.records.filter(r => r.type === 'forecast').every(r => r.route === '
 ok(committed.records.filter(r => r.type === 'machine').every(r => /^#hacking\/M\d{2}$/.test(r.route)), 'machine results use the established #hacking/Mxx routes');
 ok(committed.records.filter(r => r.type === 'csat').every(r => r.route === '#csat' && !/[{}]/.test(r.title)), 'CSAT labels are plain text, with no generator code');
 ok(committed.records.filter(r => r.type === 'claim').every(r => r.limit !== undefined), 'claims carry their note or limit field');
+ok(committed.records.filter(r => r.type === 'forecast').every(r => r.id === r.rowId && r.date && r.source && r.status), 'every Forecast record keeps its stable id, date, source and status');
+ok(committed.records.filter(r => r.type === 'forecast').every(r => !r.url || /^https:\/\/\S+$/.test(r.url)) && committed.records.filter(r => r.type === 'forecast' && r.url).length === 4, 'only valid HTTPS Forecast source URLs are kept (four events have one)');
 
 // Some case fields are objects (a label mapped to a reason) and some are arrays. None may be dropped or shown as [object Object].
 const objectCase = caseRecord({ id: 'T-OBJ', name: 'Test v State', year: null, decided: null, court: 'Supreme Court', citation: null, posture: null,
@@ -242,6 +244,16 @@ try {
   const hpText = await hp.textContent('.gs-detail');
   ok(/Tracker event/.test(hpText) && /does not show this event/.test(hpText) && /Joint Committee/.test(hpText), 'a Forecast event the tracker cannot show keeps its title and the reason in the panel');
   ok(!/Showing/.test(await hp.textContent('#gsearch-status')), 'a Forecast event that cannot be shown never claims it is showing');
+  ok(/17 Jul 2026/.test(hpText) && /PRS Bill Track and committee record/.test(hpText) && /occurred/.test(hpText) && /Checked/.test(hpText), 'the Forecast fallback shows its date, source, status and verification as separate fields');
+  // An event with a valid HTTPS source keeps that link in the fallback panel.
+  const withUrl = committed.records.find(r => r.type === 'forecast' && r.url);
+  await showResults(hp, withUrl.title, withUrl.title);
+  await hp.evaluate(t => {
+    const b = [...document.querySelectorAll('#gsearch-res li button')].find(x => x.firstChild && x.firstChild.textContent === t);
+    if (b) b.click();
+  }, withUrl.title);
+  await hp.waitForFunction(t => { const d = document.querySelector('.gs-detail'); return !!d && d.textContent.includes(t) && /Why it is not selected here/.test(d.textContent); }, withUrl.title, { timeout: 8000 });
+  ok((await hp.locator('.gs-detail a').first().getAttribute('href')) === withUrl.url, 'a Forecast event with a valid HTTPS source keeps its own source link in the fallback');
   await hidden.close();
 
   const nf = await browser.newContext({ viewport: { width: 1280, height: 800 } });

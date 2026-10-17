@@ -174,14 +174,17 @@
   // reason. It does not say the item is selected.
   function fallbackHtml(r) {
     var heading = r.type === 'forecast' ? 'Tracker event' : 'Feed item';
-    var link = r.url ? '<dt>Source</dt><dd><a href="' + esc(r.url) + '" target="_blank" rel="noopener noreferrer">Open the source</a></dd>' : '';
+    var facts = r.type === 'forecast'
+      ? field('ID', r.id) + field('Date', r.date) + field('Source', r.source) + field('Status', r.status)
+      : field('Date and source', r.sub) + field('Verification', r.status);
+    var link = r.url ? '<dt>Source link</dt><dd><a href="' + esc(r.url) + '" target="_blank" rel="noopener noreferrer">Open the source</a></dd>' : '';
     return '<section class="gs-detail" aria-label="Record detail"><h3>' + esc(heading) + '</h3>' +
-      '<p class="gs-dt-title">' + esc(r.title) + '</p><dl class="gs-dl">' + field('Date and source', r.sub) +
-      field('Verification', r.status) + '<dt>Why it is not selected here</dt><dd>' + esc(r.fallback) + '</dd>' + link + '</dl>' +
+      '<p class="gs-dt-title">' + esc(r.title) + '</p><dl class="gs-dl">' + facts +
+      '<dt>Why it is not selected here</dt><dd>' + esc(r.fallback) + '</dd>' + link + '</dl>' +
       '<button type="button" class="gs-more" data-back="1">Back to results</button></section>';
   }
   function showFallback(r, why) {
-    detailRec = { type: r.type, title: r.title, sub: r.sub, status: r.status, url: r.url, fallback: why };
+    detailRec = { type: r.type, title: r.title, sub: r.sub, id: r.id, date: r.date, source: r.source, status: r.status, url: r.url, fallback: why };
     render(input.value);
     status('"' + r.title + '" is shown in the results panel. It is not selected on the tracker.');
   }

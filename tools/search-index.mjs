@@ -55,6 +55,25 @@ export function plain(v) {
 }
 const parts = (...xs) => xs.map(plain).filter(Boolean).join(' ');
 
+// A Forecast event keeps its stable id, its date, its source label, its status and verification state, and its source URL
+// only when that is a valid HTTPS URL. Routing stays on the event's own row id.
+const httpsOnly = u => {
+  const s = plain(u);
+  return /^https:\/\/\S+$/.test(s) ? s : '';
+};
+export function forecastRecord(it) {
+  const iso = plain(it.date);
+  const when = /^\d{4}-\d{2}-\d{2}$/.test(iso)
+    ? new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
+    : iso;
+  const verification = plain(it.evidence_status) === 'VERIFIED' ? 'Checked' : 'Unverified';
+  return {
+    type: 'forecast', id: plain(it.id), title: plain(it.t), sub: parts(it.d, it.w), text: parts(it.id, it.t, it.d, it.what, it.hook, it.src),
+    route: '#forecast/tracker', rowId: plain(it.id),
+    date: when, source: plain(it.src), status: [plain(it.status), verification].filter(Boolean).join(' · '), url: httpsOnly(it.url),
+  };
+}
+
 export function claimRecord(c) {
   const text = plain(c.text), note = plain(c.note), tag = plain(c.tag), currency = plain(c.currency_check),
     locator = plain(c.locator), evidence = plain(c.evidence_phrase);
@@ -94,12 +113,7 @@ export function buildSearchIndex({
       route: `articles/${a.slug}.html`,
     });
   }
-  for (const it of items) {
-    records.push({
-      type: 'forecast', id: it.id, title: it.t, sub: parts(it.d, it.w), text: parts(it.t, it.d, it.what, it.hook, it.src),
-      route: '#forecast/tracker', rowId: it.id,
-    });
-  }
+  for (const it of items) records.push(forecastRecord(it));
   for (const m of zb.machines) {
     records.push({ type: 'machine', id: m.id, title: m.title, sub: m.id, text: parts(m.title, m.purpose), route: `#hacking/${m.id}` });
   }

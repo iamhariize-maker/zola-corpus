@@ -63,9 +63,11 @@ export function specificity(pattern) {
 }
 
 // Escapes of unreserved characters (RFC 3986 section 2.3) decode before matching, so /%62illtrack is /billtrack.
-// Other escapes are left as written.
+// Other escapes are kept as written, with uppercase hex. Unsupported forms are not guessed at beyond this.
 function plainEscapes(s) {
-  return s.replace(/%([0-9A-Fa-f]{2})/g, (m, h) => {
+  // Non-ASCII characters are percent-encoded as UTF-8 first, so a raw "café" and "caf%C3%A9" name the same path.
+  const ascii = s.replace(/[^\x00-\x7F]/gu, ch => encodeURIComponent(ch));
+  return ascii.replace(/%([0-9A-Fa-f]{2})/g, (m, h) => {
     const c = String.fromCharCode(parseInt(h, 16));
     return /[A-Za-z0-9._~-]/.test(c) ? c : '%' + h.toUpperCase();
   });

@@ -51,6 +51,8 @@ const prsRobots = parseRobots('User-agent: Googlebot\nDisallow: /\n\nUser-agent:
 ok(allowed(prsRobots, '/billtrack'), 'the * group is used, not another agent');
 ok(!allowed(parseRobots('User-agent: *\nDisallow: /billtrack'), '/%62illtrack'), 'a percent-escaped unreserved character cannot bypass a disallow (Codex bypass)');
 ok(!allowed(parseRobots('User-agent: *\nDisallow: /a$b\nAllow: /a*b'), '/a$b'), 'a non-terminal $ is literal, so the longer Disallow beats the Allow (Codex bypass)');
+ok(!allowed(parseRobots('User-agent: *\nDisallow: /caf\u00e9\n'), '/caf%C3%A9'), 'a raw non-ASCII pattern blocks its percent-encoded path (Codex bypass)');
+ok(!allowed(parseRobots('User-agent: *\nDisallow: /caf%c3%a9\n'), '/café'), 'a lowercase escaped pattern blocks the raw non-ASCII path');
 ok(!allowed(parseRobots('User-agent: *\nDisallow: /billtrack'), '/billtrack-archive'), 'a disallow matches as a prefix, so an archive under it is blocked (RFC 9309)');
 ok(!allowed(prsRobots, '/search/x'), '/search/ is blocked for *');
 ok(allowed(parseRobots(''), '/anything'), 'an empty robots.txt allows everything');

@@ -11,15 +11,62 @@ import {
 } from './upsc-taxonomy.mjs';
 
 const documentUrl = new URL('../data/upsc-article-map.json', import.meta.url);
-export const ARTICLE_SYLLABUS_DOCUMENT = JSON.parse(readFileSync(documentUrl, 'utf8'));
+const fragmentUrl = new URL('../data/upsc-article-map-oct17.json', import.meta.url);
+export const ARTICLE_SYLLABUS_BASE_DOCUMENT = JSON.parse(readFileSync(documentUrl, 'utf8'));
+export const ARTICLE_SYLLABUS_FRAGMENT_DOCUMENT = JSON.parse(readFileSync(fragmentUrl, 'utf8'));
 export const ARTICLE_SYLLABUS_SCHEMA = 'zola-article-syllabus-map/1';
-export const ARTICLE_SYLLABUS_STATUS = ARTICLE_SYLLABUS_DOCUMENT.status;
-export const ARTICLE_SYLLABUS_SOURCE = ARTICLE_SYLLABUS_DOCUMENT.syllabus_source;
-export const ARTICLE_SYLLABUS_MAP = ARTICLE_SYLLABUS_DOCUMENT.articles;
+export const ARTICLE_SYLLABUS_FRAGMENT_SCHEMA = 'zola-article-syllabus-map-fragment/1';
 
 const hasOwn = (object, key) => Object.hasOwn(object, key);
 const isRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const FORBIDDEN_ALGORITHM_FIELD = /(?:score|rank|weight|probability)/i;
+
+/** Compose metadata-only additions into the canonical full sidecar. */
+export function composeArticleSyllabusDocument(baseDocument, fragments = []) {
+  if (!isRecord(baseDocument) || baseDocument.schema !== ARTICLE_SYLLABUS_SCHEMA || !isRecord(baseDocument.articles)) {
+    throw new TypeError('base article syllabus document must use the full sidecar schema');
+  }
+  if (!Array.isArray(fragments)) throw new TypeError('article syllabus fragments must be an array');
+
+  const articles = { ...baseDocument.articles };
+  for (const fragment of fragments) {
+    if (!isRecord(fragment)) throw new TypeError('article syllabus fragment must be an object');
+    const extraKeys = Object.keys(fragment).filter(key => !['schema', 'status', 'articles'].includes(key));
+    if (extraKeys.length) throw new TypeError(`article syllabus fragment has unexpected fields: ${extraKeys.join(', ')}`);
+    if (fragment.schema !== ARTICLE_SYLLABUS_FRAGMENT_SCHEMA) {
+      throw new TypeError(`article syllabus fragment schema must be ${ARTICLE_SYLLABUS_FRAGMENT_SCHEMA}`);
+    }
+    if (fragment.status !== baseDocument.status || fragment.status !== 'draft-unverified') {
+      throw new TypeError('article syllabus fragment status must match the draft-unverified base document');
+    }
+    if (!isRecord(fragment.articles) || !Object.keys(fragment.articles).length) {
+      throw new TypeError('article syllabus fragment articles must be a nonempty object');
+    }
+    for (const [slug, entry] of Object.entries(fragment.articles)) {
+      if (hasOwn(articles, slug)) throw new TypeError(`article syllabus fragment duplicates slug ${slug}`);
+      Object.defineProperty(articles, slug, {
+        value: entry,
+        enumerable: true,
+        writable: true,
+        configurable: true,
+      });
+    }
+  }
+  return { ...baseDocument, articles };
+}
+
+// Keep the live sidecar on its current exact slug set until every corresponding
+// article record has been imported. A partial import therefore stays invalid under
+// the normal exact-set validator instead of rendering an incomplete extension.
+const fragmentSlugs = Object.keys(ARTICLE_SYLLABUS_FRAGMENT_DOCUMENT.articles ?? {});
+const currentArticleSlugs = new Set(ARTICLES.map(article => article.slug));
+const hasAllExtensionArticles = fragmentSlugs.length > 0 && fragmentSlugs.every(slug => currentArticleSlugs.has(slug));
+export const ARTICLE_SYLLABUS_DOCUMENT = hasAllExtensionArticles
+  ? composeArticleSyllabusDocument(ARTICLE_SYLLABUS_BASE_DOCUMENT, [ARTICLE_SYLLABUS_FRAGMENT_DOCUMENT])
+  : ARTICLE_SYLLABUS_BASE_DOCUMENT;
+export const ARTICLE_SYLLABUS_STATUS = ARTICLE_SYLLABUS_DOCUMENT.status;
+export const ARTICLE_SYLLABUS_SOURCE = ARTICLE_SYLLABUS_DOCUMENT.syllabus_source;
+export const ARTICLE_SYLLABUS_MAP = ARTICLE_SYLLABUS_DOCUMENT.articles;
 
 function validateAllowedKeys(record, allowed, label, problems) {
   for (const key of Object.keys(record)) {
@@ -181,12 +228,13 @@ export function validateArticleSyllabusMap({
 
 /** Return a metadata-only view whose papers are derived from the controlled taxonomy. */
 export function getArticleSyllabus(slug, {
+  articles = ARTICLES,
   document = ARTICLE_SYLLABUS_DOCUMENT,
   topics = TOPICS,
   papers = PAPERS,
 } = {}) {
   if (!isRecord(document) || !isRecord(document.articles)) return null;
-  if (validateArticleSyllabusMap({ document, topics, papers }).length) return null;
+  if (validateArticleSyllabusMap({ articles, document, topics, papers }).length) return null;
   const articleMap = document.articles;
   const topicMap = isRecord(topics) ? topics : Object.create(null);
   const paperMap = isRecord(papers) ? papers : Object.create(null);

@@ -50,6 +50,13 @@ ok(!numberGate('₹(99) crore', '₹53 crore').ok, 'a currency with brackets fai
 ok(!numberGate('298 votes cast in one long list of words that continue for a while and the final word is favour.', '298 votes cast in one long list of words that continue for a while and the final word is opposition.').ok, 'a direction word late in the clause is still compared (Sol bypass)');
 ok(numberGate('a total of 1,000 lakh', 'the total was 1000 lakh').ok, 'digit grouping with commas is ignored');
 ok(numberGate('in 2026', 'in 2026').ok && !numberGate('in 2027', 'in 2026').ok, 'years are checked like other numbers');
+ok(!numberGate('- 5 per cent', '5 per cent').ok, 'a detached minus sign before a value fails closed (Sol bypass)');
+ok(!numberGate('USD about 5 million', 'INR about 5 million').ok, 'a currency kept across "about" is compared (Sol bypass)');
+ok(numberGate('USD about 5 million', 'USD about 5 million').ok, 'the same currency across "about" passes');
+ok(!numberGate('₹९९ crore', '₹५३ crore').ok, 'Devanagari digits fail closed, not ignored (Sol bypass)');
+ok(numberGate('5. The answer is yes.', '5. The answer is no.').ok, 'a sentence after a number that ends in a period is not compared (Sol bypass)');
+ok(numberGate('5 per cent." The answer is yes.', '5 per cent." The answer is no.').ok, 'a number before a closing quote stops at its clause end (Sol bypass)');
+ok(!numberGate('5 per cent is the rate, not 5 per cent. Votes: 298 in favour', '5 per cent is the rate, not 5 per cent. Votes: 298 against').ok, 'a number after a sentence break is compared with its own clause, not skipped');
 
 console.log('Source gates: approval (signed, named, bound, and timely)');
 const draft = 'Our note on the repo rate.';

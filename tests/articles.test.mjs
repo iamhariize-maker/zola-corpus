@@ -125,6 +125,13 @@ ok(predicts('There is no doubt this is a guaranteed question.') === true, 'rejec
 ok(predicts('This does not predict how many questions will be asked.') === false, 'accepts: This does not predict how many questions will be asked.');
 ok(predicts('The article does not claim that this topic is guaranteed to be asked.') === false, 'accepts: The article does not claim that this topic is guaranteed to be asked.');
 ok(predicts('This topic is not guaranteed to be asked.') === false, 'accepts: This topic is not guaranteed to be asked.');
+ok(predicts('No question is expected and a topic will appear in Prelims.') === true, 'rejects: No question is expected and a topic will appear in Prelims. (a later assertion after and)');
+ok(predicts('We do not predict which questions will be asked and offer guaranteed questions.') === true, 'rejects: We do not predict which questions will be asked and offer guaranteed questions. (negation does not reach a second predicate)');
+ok(predicts('The note does not claim that this topic will appear in UPSC and the topic is guaranteed to be asked.') === true, 'rejects: The note does not claim that this topic will appear in UPSC and the topic is guaranteed to be asked.');
+ok(predicts('This cannot predict which questions will be asked.') === false, 'accepts: This cannot predict which questions will be asked. (cannot is a negation)');
+ok(predicts('Questions for candidates will be asked in Prelims.') === true, 'rejects: Questions for candidates will be asked in Prelims. (candidates after for is a modifier)');
+ok(predicts('This does not predict which questions and topics will be asked.') === false, 'accepts: This does not predict which questions and topics will be asked. (coordinated object stays negated)');
+ok(predicts('Candidates are likely to appear in Prelims.') === false, 'accepts: Candidates are likely to appear in Prelims. (attendance)');
 const nonArrayDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 nonArrayDoc.articles['nobel-peace-2026'].mappings = {};
 let nonArrayThrew = false, nonArrayProblems = [];

@@ -27,7 +27,8 @@ const KINDS = ['Official', 'News report', 'Government', 'Research'];
 // (a candidate or applicant, or a question, topic or other item), its predicate (an appearance, a being-asked, or an exam
 // preparation claim) and its negation. A negation counts only when it governs the cue: a not/no/never directly before it, a
 // no or none subject, or a not-claim/not-predict whose complement starts the clause. "No doubt" is an idiom, not a
-// negation, and a coordinating "and" starts a new clause only before a subject. Every cue in every clause is checked.
+// negation, and "cannot" is a negation. A coordinating "and" starts a new clause before a subject or a predicate verb,
+// and before a determiner once the clause already has a finite predicate. Every cue in every clause is checked.
 const EXAM_WORDS = new Set(['prelims', 'prelim', 'mains', 'exam', 'exams', 'examination', 'examinations', 'paper', 'papers']);
 const NON_EXAM_AFTER_UPSC = new Set(['calendar', 'calendars', 'website', 'notice', 'notices', 'timetable', 'portal', 'office', 'chairman', 'member', 'members', 'circular', 'advertisement', 'notification']);
 const PERSON_WORDS = new Set(['candidate', 'candidates', 'applicant', 'applicants', 'aspirant', 'aspirants', 'examinee', 'examinees', 'student', 'students', 'individual', 'individuals', 'people', 'person', 'persons']);
@@ -45,11 +46,16 @@ const DET_WORDS = new Set(['a', 'an', 'the', 'this', 'these', 'those', 'some', '
 const REPORTING_WORDS = new Set(['predict', 'claim', 'claims', 'claimed', 'say', 'says', 'said', 'state', 'states', 'stated', 'suggest', 'suggests', 'imply', 'implies', 'direct', 'directs', 'mention', 'mentions', 'mentioned']);
 const COMPLEMENT_START = new Set(['that', 'which', 'what', 'how', 'whether', 'any', 'all', 'these', 'this', 'some', 'none', 'no', 'many', 'those', 'the', 'each', 'every']);
 const SUBJECT_START_FOR_AND = new Set(['this', 'it', 'these', 'that', 'they', 'there', 'none', 'no', 'candidates', 'applicants', 'students']);
+// A bare predicate verb after "and" begins a new predicate ("...will be asked and offer guaranteed questions").
+const VERB_AFTER_AND = new Set(['be', 'is', 'are', 'was', 'were', 'will', 'would', 'can', 'could', 'may', 'might', 'must', 'shall', 'should', 'has', 'have', 'had', 'appear', 'appears', 'come', 'comes', 'expect', 'expects', 'offer', 'offers', 'raise', 'raises', 'cover', 'covers', 'discuss', 'discusses', 'include', 'includes', 'need', 'needs', 'require', 'requires', 'draw', 'draws', 'see', 'sees', 'mention', 'mentions']);
+// A preposition before a person word makes it a modifier, not the subject ("questions for candidates").
+const PREP_IN_SUBJECT = new Set(['for', 'of', 'in', 'to', 'from', 'by', 'with', 'on', 'at', 'among', 'about']);
 const CONTRAST_WORDS = new Set(['but', 'though', 'while', 'whereas', 'yet']);
 const CLAUSE_PUNCT = new Set(['.', ';', ':', '!', '?', ',']);
 
 function tokenizeSyllabus(text) {
   const expanded = String(text)
+    .replace(/\bcannot\b/gi, 'can not')
     .replace(/\bwon't\b/gi, 'will not')
     .replace(/\bcan't\b/gi, 'can not')
     .replace(/([a-z])n't\b/gi, '$1 not');
@@ -63,8 +69,12 @@ function tokenizeSyllabus(text) {
   return out;
 }
 
-function startsClause(tokens, i) {
-  return SUBJECT_START_FOR_AND.has(tokens[i + 1]);
+// "questions and topics" keeps its object, but "...appear and a topic will appear" splits: a determiner after "and"
+// starts a clause only when the clause so far already has a finite verb.
+function startsClause(tokens, i, cur) {
+  const next = tokens[i + 1];
+  if (SUBJECT_START_FOR_AND.has(next) || VERB_AFTER_AND.has(next)) return true;
+  return DET_WORDS.has(next) && cur.some(t => AUX_WORDS.has(t));
 }
 
 // Splits into clauses. A clause after a reporting verb records whether that verb is negated and its complement starts a
@@ -81,7 +91,7 @@ function splitClauses(tokens) {
   for (let i = 0; i < tokens.length; i++) {
     const t = tokens[i];
     if (CLAUSE_PUNCT.has(t) || CONTRAST_WORDS.has(t)) { breakAt(false); continue; }
-    if (t === 'and' && startsClause(tokens, i)) { breakAt(false); continue; }
+    if (t === 'and' && startsClause(tokens, i, cur)) { breakAt(false); continue; }
     if (REPORTING_WORDS.has(t)) {
       const neg = tokens[i - 1] === 'not' || (['does', 'do', 'did'].includes(tokens[i - 1]) && tokens[i - 2] === 'not');
       const j = tokens[i + 1] === 'that' ? i + 2 : i + 1;
@@ -147,10 +157,15 @@ function cuesIn(tokens) {
   return out;
 }
 
+function personSubject(subject) {
+  const i = subject.findIndex(t => PERSON_WORDS.has(t));
+  return i >= 0 && !subject.slice(0, i).some(t => PREP_IN_SUBJECT.has(t));
+}
+
 function clausePredicts(tokens, reportNeg) {
   const aux = tokens.findIndex(t => AUX_WORDS.has(t));
   const subject = aux < 0 ? tokens : tokens.slice(0, aux);
-  const person = subject.some(t => PERSON_WORDS.has(t));
+  const person = personSubject(subject);
   const subjectNegated = NEG_SUBJECT.has(tokens[0]);
   for (const cue of cuesIn(tokens)) {
     if (cue.neg || subjectNegated || reportNeg) continue;

@@ -67,10 +67,17 @@ export function similarityGate(draft, reference, limits = SIMILARITY_LIMITS) {
 // prefix of the reference's tail, so "298 votes in favour" is not covered by "298 votes in opposition".
 // Supported forms: an optional currency (₹ Rs INR $ USD), an optional sign (ASCII or Unicode minus), a number with
 // optional decimals, a range written a-b or a–b, an ISO date, and a trailing % (read as "per cent").
-// Any other token that contains a digit (for example 10^12, 2nd, €99, ~99) is reported as unsupported, so the gate fails
-// closed and a person must check it. This is not a semantic verifier: it compares numbers and the words of their clause,
-// and it cannot check meaning that sits outside the number's clause.
+// Any other token that contains a digit (ASCII or any Unicode decimal digit, for example 10^12, 2nd, €99, ~99, ₹९९) and a
+// lone sign before a value ("- 5") are reported as unsupported, so the gate fails closed and a person must check them. This
+// is not a semantic verifier: it compares numbers and the words of their clause, and it cannot check meaning that sits
+// outside the number's clause.
 const CURRENCY_WORDS = { '₹': 'INR', rs: 'INR', 'rs.': 'INR', inr: 'INR', $: 'USD', usd: 'USD', '€': 'EUR', '£': 'GBP', '¥': 'JPY' };
+// Words that keep a pending currency: "USD about 5 million" is still a dollar figure.
+const QUALIFIER_WORDS = new Set(['about', 'approximately', 'around', 'nearly', 'roughly', 'almost', 'circa', 'over', 'under', 'more', 'less', 'than']);
+// Clause end: sentence punctuation, optionally followed by closing quotes or brackets (5." The answer...).
+const CLAUSE_END = /[.;:!?,][)\]"'”’]*$/;
+// Any decimal digit, ASCII or not. A token with one that the gate does not parse fails closed.
+const hasDigit = s => /\p{Nd}/u.test(s);
 function numberItems(text) {
   const norm = String(text)
     .replace(/−/g, '-')
@@ -81,10 +88,19 @@ function numberItems(text) {
   let pendingCur = null;
   toks.forEach((raw, i) => {
     const lead = raw.replace(/^[(\[“"‘']+/, '');
-    if (!/\d/.test(lead) && CURRENCY_WORDS[lead.toLowerCase()] !== undefined) {
-      pendingCur = CURRENCY_WORDS[lead.toLowerCase()];
+    const word = lead.toLowerCase();
+    // A lone sign before a value ("- 5", "- USD 5") is a sign the gate cannot attach, so it fails closed.
+    const next = (toks[i + 1] ?? '').replace(/^[(\[“"‘']+/, '').toLowerCase();
+    if (/^[+\-–]$/.test(raw) && (hasDigit(next) || Object.hasOwn(CURRENCY_WORDS, next) || QUALIFIER_WORDS.has(next))) {
+      items.push({ unsupported: raw });
+      pendingCur = null;
       return;
     }
+    if (!hasDigit(lead) && Object.hasOwn(CURRENCY_WORDS, word)) {
+      pendingCur = CURRENCY_WORDS[word];
+      return;
+    }
+    if (QUALIFIER_WORDS.has(word)) return;
     let cur = pendingCur;
     let rest = lead;
     const attached = rest.match(/^(₹|\$|€|£|¥|Rs\.?|INR|USD)(?=[+-]?\d)/i);
@@ -95,7 +111,7 @@ function numberItems(text) {
     pendingCur = null;
     // Any other token with a digit (€99, ~99, ₹(99), 2nd) is a form this gate does not parse, so it fails closed.
     if (!/^[+-]?\d/.test(rest)) {
-      if (/\d/.test(raw)) items.push({ unsupported: raw });
+      if (hasDigit(raw)) items.push({ unsupported: raw });
       return;
     }
     let body = rest.replace(/[.,;:!?"'”’]+$/, '').replace(/–/g, '-');
@@ -105,13 +121,14 @@ function numberItems(text) {
       items.push({ unsupported: raw });
       return;
     }
-    // The tail runs to the next clause break with no word cap, so a direction word late in a clause is still compared.
+    // The tail runs to the number's clause end with no word cap, so a direction word late in a clause is still compared.
+    // A number that ends its own clause ("5." or "5.\"") has an empty tail, so the next sentence is not compared.
     const tail = pct ? ['per', 'cent'] : [];
-    for (let j = i + 1; j < toks.length; j++) {
+    for (let j = i + 1; j < toks.length && !CLAUSE_END.test(raw); j++) {
       const w = toks[j];
-      const word = w.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
-      if (word) tail.push(word);
-      if (/[.;:!?,]$/.test(w)) break;
+      const tailWord = w.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
+      if (tailWord) tail.push(tailWord);
+      if (CLAUSE_END.test(w)) break;
     }
     items.push({ key: (cur || '') + body, tail });
   });

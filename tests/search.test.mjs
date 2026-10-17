@@ -226,6 +226,47 @@ try {
   ok(!/is listed in the feed box/.test(await fbp.textContent('#gsearch-status')), 'the fallback never says the item is listed in the box');
   await fb.close();
 
+  // Forced not-shown paths: the tracker's Forecast panel is hidden, so the row cannot be revealed; and a feed event on a
+  // page with no feed box cannot be selected. Both keep the title and reason in the panel, and neither claims success.
+  const hidden = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  const hp = await hidden.newPage();
+  await hp.goto(base + 'index.html', { waitUntil: 'load' });
+  await hp.waitForSelector('#gsearch');
+  await hp.addStyleTag({ content: '#catA{display:none !important}' });
+  await showResults(hp, 'Joint Committee', 'Joint Committee');
+  await hp.evaluate(() => {
+    const b = [...document.querySelectorAll('#gsearch-res li button')].find(x => x.firstChild && /Joint Committee/.test(x.firstChild.textContent));
+    if (b) b.click();
+  });
+  await hp.waitForSelector('.gs-detail', { timeout: 8000 });
+  const hpText = await hp.textContent('.gs-detail');
+  ok(/Tracker event/.test(hpText) && /does not show this event/.test(hpText) && /Joint Committee/.test(hpText), 'a Forecast event the tracker cannot show keeps its title and the reason in the panel');
+  ok(!/Showing/.test(await hp.textContent('#gsearch-status')), 'a Forecast event that cannot be shown never claims it is showing');
+  await hidden.close();
+
+  const nf = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  await nf.route(/raw\.githubusercontent\.com/, r => r.abort());
+  const nfp = await nf.newPage();
+  await nfp.goto(base + 'index.html', { waitUntil: 'load' });
+  await nfp.waitForFunction(() => !!window.ZOLA_LIVE);
+  await nfp.evaluate(() => {
+    window.ZOLA_LIVE.events = function () {
+      return [{ id: 'EV-NOBOX-1', date: '2026-10-15', title: 'No box test event', subject: 'Polity', hook: '', status: 'UNVERIFIED',
+        machines: [], source: { url: 'https://example.test/nobox', title: 'No box source' } }];
+    };
+    window.dispatchEvent(new CustomEvent('zola-live', { detail: { state: 'live' } }));
+  });
+  await showResults(nfp, 'No box test event', 'No box test event');
+  await nfp.evaluate(() => {
+    const b = [...document.querySelectorAll('#gsearch-res li button')].find(x => x.firstChild && x.firstChild.textContent === 'No box test event');
+    if (b) b.click();
+  });
+  await nfp.waitForSelector('.gs-detail', { timeout: 8000 });
+  const nfText = await nfp.textContent('.gs-detail');
+  ok(/does not show the feed box/.test(nfText) && /Feed item/.test(nfText) && (await nfp.locator('.gs-detail a').count()) === 1, 'a feed event with no feed box keeps its title and source in the panel');
+  ok((await nfp.locator('.gs-detail a').first().getAttribute('href')) === 'https://example.test/nobox', 'the fallback source link is the item’s own source');
+  await nf.close();
+
   // A cached feed with the network blocked: the saved copy is searched, and the footer says it is a saved copy.
   const cache = await browser.newContext({ viewport: { width: 1280, height: 800 } });
   await cache.addInitScript(f => {

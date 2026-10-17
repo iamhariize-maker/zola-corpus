@@ -35,6 +35,15 @@ ok(!numberGate('298 votes in favour', '298 votes against; 230 votes in favour').
 ok(!numberGate('298 votes in favour', '298 votes in opposition; 230 votes in favour').ok, 'a vote direction reversed by a different word is flagged (Sol bypass)');
 ok(!numberGate('₹99 lakh crore', '₹53.47 lakh crore').ok, 'a currency amount with a different value is flagged (Sol bypass)');
 ok(!numberGate('-5 per cent', '5 per cent').ok, 'a number whose sign differs is flagged (Sol bypass)');
+ok(!numberGate('−5 per cent', '5 per cent').ok, 'a Unicode minus differs from a plain number (Sol bypass)');
+ok(!numberGate('2026-10-17', '2026-09-01').ok, 'an ISO date with a different day and month is flagged (Sol bypass)');
+ok(!numberGate('25–37 judges', '25–33 judges').ok, 'a range with a different upper bound is flagged (Sol bypass)');
+ok(!numberGate('5% growth', '5 growth').ok, 'a percent unit omitted from the reference is flagged (Sol bypass)');
+ok(numberGate('5% growth', '5% growth').ok, 'the same percent figure with the same unit passes');
+ok(!numberGate('₹5 lakh crore', '$5 lakh crore').ok, 'a currency change with the same digit is flagged (Codex bypass)');
+ok(!numberGate('298 votes cast in favour', '298 votes cast in opposition').ok, 'a direction word beyond the old window is flagged (Codex bypass)');
+ok(!numberGate('10^12 days', '10 days').ok, 'an unsupported number form fails closed for review (Codex)');
+ok(numberGate('(5 per cent)', 'the rate is 5 per cent.').ok, 'a number inside brackets with the same unit passes');
 ok(numberGate('a total of 1,000 lakh', 'the total was 1000 lakh').ok, 'digit grouping with commas is ignored');
 ok(numberGate('in 2026', 'in 2026').ok && !numberGate('in 2027', 'in 2026').ok, 'years are checked like other numbers');
 

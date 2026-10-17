@@ -62,29 +62,69 @@ export function similarityGate(draft, reference, limits = SIMILARITY_LIMITS) {
 
 // Each number is checked together with the two words after it, so "298 votes in favour" is not explained by
 // "298 votes against". Commas inside a number are ignored (1,000 = 1000).
+// A number is parsed into a key (currency, sign, value or range or ISO date) and a tail of the words that follow it up to
+// the next clause break. A draft number is covered only when the reference has the same key and the draft's tail is a
+// prefix of the reference's tail, so "298 votes in favour" is not covered by "298 votes in opposition".
+// Supported forms: an optional currency (₹ Rs INR $ USD), an optional sign (ASCII or Unicode minus), a number with
+// optional decimals, a range written a-b or a–b, an ISO date, and a trailing % (read as "per cent").
+// Any other token that starts like a number (for example 10^12, 2nd) is reported as unsupported, so the gate fails
+// closed and a person must check it.
+const CURRENCY_WORDS = { '₹': 'INR', rs: 'INR', 'rs.': 'INR', inr: 'INR', $: 'USD', usd: 'USD' };
 function numberItems(text) {
-  const clean = String(text).replace(/(\d),(?=\d{3}\b)/g, '$1');
-  const toks = clean.split(/\s+/);
-  const out = [];
-  toks.forEach((t, i) => {
-    // A currency symbol or dash before the number is stripped; a minus sign stays part of the number.
-    const m = t.replace(/^[^\d\s+-]+/, '').match(/^([+-]?\d+(?:\.\d+)?)/);
-    if (!m) return;
-    const words = toks.slice(i + 1, i + 4).map(w => w.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '')).filter(Boolean).slice(0, 3);
-    out.push({ num: m[1], words });
+  const norm = String(text)
+    .replace(/−/g, '-')
+    .replace(/ /g, ' ')
+    .replace(/(\d),(?=\d{3}\b)/g, '$1');
+  const toks = norm.split(/\s+/).filter(Boolean);
+  const items = [];
+  let pendingCur = null;
+  toks.forEach((raw, i) => {
+    const lead = raw.replace(/^[(\[“"‘']+/, '');
+    if (!/\d/.test(lead) && CURRENCY_WORDS[lead.toLowerCase()] !== undefined) {
+      pendingCur = CURRENCY_WORDS[lead.toLowerCase()];
+      return;
+    }
+    let cur = pendingCur;
+    let rest = lead;
+    const attached = rest.match(/^(₹|\$|Rs\.?|INR|USD)(?=[+-]?\d)/i);
+    if (attached) {
+      cur = CURRENCY_WORDS[attached[1].toLowerCase()] ?? cur;
+      rest = rest.slice(attached[0].length);
+    }
+    pendingCur = null;
+    if (!/^[+-]?\d/.test(rest)) return;
+    let body = rest.replace(/[.,;:!?"'”’]+$/, '').replace(/–/g, '-');
+    const pct = body.endsWith('%');
+    if (pct) body = body.slice(0, -1);
+    if (!/^[+-]?\d[\d.\-/()]*$/.test(body)) {
+      items.push({ unsupported: raw });
+      return;
+    }
+    const tail = pct ? ['per', 'cent'] : [];
+    for (let j = i + 1; j < toks.length && tail.length < 12; j++) {
+      const w = toks[j];
+      const word = w.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
+      if (word) tail.push(word);
+      if (/[.;:!?,]$/.test(w)) break;
+    }
+    items.push({ key: (cur || '') + body, tail });
   });
-  return out;
-}
-
-// A draft number is covered when the reference has the same number followed by the same words, as far as the draft goes.
-function covered(item, refItems) {
-  return refItems.some(r => r.num === item.num && item.words.every((w, k) => r.words[k] === w));
+  return items;
 }
 
 export function numberGate(draft, reference) {
-  const refItems = numberItems(reference);
-  const missing = [...new Set(numberItems(draft).filter(d => !covered(d, refItems)).map(d => [d.num, ...d.words].join(' ')))];
-  return { ok: missing.length === 0, missing };
+  const refItems = numberItems(reference).filter(r => r.key !== undefined);
+  const missing = [];
+  for (const d of numberItems(draft)) {
+    if (d.unsupported !== undefined) {
+      missing.push(`unsupported number form: ${d.unsupported}`);
+      continue;
+    }
+    const covered = refItems.some(r => r.key === d.key && d.tail.every((w, k) => r.tail[k] === w));
+    if (!covered) missing.push([d.key, ...d.tail].join(' '));
+  }
+  const unique = [...new Set(missing)];
+  return { ok: unique.length === 0, missing: unique };
 }
 
 // The approval must be signed by a listed approver with the shared secret, and name this exact draft and these exact

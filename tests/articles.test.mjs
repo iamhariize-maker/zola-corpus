@@ -68,6 +68,9 @@ ok(reasonProblems('These are not expected questions. This is guaranteed to be as
 ok(reasonProblems('These links are study aids, not expected questions.').length === 0, 'a study-aid disclaimer that negates the cue is accepted');
 ok(reasonProblems('This does not predict which questions will be asked.').length === 0, 'a statement that does not predict questions is accepted');
 ok(reasonProblems('The topic is unlikely to be asked.').length === 0, 'unlikely to be asked is accepted (not the substring likely)');
+ok(reasonProblems('This topic is not the only issue; it is guaranteed to be asked.').some(p => /predicts questions/.test(p)), 'a negation in another clause does not cancel a guaranteed prediction');
+ok(reasonProblems('This is not a forecast, but likely to be asked in Prelims.').some(p => /predicts questions/.test(p)), 'a negation before a contrast does not cancel a likely prediction after it');
+ok(reasonProblems('This topic is not guaranteed to be asked.').length === 0, 'a directly negated guarantee is accepted');
 const nonArrayDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 nonArrayDoc.articles['nobel-peace-2026'].mappings = {};
 let nonArrayThrew = false, nonArrayProblems = [];

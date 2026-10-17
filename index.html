@@ -4047,7 +4047,7 @@ var top=d.createElement('button');top.type='button';top.className='z-top';top.hi
 top.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 12 6-6 6 6M12 6v13"/></svg><span>Back to top</span>';d.body.appendChild(top);
 function target(){try{if(frame&&!frame.hidden&&frame.contentDocument)return frame.contentWindow}catch(e){}return window}
 var scheduled=false;
-function update(){scheduled=false;var w=target(),s=w.document.scrollingElement||w.document.documentElement,y=s.scrollTop;top.hidden=y<650;
+function update(){scheduled=false;var w=target(),s=w.document.scrollingElement||w.document.documentElement;if(!s){top.hidden=true;return}var y=s.scrollTop;top.hidden=y<650; // the frame's document can be replaced mid-scroll; read nothing from a missing one
  if(w!==window){var h=d.querySelector('.hdr'),max=s.scrollHeight-w.innerHeight;if(h)h.style.setProperty('--zprog',max>60?Math.min(1,y/max).toFixed(4):'0')}
 }
 function queue(){if(!scheduled){scheduled=true;requestAnimationFrame(update)}}

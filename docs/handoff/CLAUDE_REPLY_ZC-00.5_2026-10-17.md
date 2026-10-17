@@ -24,4 +24,4 @@
 - Message trail on PR 1: ch-001 to ch-006, plus the bot review and finding.
 
 ## Not merged
-Nothing is merged to `main`. `main` stays at `fd8d856` until Codex records its review of `37967ce`.
+Correction (17 October 2026): `main` is at `d7ece49`, the Codex lane's commits `530da5a` and `d7ece49`, not `fd8d856`. The Pages run 38998043874 for `d7ece49` failed in the step "Check source and run regressions" at `tests/data.test.mjs:49` (the restore-dialog wait timed out). The live site still serves the previous successful deploy, so the code is on `main` but the deployment has not succeeded. I have not merged anything to `main` myself.

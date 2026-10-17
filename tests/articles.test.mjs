@@ -83,6 +83,8 @@ ok(predicts('This is not only a guaranteed question.'), '"not only" does not dir
 ok(predicts('This will appear in Prelims.'), 'will appear in Prelims is a prediction');
 ok(!predicts('Rights guaranteed by Article 19 raise constitutional questions.'), 'a guarantee and an unrelated questions mention in one clause are accepted');
 ok(!predicts('The notice will appear in the Gazette.'), 'will appear in the Gazette is accepted (not exam wording)');
+ok(predicts('This does not predict which questions will be asked and this is guaranteed to be asked.'), 'does not predict does not exempt a later guarantee in the same clause');
+ok(!predicts('This does not predict which questions will be asked.'), 'does not predict which questions will be asked is accepted');
 const nonArrayDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 nonArrayDoc.articles['nobel-peace-2026'].mappings = {};
 let nonArrayThrew = false, nonArrayProblems = [];

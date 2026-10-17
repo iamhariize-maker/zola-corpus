@@ -3588,6 +3588,12 @@ addEventListener('resize',update);addEventListener('hashchange',function(){close
 if(window.ResizeObserver)new ResizeObserver(update).observe(strip);update();
 })();
 </script>
+<style id="zarticles">
+.foot .zart{display:inline-block;margin-top:10px;min-height:40px;line-height:40px;color:var(--ink,inherit);text-decoration:underline;text-underline-offset:3px}
+</style>
+<script>// Study articles: one footer link to the static notes in articles/. Plain link; no requests, no data stored.
+(function(){try{var f=document.querySelector('footer.foot');if(!f||document.getElementById('zart-link'))return;var a=document.createElement('a');a.id='zart-link';a.className='zart';a.href='articles/';a.textContent='Study articles on recent events';f.appendChild(document.createElement('br'));f.appendChild(a);}catch(e){}})();
+</script>
 <style id="zstudio">
 /* Zola Studio: editorial hierarchy, quiet colour and precise interaction. */
 :root{

@@ -56,8 +56,8 @@ export const CURRENT_ARTICLES = [
       'Act No. 10 of 2026, assented to on 31 July 2026. It amends the Public Examinations (Prevention of Unfair Means) Act, 2024 (Gazette text, as transcribed by a non-government site; the e-Gazette PDF was not reachable from the build environment).',
       'The Act amends section 12 so that investigation can be handed to a Special Task Force that the Central Government constitutes by notification. Where a Special Task Force is constituted, only it investigates.',
       'Investigations must be completed within two months, counted from the date of the information (or the reference or notification to the Central Investigating Agency or the Special Task Force).',
-      'Each State and Union Territory designates a Special Fast Track Court, after consulting the High Court Chief Justice. Trials must be completed within three months of the chargesheet being filed, or, for an already-pending transferred case, of its receipt by the designated court.',
-      'Appeals from these courts go to a bench of two High Court judges.',
+      'Each State Government and Union Territory Administration, after consulting the Chief Justice of the High Court, designates a Court of Session as a Special Fast Track Court, by notification. Trials proceed day-to-day, and Special Public Prosecutors are appointed for these courts. Trials must be completed within three months of the chargesheet being filed, or, for an already-pending transferred case, of its receipt by the designated court.',
+      'Appeals lie to the High Court against a judgment, sentence or order of these courts that is not interlocutory, and are heard by a bench of two High Court judges. Appeals against bail orders are separate. An appeal is filed within thirty days, which the High Court may extend for sufficient cause, but no appeal is entertained after ninety days. It is disposed of within three months as far as possible.',
       'The penalties are revised. The figures in the bill as introduced are in the PRS summary. Check the enacted sections 10 to 12 for the final numbers.',
     ],
     sections: [
@@ -185,7 +185,7 @@ export const CURRENT_ARTICLES = [
       'Inserts section 9D. A State levy on mineral rights or mineral-bearing land, whether based on quantity, value or royalty, is allowed only under conditions the Central Government prescribes.',
       'Section 9D deems invalid any such levy that had not been deposited with the State Government or recovered by it before the Act\'s commencement. Amounts already deposited or recovered are not refundable.',
       'Section 13(2) is amended to cover the conditions or restrictions on levies under section 9D. A new definition of "mineral bearing land" is added to section 3.',
-      'Commencement: 22 August 2026 under S.O. 4642(E), per the ZC-03 review (not checked against the notification here).',
+      'Commencement: the Central Government appointed the date of publication of S.O. 4642(E), 22 August 2026, as the effective date. The transcription was checked; the official PDF was not reached.',
     ],
     sections: [
       {

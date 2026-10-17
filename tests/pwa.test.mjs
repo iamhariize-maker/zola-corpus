@@ -24,6 +24,18 @@ ok((await cdp.send('Page.getAppManifest')).errors.length === 0, 'manifest parses
 ok((await cdp.send('Page.getInstallabilityErrors')).installabilityErrors.length === 0, 'Chrome reports the app installable');
 const cached = await page.evaluate(async () => { const k = await caches.keys(); return (await (await caches.open(k[0])).keys()).length; });
 ok(cached >= 11, `app shell precached (${cached} files)`);
+const notesHref = await page.locator('.zstudy-notes a').getAttribute('href');
+ok(await page.getByRole('heading', { name: 'Study notes' }).count() === 1 && notesHref === './articles/index.html', 'Brief shows a semantic Study notes card linked to the article hub');
+const footerLink = page.locator('#zart-link');
+const footerHref = await footerLink.getAttribute('href');
+ok(!!footerHref && new URL(footerHref, base).href === new URL('./articles/index.html', base).href, 'app footer points to the exact cached article-hub URL');
+ok(await footerLink.evaluate(a => Math.round(a.getBoundingClientRect().height)) >= 44, 'app footer article link meets the 44px touch-target minimum');
+const hubCached = await page.evaluate(async () => {
+ const keys = await caches.keys();
+ for (const key of keys) if (await (await caches.open(key)).match(new URL('./articles/index.html', location.href))) return true;
+ return false;
+});
+ok(hubCached, 'article hub is included in the service-worker cache');
 
 await ctx.setOffline(true); await page.waitForTimeout(300);
 ok(/^offline:/.test(await toast(page) || ''), 'going offline shows the offline notice');
@@ -31,6 +43,14 @@ await page.reload();
 ok(await page.locator('#tab-hacking').count() === 1, 'reload while offline opens the full app');
 await page.goto(base + 'some/deep/path');
 ok(await page.locator('#tab-hacking').count() === 1 && new URL(page.url()).pathname === '/', 'offline, an unknown address lands on the app home');
+await page.goto(base + '#forecast/brief');
+await page.locator('.zstudy-notes a').click();
+await page.waitForURL(url => url.pathname === '/articles/index.html');
+ok(await page.getByRole('heading', { name: 'Study articles on recent events' }).count() === 1, 'Study notes link opens the pre-cached article hub while offline');
+await page.goto(base);
+await page.locator('#zart-link').click();
+await page.waitForURL(url => url.pathname === '/articles/index.html');
+ok(await page.getByRole('heading', { name: 'Study articles on recent events' }).count() === 1, 'app footer link opens the pre-cached article hub while offline');
 await ctx.setOffline(false);
 
 await page.goto(base + '#forecast/brief'); await page.waitForTimeout(500);

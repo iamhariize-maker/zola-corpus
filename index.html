@@ -3485,6 +3485,10 @@ addButtons();
 .zbackup-tools p{flex:1 1 200px;margin:0;font:15px/1.45 var(--sans)}
 .zbackup-tools small{display:block;color:var(--muted)}
 .zbackup-tools .btn,#zbackup .btn{min-height:44px}
+.box.zstudy-notes{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;max-width:760px;margin:0 0 16px;padding:15px 20px;border-color:var(--rule);border-radius:14px;background:var(--sheet);box-shadow:none}
+.zstudy-notes h3{margin:0 0 3px;font:600 14px/1.3 var(--display);color:var(--ink)}
+.zstudy-notes p{margin:0;color:var(--muted);font:400 12px/1.45 var(--sans)}
+.zstudy-notes .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 15px;font-size:12px;white-space:nowrap}
 #zbackup{width:min(560px,94vw);max-height:86vh;overflow:auto;border:1px solid var(--rule);border-radius:22px;background:var(--sheet);color:var(--ink);padding:18px;box-sizing:border-box}
 #zbackup::backdrop{background:rgba(15,10,30,.55)}
 #zbackup h2{margin:0 0 12px;font:700 22px/1.25 var(--display)}
@@ -3500,7 +3504,8 @@ addButtons();
 #zsections-menu button{display:block;width:100%;text-align:left;min-height:44px;background:var(--sheet);border:0;border-radius:6px;color:var(--ink);font:500 15px var(--sans);cursor:pointer}
 #zsections-menu button[aria-current="page"]{background:var(--pen-soft);color:var(--pen);font-weight:700}
 .zsections:focus-visible,#zsections-menu button:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
-@media print{.zbackup-tools,#zbackup,.zsections,#zsections-menu{display:none!important}}
+@media(max-width:600px){.box.zstudy-notes{padding:14px}.zstudy-notes .btn{width:100%}}
+@media print{.zbackup-tools,.zstudy-notes,#zbackup,.zsections,#zsections-menu{display:none!important}}
 </style>
 <script>// Complete backups and one-tap section access. No requests or third-party code.
 (function(){
@@ -3527,9 +3532,12 @@ function counts(v){var b={},c={};try{b=JSON.parse(v.storage['zolaB.v22']||'{}');
  return {traps:Object.keys(b.traps||{}).length,walks:Object.keys(b.walks||{}).length,questions:(c.ledger||[]).length,mocks:(c.mocks||[]).length,unfinished:!!c.live,keys:Object.keys(v.storage).length};
 }
 window.ZOLA_BACKUP={snapshot:snapshot,validate:validate,restore:restore};
-var brief=document.getElementById('p-brief'),tools=document.createElement('section');tools.className='box zbackup-tools';tools.setAttribute('aria-label','Back up and restore progress');
+var brief=document.getElementById('p-brief'),study=document.createElement('section'),tools=document.createElement('section');
+study.className='box zstudy-notes';study.setAttribute('aria-labelledby','zstudy-notes-title');
+study.innerHTML='<div><h3 id="zstudy-notes-title">Study notes</h3><p>Read sourced notes on recent events.</p></div><a class="btn ghost" href="./articles/index.html">Open study notes <span aria-hidden="true">↗</span></a>';
+tools.className='box zbackup-tools';tools.setAttribute('aria-label','Back up and restore progress');
 tools.innerHTML='<p><b>Your progress</b><small>Save Hacking, CSAT and Forecast data together.</small></p><button type="button" class="btn" id="zbackup-save">Back up</button><button type="button" class="btn ghost" id="zbackup-open">Restore</button><span id="zbackup-status" role="status"></span>';
-if(brief){var intro=brief.querySelector('.read');if(intro)intro.insertAdjacentElement('afterend',tools);else brief.prepend(tools)}
+if(brief){var intro=brief.querySelector('.read');if(intro){intro.insertAdjacentElement('afterend',study);study.insertAdjacentElement('afterend',tools)}else{brief.prepend(tools);tools.insertAdjacentElement('afterend',study)}}
 var input=document.createElement('input');input.type='file';input.accept='.json,application/json';input.hidden=true;input.id='zbackup-file';document.body.appendChild(input);
 var dlg=document.createElement('dialog');dlg.id='zbackup';dlg.setAttribute('aria-labelledby','zbackup-title');
 dlg.innerHTML='<h2 id="zbackup-title">Restore your backup</h2><p id="zbackup-summary"></p><p>This replaces all Zola progress and settings on this device. The app will reload. Back up your current progress first if you want to keep it.</p><p id="zbackup-error" role="alert"></p><div class="zbackup-acts"><button type="button" class="btn ghost" id="zbackup-cancel">Cancel</button><button type="button" class="btn" id="zbackup-confirm">Replace and reload</button></div>';

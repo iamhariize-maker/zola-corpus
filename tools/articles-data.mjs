@@ -11,6 +11,7 @@ export const VERIFIED = '16 October 2026';
 
 import { BASE_ARTICLES } from './articles-base.mjs';
 import { CURRENT_ARTICLES } from './articles-current.mjs';
+import { ARTICLES_OCT17 } from './articles-oct17-notes.mjs';
 
 export const CATEGORIES = [
   { id: 'nobel', title: 'Nobel Prizes 2026' },
@@ -22,4 +23,4 @@ export const CATEGORIES = [
 ];
 
 
-export const ARTICLES = [...BASE_ARTICLES, ...CURRENT_ARTICLES];
+export const ARTICLES = [...BASE_ARTICLES, ...CURRENT_ARTICLES, ...ARTICLES_OCT17];

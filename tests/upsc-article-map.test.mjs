@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { ARTICLES } from '../tools/articles-data.mjs';
 import { ARTICLES_OCT17 } from '../tools/articles-oct17-notes.mjs';
 import {
+  ARTICLE_SYLLABUS_BASE_DOCUMENT,
   ARTICLE_SYLLABUS_FRAGMENT_DOCUMENT,
   ARTICLE_SYLLABUS_DOCUMENT,
   ARTICLE_SYLLABUS_MAP,
@@ -42,6 +43,9 @@ const EXPECTED_ARTICLE_SLUGS = [
   'caqm-ptz-cameras-ncr-2026',
   'pmay-urban-2-csmc-october-2026',
   'constitution-131st-amendment-bill-2026',
+  'sukhna-wetland-sauj-jheel-ramsar-2026',
+  'plfs-september-2026-monthly-bulletin',
+  'nsap-continuation-pension-revisions-2026',
 ];
 const cloneDocument = () => JSON.parse(JSON.stringify(ARTICLE_SYLLABUS_DOCUMENT));
 const hasProblem = (document, expression, options) =>
@@ -52,20 +56,21 @@ assert.equal(ARTICLE_SYLLABUS_STATUS, 'draft-unverified');
 assert.equal(ARTICLE_SYLLABUS_STATUS, TAXONOMY_STATUS);
 assert.equal(ARTICLE_SYLLABUS_DOCUMENT.schema, 'zola-article-syllabus-map/1');
 assert.equal(ARTICLE_SYLLABUS_SCHEMA, ARTICLE_SYLLABUS_DOCUMENT.schema);
-assert.deepEqual(ARTICLES.map(article => article.slug), EXPECTED_ARTICLE_SLUGS, 'the current article export has the pinned 21 slugs');
+assert.deepEqual(ARTICLES.map(article => article.slug), EXPECTED_ARTICLE_SLUGS, 'the current article export has the pinned 24 slugs');
 assert.deepEqual(Object.keys(ARTICLE_SYLLABUS_MAP), EXPECTED_ARTICLE_SLUGS, 'the sidecar has exactly the current article keys in export order');
 assert.deepEqual(validateArticleSyllabusMap(), [], 'the sidecar entries validate against the articles and taxonomy');
 assert.ok(
   validateArticleSyllabusMap({
-    articles: [...ARTICLES, ARTICLES_OCT17[0]],
+    articles: [...ARTICLES.filter(article => !ARTICLES_OCT17.some(note => note.slug === article.slug)), ARTICLES_OCT17[0]],
     document: ARTICLE_SYLLABUS_DOCUMENT,
   }).some(problem => /slug set mismatch/.test(problem)),
   'a partial note import stays invalid until the complete extension is present',
 );
 
-const OCT17_ARTICLES = [...ARTICLES, ...ARTICLES_OCT17];
+// ARTICLES already includes the 17 October notes, so the complete list is ARTICLES itself and the base document is composed once.
+const OCT17_ARTICLES = ARTICLES;
 const OCT17_SYLLABUS_DOCUMENT = composeArticleSyllabusDocument(
-  ARTICLE_SYLLABUS_DOCUMENT,
+  ARTICLE_SYLLABUS_BASE_DOCUMENT,
   [ARTICLE_SYLLABUS_FRAGMENT_DOCUMENT],
 );
 assert.deepEqual(

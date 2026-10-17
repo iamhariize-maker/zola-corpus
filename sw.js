@@ -17,7 +17,8 @@ const SHELL = [INDEX,
   './articles/nobel-chemistry-2026.html', './articles/nobel-literature-2026.html', './articles/nobel-peace-2026.html',
   './articles/nobel-economics-2026.html', './articles/fields-medal-2026.html', './articles/artemis-ii-2026.html',
   './articles/ai-impact-summit-2026.html', './articles/union-budget-2026-27.html', './articles/padma-awards-2026.html',
-  './articles/rbi-repo-hike-october-2026.html', './articles/public-examinations-amendment-act-2026.html', './articles/supreme-court-judges-amendment-2026.html', './articles/tribunals-reforms-act-2026.html', './articles/mines-minerals-amendment-act-2026.html', './articles/ins-samarthak-commissioned-2026.html', './articles/caqm-ptz-cameras-ncr-2026.html', './articles/pmay-urban-2-csmc-october-2026.html', './articles/constitution-131st-amendment-bill-2026.html'
+  './articles/rbi-repo-hike-october-2026.html', './articles/public-examinations-amendment-act-2026.html', './articles/supreme-court-judges-amendment-2026.html', './articles/tribunals-reforms-act-2026.html', './articles/mines-minerals-amendment-act-2026.html', './articles/ins-samarthak-commissioned-2026.html', './articles/caqm-ptz-cameras-ncr-2026.html', './articles/pmay-urban-2-csmc-october-2026.html', './articles/constitution-131st-amendment-bill-2026.html',
+  './articles/sukhna-wetland-sauj-jheel-ramsar-2026.html', './articles/plfs-september-2026-monthly-bulletin.html', './articles/nsap-continuation-pension-revisions-2026.html'
 ].map(p => new URL(p, SCOPE).href);
 
 const tell = async msg => (await self.clients.matchAll({type: 'window'})).forEach(c => c.postMessage(msg));

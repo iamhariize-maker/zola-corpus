@@ -132,6 +132,11 @@ ok(predicts('This cannot predict which questions will be asked.') === false, 'ac
 ok(predicts('Questions for candidates will be asked in Prelims.') === true, 'rejects: Questions for candidates will be asked in Prelims. (candidates after for is a modifier)');
 ok(predicts('This does not predict which questions and topics will be asked.') === false, 'accepts: This does not predict which questions and topics will be asked. (coordinated object stays negated)');
 ok(predicts('Candidates are likely to appear in Prelims.') === false, 'accepts: Candidates are likely to appear in Prelims. (attendance)');
+ok(predicts('We do not predict which questions will be asked and we offer guaranteed questions.') === true, 'rejects: We do not predict which questions will be asked and we offer guaranteed questions. (a new assertion after and)');
+ok(predicts('This does not predict which questions will be asked and monetary policy will appear in Prelims.') === true, 'rejects: This does not predict which questions will be asked and monetary policy will appear in Prelims. (a finite assertion after and)');
+ok(predicts('This never predicts which questions will be asked.') === false, 'accepts: This never predicts which questions will be asked. (never is a negation)');
+ok(predicts('This note discusses important questions of constitutional law.') === false, 'accepts: This note discusses important questions of constitutional law. (description, no exam)');
+ok(predicts('This is an important question for Prelims.') === true, 'rejects: This is an important question for Prelims. (important question aimed at an exam)');
 const nonArrayDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 nonArrayDoc.articles['nobel-peace-2026'].mappings = {};
 let nonArrayThrew = false, nonArrayProblems = [];
@@ -146,6 +151,12 @@ const datedFiles = render(datedArticles);
 ok(datedFiles['nobel-peace-2026.html'].includes('Checked against the sources below on 17 October 2026.'), 'an article with its own checked date shows that date');
 ok(datedFiles['union-budget-2026-27.html'].includes(`Checked against the sources below on ${VERIFIED}.`), 'an article without its own date keeps the build date');
 ok(datedFiles['index.html'].includes('says when it was last checked') && !/Every article was checked/.test(datedFiles['index.html']), 'the index no longer says every article was checked on one date');
+const customArticle = { ...ARTICLES.find(a => a.slug === 'nobel-peace-2026'), slug: 'custom-check-2026' };
+const customDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
+customDoc.articles['custom-check-2026'] = structuredClone(customDoc.articles['nobel-peace-2026']);
+let customRendered = false;
+try { customRendered = Object.hasOwn(render([...ARTICLES, customArticle], customDoc), 'custom-check-2026.html'); } catch { customRendered = false; }
+ok(customRendered, 'a custom article list renders its own sidecar entries, not only the default list');
 
 console.log('Study articles: pages are self-contained and offline-safe');
 for (const name of Object.keys(files)) {

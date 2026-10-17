@@ -43,7 +43,7 @@ const AUX_WORDS = new Set(['is', 'are', 'was', 'were', 'will', 'would', 'can', '
 const NEG_SUBJECT = new Set(['no', 'none', 'nothing', 'nobody']);
 const NEG_WORDS = new Set(['not', 'never', 'no', 'nor', 'neither']);
 const DET_WORDS = new Set(['a', 'an', 'the', 'this', 'these', 'those', 'some', 'any']);
-const REPORTING_WORDS = new Set(['predict', 'claim', 'claims', 'claimed', 'say', 'says', 'said', 'state', 'states', 'stated', 'suggest', 'suggests', 'imply', 'implies', 'direct', 'directs', 'mention', 'mentions', 'mentioned']);
+const REPORTING_WORDS = new Set(['predict', 'predicts', 'claim', 'claims', 'claimed', 'say', 'says', 'said', 'state', 'states', 'stated', 'suggest', 'suggests', 'imply', 'implies', 'direct', 'directs', 'mention', 'mentions', 'mentioned']);
 const COMPLEMENT_START = new Set(['that', 'which', 'what', 'how', 'whether', 'any', 'all', 'these', 'this', 'some', 'none', 'no', 'many', 'those', 'the', 'each', 'every']);
 const SUBJECT_START_FOR_AND = new Set(['this', 'it', 'these', 'that', 'they', 'there', 'none', 'no', 'candidates', 'applicants', 'students']);
 // A bare predicate verb after "and" begins a new predicate ("...will be asked and offer guaranteed questions").
@@ -71,10 +71,21 @@ function tokenizeSyllabus(text) {
 
 // "questions and topics" keeps its object, but "...appear and a topic will appear" splits: a determiner after "and"
 // starts a clause only when the clause so far already has a finite verb.
+// Once the clause has a finite verb, "and" plus a determiner, or a later finite verb before the clause break, is a new
+// assertion ("...will be asked and we offer...", "...will be asked and monetary policy will appear..."). Before any finite
+// verb, "and" stays inside the noun phrase ("which questions and topics will be asked").
 function startsClause(tokens, i, cur) {
   const next = tokens[i + 1];
   if (SUBJECT_START_FOR_AND.has(next) || VERB_AFTER_AND.has(next)) return true;
-  return DET_WORDS.has(next) && cur.some(t => AUX_WORDS.has(t));
+  if (!cur.some(t => AUX_WORDS.has(t))) return false;
+  return DET_WORDS.has(next) || finiteBeforeBreak(tokens, i + 1);
+}
+
+function finiteBeforeBreak(tokens, from) {
+  for (let j = from; j < tokens.length && !CLAUSE_PUNCT.has(tokens[j]) && !CONTRAST_WORDS.has(tokens[j]); j++) {
+    if (AUX_WORDS.has(tokens[j])) return true;
+  }
+  return false;
 }
 
 // Splits into clauses. A clause after a reporting verb records whether that verb is negated and its complement starts a
@@ -93,7 +104,7 @@ function splitClauses(tokens) {
     if (CLAUSE_PUNCT.has(t) || CONTRAST_WORDS.has(t)) { breakAt(false); continue; }
     if (t === 'and' && startsClause(tokens, i, cur)) { breakAt(false); continue; }
     if (REPORTING_WORDS.has(t)) {
-      const neg = tokens[i - 1] === 'not' || (['does', 'do', 'did'].includes(tokens[i - 1]) && tokens[i - 2] === 'not');
+      const neg = tokens[i - 1] === 'not' || tokens[i - 1] === 'never' || (['does', 'do', 'did'].includes(tokens[i - 1]) && tokens[i - 2] === 'not');
       const j = tokens[i + 1] === 'that' ? i + 2 : i + 1;
       breakAt(neg && COMPLEMENT_START.has(tokens[j]));
       continue;
@@ -152,7 +163,7 @@ function cuesIn(tokens) {
       }
     }
     if (w === 'read' && tokens[k - 1] === 'must') out.push({ kind: 'hype', neg: negatedBefore(tokens, k - 1), text: 'must read' });
-    if (w === 'important' && QUESTION_ANY.has(tokens[k + 1])) out.push({ kind: 'hype', neg: negatedBefore(tokens, k), text: `important ${tokens[k + 1]}` });
+    if (w === 'important' && QUESTION_ANY.has(tokens[k + 1])) out.push({ kind: 'important', neg: negatedBefore(tokens, k), text: `important ${tokens[k + 1]}` });
   }
   return out;
 }
@@ -170,6 +181,11 @@ function clausePredicts(tokens, reportNeg) {
   for (const cue of cuesIn(tokens)) {
     if (cue.neg || subjectNegated || reportNeg) continue;
     if (cue.kind === 'attr' || cue.kind === 'expect' || cue.kind === 'hype') return cue.text;
+    // "important questions" is ordinary description unless the clause points it at an exam.
+    if (cue.kind === 'important') {
+      if (tokens.some((_, i) => examAt(tokens, i))) return cue.text;
+      continue;
+    }
     if (person) continue;
     if (cue.kind === 'appear') {
       if (tokens.some((_, i) => examAt(tokens, i))) return cue.text;
@@ -248,9 +264,9 @@ ${body}
     </section>`;
 }
 
-function renderArticle(a, syllabusDocument) {
+function renderArticle(a, syllabusDocument, articles) {
   // Fail closed: a page without a valid syllabus entry is never written.
-  const syllabus = getArticleSyllabus(a.slug, { document: syllabusDocument });
+  const syllabus = getArticleSyllabus(a.slug, { articles, document: syllabusDocument });
   if (!syllabus) throw new Error(`${a.slug}: no valid syllabus map entry; fix data/upsc-article-map.json`);
   const sections = a.sections.map(s => `      <section>\n        <h2>${esc(s.heading)}</h2>\n${s.paragraphs.map(p => `        <p>${esc(p)}</p>`).join('\n')}\n      </section>`).join('\n');
   const caveats = a.caveats.map(c => `        <li>${esc(c)}</li>`).join('\n');
@@ -337,7 +353,7 @@ ${groups}
 
 export function render(articles = ARTICLES, syllabusDocument = ARTICLE_SYLLABUS_DOCUMENT) {
   const files = { 'index.html': renderIndex(articles) };
-  for (const a of articles) files[`${a.slug}.html`] = renderArticle(a, syllabusDocument);
+  for (const a of articles) files[`${a.slug}.html`] = renderArticle(a, syllabusDocument, articles);
   return files;
 }
 

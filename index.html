@@ -4300,6 +4300,7 @@ if(enabled){
     return value ? '<dt>' + esc(label) + '</dt><dd>' + esc(value) + '</dd>' : '';
   }
   function detailHtml(r) {
+    if (r.fallback) return fallbackHtml(r);
     var d = r.detail || {}, body, heading;
     if (r.type === 'claim') {
       heading = 'Hacking claim';
@@ -4317,6 +4318,21 @@ if(enabled){
     return '<section class="gs-detail" aria-label="Record detail"><h3>' + esc(heading) + '</h3>' +
       '<p class="gs-dt-title">' + esc(r.title) + '</p><dl class="gs-dl">' + body + '</dl>' +
       '<button type="button" class="gs-more" data-back="1">Back to results</button></section>';
+  }
+  // A tracker or feed result that the tracker cannot show keeps its title, date, source and status in the panel, with the
+  // reason. It does not say the item is selected.
+  function fallbackHtml(r) {
+    var heading = r.type === 'forecast' ? 'Tracker event' : 'Feed item';
+    var link = r.url ? '<dt>Source</dt><dd><a href="' + esc(r.url) + '" target="_blank" rel="noopener noreferrer">Open the source</a></dd>' : '';
+    return '<section class="gs-detail" aria-label="Record detail"><h3>' + esc(heading) + '</h3>' +
+      '<p class="gs-dt-title">' + esc(r.title) + '</p><dl class="gs-dl">' + field('Date and source', r.sub) +
+      field('Verification', r.status) + '<dt>Why it is not selected here</dt><dd>' + esc(r.fallback) + '</dd>' + link + '</dl>' +
+      '<button type="button" class="gs-more" data-back="1">Back to results</button></section>';
+  }
+  function showFallback(r, why) {
+    detailRec = { type: r.type, title: r.title, sub: r.sub, status: r.status, url: r.url, fallback: why };
+    render(input.value);
+    status('"' + r.title + '" is shown in the results panel. It is not selected on the tracker.');
   }
   function showDetail(r) {
     detailRec = r;
@@ -4390,11 +4406,12 @@ if(enabled){
         row.scrollIntoView({ block: 'center' });
         var s = row.querySelector('summary');
         if (s) s.focus({ preventScroll: true });
+        close();
         status('Showing "' + r.title + '" in the tracker.');
         return;
       }
       if (Date.now() - t0 > 3000) {
-        status('"' + r.title + '" is not shown in the tracker right now. Its title and source are listed above.');
+        showFallback(r, 'the tracker does not show this event right now.');
         return;
       }
       setTimeout(wait, 60);
@@ -4411,14 +4428,15 @@ if(enabled){
       if (box && box.offsetParent !== null) {
         box.scrollIntoView({ block: 'start' });
         if (box.textContent.indexOf(r.title) !== -1) {
+          close();
           status('"' + r.title + '" is listed in the feed box on the tracker. It is not selected.');
         } else {
-          status('"' + r.title + '" is not in the feed box\u2019s current list.' + (r.url ? ' Use its Source link.' : ''));
+          showFallback(r, 'it is not in the feed box\u2019s current list.');
         }
         return;
       }
       if (Date.now() - t0 > 3000) {
-        status('"' + r.title + '" is not shown on the tracker right now.' + (r.url ? ' Use its Source link.' : ''));
+        showFallback(r, 'the tracker does not show the feed box right now.');
         return;
       }
       setTimeout(wait, 60);
@@ -4428,8 +4446,8 @@ if(enabled){
   function activate(r) {
     clearTimeout(timer);
     if (r.type === 'article') { location.href = r.route; return; }
-    if (r.type === 'forecast') { revealForecast(r); close(); return; }
-    if (r.type === 'feed-event' || r.type === 'feed-inbox') { revealFeed(r); close(); return; }
+    if (r.type === 'forecast') { revealForecast(r); return; }
+    if (r.type === 'feed-event' || r.type === 'feed-inbox') { revealFeed(r); return; }
     if (r.type === 'topic' || r.type === 'claim' || r.type === 'case') { showDetail(r); return; }
     if (r.type === 'csat') {
       location.hash = r.route;

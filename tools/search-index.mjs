@@ -42,7 +42,38 @@ function csatRecords(html) {
 }
 
 const clip = (s, n) => (s.length > n ? `${s.slice(0, n - 1).trimEnd()}…` : s);
-const parts = (...xs) => xs.filter(x => typeof x === 'string' && x.trim()).join(' ');
+
+// Flatten a field to readable text. Some case fields are objects (a label mapped to a reason) and some are arrays, so
+// nothing is silently dropped, and nothing reaches the page as [object Object].
+export function plain(v) {
+  if (v == null) return '';
+  if (typeof v === 'string') return v.trim();
+  if (typeof v === 'number' || typeof v === 'boolean') return String(v);
+  if (Array.isArray(v)) return v.map(plain).filter(Boolean).join('; ');
+  if (typeof v === 'object') return Object.keys(v).map(k => (plain(v[k]) ? `${k}: ${plain(v[k])}` : '')).filter(Boolean).join('; ');
+  return '';
+}
+const parts = (...xs) => xs.map(plain).filter(Boolean).join(' ');
+
+export function claimRecord(c) {
+  const text = plain(c.text), note = plain(c.note), tag = plain(c.tag), currency = plain(c.currency_check),
+    locator = plain(c.locator), evidence = plain(c.evidence_phrase);
+  return {
+    type: 'claim', id: c.id, title: clip(text, 160), sub: parts(tag, currency && `currency: ${currency}`),
+    limit: note, text: parts(text, note, evidence, locator), route: null,
+    detail: { text, tag, currency_check: currency, note, locator, evidence_phrase: evidence },
+  };
+}
+
+export function caseRecord(c) {
+  const name = plain(c.name), year = c.year == null ? '' : String(c.year), court = plain(c.court), decided = plain(c.decided),
+    citation = plain(c.citation), posture = plain(c.posture), scope = plain(c.verified_scope), nullReason = plain(c.null_reason);
+  return {
+    type: 'case', id: c.id, title: year ? `${name} (${year})` : name, sub: parts(court, decided && `decided ${decided}`),
+    limit: nullReason || scope, text: parts(name, citation, court, posture, scope, nullReason), route: null,
+    detail: { name, year, decided, citation, court, posture, verified_scope: scope, null_reason: nullReason },
+  };
+}
 
 export function buildSearchIndex({
   html,
@@ -72,24 +103,8 @@ export function buildSearchIndex({
   for (const m of zb.machines) {
     records.push({ type: 'machine', id: m.id, title: m.title, sub: m.id, text: parts(m.title, m.purpose), route: `#hacking/${m.id}` });
   }
-  for (const c of zb.claim_bank) {
-    records.push({
-      type: 'claim', id: c.id, title: clip(c.text, 160), sub: parts(c.tag, c.currency_check && `currency: ${c.currency_check}`),
-      limit: c.note || '', text: parts(c.text, c.note, c.evidence_phrase, c.locator), route: null,
-      detail: { text: c.text, tag: c.tag, currency_check: c.currency_check || '', note: c.note || '', locator: c.locator || '', evidence_phrase: c.evidence_phrase || '' },
-    });
-  }
-  for (const c of zb.case_bank) {
-    records.push({
-      type: 'case', id: c.id, title: `${c.name} (${c.year})`, sub: parts(c.court, c.decided && `decided ${c.decided}`),
-      limit: c.null_reason || c.verified_scope || '', text: parts(c.name, c.citation, c.court, c.posture, c.verified_scope, c.null_reason),
-      route: null,
-      detail: {
-        name: c.name, year: c.year, decided: c.decided || '', citation: c.citation || '', court: c.court || '', posture: c.posture || '',
-        verified_scope: c.verified_scope || '', null_reason: c.null_reason || '',
-      },
-    });
-  }
+  for (const c of zb.claim_bank) records.push(claimRecord(c));
+  for (const c of zb.case_bank) records.push(caseRecord(c));
   for (const c of csatRecords(html)) {
     records.push({ type: 'csat', id: c.key, title: c.name, sub: parts(c.sec, c.fam), text: parts(c.name, c.sec, c.fam, c.key), route: '#csat' });
   }

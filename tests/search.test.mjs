@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, SITE, ok, failures, playwright, serve, FEED_FIXTURE } from './helpers.mjs';
-import { buildSearchIndex, SEARCH_INDEX_FILE } from '../tools/search-index.mjs';
+import { buildSearchIndex, caseRecord, SEARCH_INDEX_FILE } from '../tools/search-index.mjs';
 
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
 const html = read('index.html');
@@ -21,6 +21,15 @@ ok(committed.records.filter(r => r.type === 'forecast').every(r => r.route === '
 ok(committed.records.filter(r => r.type === 'machine').every(r => /^#hacking\/M\d{2}$/.test(r.route)), 'machine results use the established #hacking/Mxx routes');
 ok(committed.records.filter(r => r.type === 'csat').every(r => r.route === '#csat' && !/[{}]/.test(r.title)), 'CSAT labels are plain text, with no generator code');
 ok(committed.records.filter(r => r.type === 'claim').every(r => r.limit !== undefined), 'claims carry their note or limit field');
+
+// Some case fields are objects (a label mapped to a reason) and some are arrays. None may be dropped or shown as [object Object].
+const objectCase = caseRecord({ id: 'T-OBJ', name: 'Test v State', year: null, decided: null, court: 'Supreme Court', citation: null, posture: null,
+  verified_scope: ['bail', 'appeal'], null_reason: { 'SCC citation': 'Not independently located.', 'neutral citation': null } });
+ok(objectCase.limit === 'SCC citation: Not independently located.', 'an object null_reason is shown as readable label and reason text');
+ok(objectCase.text.includes('SCC citation: Not independently located.') && objectCase.text.includes('bail; appeal'), 'an object null_reason and an array verified_scope are both searchable');
+ok(objectCase.title === 'Test v State' && !JSON.stringify(objectCase).includes('[object Object]'), 'a missing year is not shown as null, and nothing renders as [object Object]');
+ok(committed.records.every(r => !JSON.stringify(r).includes('[object Object]')), 'no committed record contains [object Object]');
+ok(committed.records.filter(r => r.type === 'case').every(r => typeof r.limit === 'string'), 'every case limit is text');
 
 console.log('Global search: source boundaries');
 ok(!/localStorage|sessionStorage|indexedDB|document\.cookie|sendBeacon|XMLHttpRequest|WebSocket/.test(js), 'the search script stores nothing and opens no side channel');
@@ -181,6 +190,9 @@ try {
   await lp.goto(base + 'index.html', { waitUntil: 'load' });
   await lp.waitForSelector('#gsearch');
   await lp.waitForFunction(() => !!window.ZOLA_LIVE);
+  // The search is open before the update arrives, so the update has to refresh the open results.
+  await lp.fill('#gsearch', 'Live update test event');
+  await lp.waitForFunction(() => { const e = document.getElementById('gsearch-res'); return !!e && !e.hidden; }, null, { timeout: 8000 });
   await lp.evaluate(() => {
     window.ZOLA_LIVE.events = function () {
       return [{ id: 'EV-LIVE-2', date: '2026-10-16', title: 'Live update test event', subject: 'Polity', hook: '', status: 'VERIFIED',
@@ -188,10 +200,31 @@ try {
     };
     window.dispatchEvent(new CustomEvent('zola-live', { detail: { state: 'live' } }));
   });
-  await showResults(lp, 'Live update test event', 'Live update test event');
+  await lp.waitForFunction(() => { const e = document.getElementById('gsearch-res'); return !!e && e.textContent.includes('Live update test event'); }, null, { timeout: 8000 });
   const liveText = await lp.textContent('#gsearch-res');
   ok(/Feed events/.test(liveText) && /Checked/.test(liveText) && /Live source/.test(liveText), 'an event that arrives on zola-live appears with its status and source');
   await lp.close();
+
+  // A feed item the tracker's feed box does not list (the box shows only its newest items): its title, date, source and
+  // status stay in the panel, with the reason, and nothing claims it is listed or selected.
+  const oldest = [...fixture.inbox].sort((a, b) => String(b.published).localeCompare(String(a.published))).at(-1);
+  const fb = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  await fb.route(/raw\.githubusercontent\.com/, r => r.fulfill({ status: 200, body: JSON.stringify(fixture), headers: { 'access-control-allow-origin': '*' } }));
+  const fbp = await fb.newPage();
+  await fbp.goto(base + 'index.html', { waitUntil: 'load' });
+  await fbp.waitForSelector('#gsearch');
+  await fbp.waitForTimeout(1500);
+  await showResults(fbp, oldest.title, oldest.title);
+  await fbp.evaluate(t => {
+    const b = [...document.querySelectorAll('#gsearch-res li button')].find(x => x.firstChild && x.firstChild.textContent === t);
+    if (b) b.click();
+  }, oldest.title);
+  await fbp.waitForSelector('.gs-detail');
+  const fbText = await fbp.textContent('.gs-detail');
+  ok(/Why it is not selected here/.test(fbText) && /not in the feed box/.test(fbText) && fbText.includes(oldest.title), 'a feed item outside the tracker box keeps its title and the reason in the panel');
+  ok(await fbp.locator('.gs-detail a').count() === 1 && /Feed item/.test(fbText), 'the fallback keeps the source link and labels the item as a feed item');
+  ok(!/is listed in the feed box/.test(await fbp.textContent('#gsearch-status')), 'the fallback never says the item is listed in the box');
+  await fb.close();
 
   // A cached feed with the network blocked: the saved copy is searched, and the footer says it is a saved copy.
   const cache = await browser.newContext({ viewport: { width: 1280, height: 800 } });

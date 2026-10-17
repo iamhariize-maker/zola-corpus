@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
 import { ROOT, SITE, serve, playwright, ok, failures, FEED_FIXTURE } from './helpers.mjs';
+import { ARTICLES_OCT17 } from '../tools/articles-oct17-notes.mjs';
 
 const { chromium, devices } = await playwright();
 const { base, close } = await serve();
@@ -47,6 +48,12 @@ await page.goto(base + '#forecast/brief');
 await page.locator('.zstudy-notes a').click();
 await page.waitForURL(url => url.pathname === '/articles/index.html');
 ok(await page.getByRole('heading', { name: 'Study articles on recent events' }).count() === 1, 'Study notes link opens the pre-cached article hub while offline');
+for (const article of ARTICLES_OCT17) {
+ const url = new URL(`articles/${article.slug}.html`, base).href;
+ await page.goto(url);
+ const body = await page.locator('body').innerText();
+ ok(await page.getByRole('heading', { name: article.title, level: 1 }).count() === 1 && body.includes('17 October 2026'), `${article.slug} opens from cache offline with its checked date`);
+}
 await page.goto(base);
 await page.locator('#zart-link').click();
 await page.waitForURL(url => url.pathname === '/articles/index.html');

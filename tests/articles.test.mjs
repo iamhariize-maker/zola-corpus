@@ -137,6 +137,15 @@ ok(predicts('This does not predict which questions will be asked and monetary po
 ok(predicts('This never predicts which questions will be asked.') === false, 'accepts: This never predicts which questions will be asked. (never is a negation)');
 ok(predicts('This note discusses important questions of constitutional law.') === false, 'accepts: This note discusses important questions of constitutional law. (description, no exam)');
 ok(predicts('This is an important question for Prelims.') === true, 'rejects: This is an important question for Prelims. (important question aimed at an exam)');
+ok(predicts('We guarantee a question on this topic in Prelims.') === true, 'rejects: We guarantee a question on this topic in Prelims. (guarantee is a prediction verb)');
+ok(predicts('We do not guarantee a question on this topic in Prelims.') === false, 'accepts: We do not guarantee a question on this topic in Prelims. (negated guarantee)');
+ok(predicts('No one doubts this question will be asked in Prelims.') === true, 'rejects: No one doubts this question will be asked in Prelims. (no one does not negate the predicate)');
+ok(predicts('None of these topics is guaranteed to be asked.') === false, 'accepts: None of these topics is guaranteed to be asked. (negative topic subject)');
+ok(predicts('This Prelims note discusses important questions of constitutional law.') === false, 'accepts: This Prelims note discusses important questions of constitutional law. (description; no exam right after the phrase)');
+ok(predicts('This does not predict questions that will be asked in Prelims.') === false, 'accepts: This does not predict questions that will be asked in Prelims. (negated disclaimer with a bare noun complement)');
+ok(predicts('This is not a guaranteed question or an expected question.') === false, 'accepts: This is not a guaranteed question or an expected question. (negation shared by or)');
+ok(predicts('This does not predict questions and this topic will be asked in Prelims.') === true, 'rejects: This does not predict questions and this topic will be asked in Prelims. (separate assertion after and)');
+ok(predicts('We do not predict which questions will be asked and which topics will be asked.') === true, 'documented boundary, fails closed: a second finite clause after and in a negated clause is flagged');
 const nonArrayDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 nonArrayDoc.articles['nobel-peace-2026'].mappings = {};
 let nonArrayThrew = false, nonArrayProblems = [];
@@ -157,6 +166,8 @@ customDoc.articles['custom-check-2026'] = structuredClone(customDoc.articles['no
 let customRendered = false;
 try { customRendered = Object.hasOwn(render([...ARTICLES, customArticle], customDoc), 'custom-check-2026.html'); } catch { customRendered = false; }
 ok(customRendered, 'a custom article list renders its own sidecar entries, not only the default list');
+const ramsarPage = render()['sukhna-wetland-sauj-jheel-ramsar-2026.html'];
+ok(ramsarPage.includes('Reviewed on 17 October 2026. PIB confirms the designations') && !ramsarPage.includes('Checked against the sources below on 17 October 2026'), 'the Ramsar note states what was confirmed, not a blanket check of the sources below');
 
 console.log('Study articles: pages are self-contained and offline-safe');
 for (const name of Object.keys(files)) {

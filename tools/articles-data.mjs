@@ -23,4 +23,11 @@ export const CATEGORIES = [
 ];
 
 
-export const ARTICLES = [...BASE_ARTICLES, ...CURRENT_ARTICLES, ...ARTICLES_OCT17];
+// Review wording where a primary source could not be opened (Astra, ch-070): the page says what was confirmed and what
+// stays unverified, instead of a blanket "checked against the sources below". Kept here so the note file keeps its author.
+const REVIEW_NOTES = {
+  'sukhna-wetland-sauj-jheel-ramsar-2026': 'PIB confirms the designations, locations and announced total of 103. Site numbers, ecological details and proposed management actions remain unverified; see caveats below.',
+};
+
+export const ARTICLES = [...BASE_ARTICLES, ...CURRENT_ARTICLES, ...ARTICLES_OCT17]
+  .map(article => (REVIEW_NOTES[article.slug] ? { ...article, review: REVIEW_NOTES[article.slug] } : article));

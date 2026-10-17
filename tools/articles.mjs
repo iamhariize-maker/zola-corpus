@@ -40,7 +40,6 @@ const MODAL_HEADS = new Set(['will', 'going', 'expected', 'likely', 'certain', '
 const CUE_SKIP = new Set(['to', 'be', 'definitely', 'certainly', 'surely', 'going', 'not']);
 const PREP_WORDS = new Set(['in', 'for', 'at']);
 const AUX_WORDS = new Set(['is', 'are', 'was', 'were', 'will', 'would', 'can', 'could', 'may', 'might', 'must', 'shall', 'should', 'does', 'do', 'did', 'has', 'have', 'had', 'be', 'appear', 'appears', 'come', 'comes', 'expect', 'expects', 'offer', 'offers', 'raise', 'raises', 'cover', 'covers', 'discuss', 'discusses', 'list', 'lists', 'listed', 'include', 'includes', 'need', 'needs', 'require', 'requires', 'required', 'draw', 'draws', 'see', 'sees', 'claim', 'claims', 'read']);
-const NEG_SUBJECT = new Set(['no', 'none', 'nothing', 'nobody']);
 const NEG_WORDS = new Set(['not', 'never', 'no', 'nor', 'neither']);
 const DET_WORDS = new Set(['a', 'an', 'the', 'this', 'these', 'those', 'some', 'any']);
 const REPORTING_WORDS = new Set(['predict', 'predicts', 'claim', 'claims', 'claimed', 'say', 'says', 'said', 'state', 'states', 'stated', 'suggest', 'suggests', 'imply', 'implies', 'direct', 'directs', 'mention', 'mentions', 'mentioned']);
@@ -106,7 +105,7 @@ function splitClauses(tokens) {
     if (REPORTING_WORDS.has(t)) {
       const neg = tokens[i - 1] === 'not' || tokens[i - 1] === 'never' || (['does', 'do', 'did'].includes(tokens[i - 1]) && tokens[i - 2] === 'not');
       const j = tokens[i + 1] === 'that' ? i + 2 : i + 1;
-      breakAt(neg && COMPLEMENT_START.has(tokens[j]));
+      breakAt(neg && (COMPLEMENT_START.has(tokens[j]) || QUESTION_ANY.has(tokens[j])));
       continue;
     }
     cur.push(t);
@@ -135,6 +134,26 @@ function negatedBefore(tokens, k) {
   return m >= 0 && NEG_WORDS.has(tokens[m]);
 }
 
+// A clause is negated by its subject only when the subject is a negative question, topic or item ("No expected questions",
+// "None of these topics") or "nothing". "No one" is a person, so "No one doubts this question will be asked" keeps its predicate.
+function negativeSubject(tokens) {
+  if (tokens[0] === 'nothing') return true;
+  if (tokens[0] !== 'no' && tokens[0] !== 'none') return false;
+  let j = 1;
+  while (j < tokens.length && (ADJ_WORDS.has(tokens[j]) || DET_WORDS.has(tokens[j]) || tokens[j] === 'of')) j++;
+  return QUESTION_ANY.has(tokens[j]);
+}
+
+// "not a guaranteed question or an expected question": a cue joined by "or" to a negated cue shares its negation.
+function negatedDisjunct(tokens, k) {
+  for (let m = k - 1; m >= 0; m--) {
+    const t = tokens[m];
+    if (NEG_WORDS.has(t)) return true;
+    if (!(DET_WORDS.has(t) || ADJ_WORDS.has(t) || QUESTION_ANY.has(t) || t === 'or')) return false;
+  }
+  return false;
+}
+
 function cuesIn(tokens) {
   const out = [];
   const n = tokens.length;
@@ -143,9 +162,9 @@ function cuesIn(tokens) {
     if (ATTR_HEADS.has(w)) {
       let j = k + 1;
       while (j < n && ADJ_WORDS.has(tokens[j])) j++;
-      if (j < n && QUESTION_SG.has(tokens[j])) out.push({ kind: 'attr', neg: negatedBefore(tokens, k), text: tokens.slice(k, j + 1).join(' ') });
+      if (j < n && QUESTION_SG.has(tokens[j])) out.push({ kind: 'attr', neg: negatedBefore(tokens, k) || negatedDisjunct(tokens, k), text: tokens.slice(k, j + 1).join(' ') });
     }
-    if (w === 'expect' || w === 'expects') {
+    if (w === 'expect' || w === 'expects' || w === 'guarantee' || w === 'guarantees') {
       const q = tokens.slice(k + 1, k + 7).findIndex(t => QUESTION_ANY.has(t));
       if (q >= 0 && hasExamFrom(tokens, k + 1 + q + 1)) out.push({ kind: 'expect', neg: negatedBefore(tokens, k), text: w });
     }
@@ -163,7 +182,10 @@ function cuesIn(tokens) {
       }
     }
     if (w === 'read' && tokens[k - 1] === 'must') out.push({ kind: 'hype', neg: negatedBefore(tokens, k - 1), text: 'must read' });
-    if (w === 'important' && QUESTION_ANY.has(tokens[k + 1])) out.push({ kind: 'important', neg: negatedBefore(tokens, k), text: `important ${tokens[k + 1]}` });
+    // "important questions" predicts only when an exam word sits right after it ("important questions for Prelims").
+    if (w === 'important' && QUESTION_ANY.has(tokens[k + 1]) && tokens.slice(k + 2, k + 6).some((_, i2) => examAt(tokens, k + 2 + i2))) {
+      out.push({ kind: 'hype', neg: negatedBefore(tokens, k), text: `important ${tokens[k + 1]}` });
+    }
   }
   return out;
 }
@@ -177,15 +199,10 @@ function clausePredicts(tokens, reportNeg) {
   const aux = tokens.findIndex(t => AUX_WORDS.has(t));
   const subject = aux < 0 ? tokens : tokens.slice(0, aux);
   const person = personSubject(subject);
-  const subjectNegated = NEG_SUBJECT.has(tokens[0]);
+  const subjectNegated = negativeSubject(tokens);
   for (const cue of cuesIn(tokens)) {
     if (cue.neg || subjectNegated || reportNeg) continue;
     if (cue.kind === 'attr' || cue.kind === 'expect' || cue.kind === 'hype') return cue.text;
-    // "important questions" is ordinary description unless the clause points it at an exam.
-    if (cue.kind === 'important') {
-      if (tokens.some((_, i) => examAt(tokens, i))) return cue.text;
-      continue;
-    }
     if (person) continue;
     if (cue.kind === 'appear') {
       if (tokens.some((_, i) => examAt(tokens, i))) return cue.text;
@@ -265,6 +282,8 @@ ${body}
 }
 
 function renderArticle(a, syllabusDocument, articles) {
+  // A note with its own review line states that line; the default says the sources below were checked.
+  const reviewLine = a.review ? `Reviewed on ${esc(checkedOn(a))}. ${esc(a.review)}` : `Checked against the sources below on ${esc(checkedOn(a))}.`;
   // Fail closed: a page without a valid syllabus entry is never written.
   const syllabus = getArticleSyllabus(a.slug, { articles, document: syllabusDocument });
   if (!syllabus) throw new Error(`${a.slug}: no valid syllabus map entry; fix data/upsc-article-map.json`);
@@ -290,7 +309,7 @@ function renderArticle(a, syllabusDocument, articles) {
     <p class="kicker">${esc(categoryTitle(a.category))} · ${esc(a.event)}</p>
     <h1>${esc(a.title)}</h1>
     <p class="dek">${esc(a.dek)}</p>
-    <p class="verified">Checked against the sources below on ${esc(checkedOn(a))}. Items marked "background" are general knowledge, not taken from the sources.</p>
+    <p class="verified">${reviewLine} Items marked "background" are general knowledge, not taken from the sources.</p>
     <section>
       <h2>Key facts</h2>
       <ul>

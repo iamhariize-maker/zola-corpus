@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 import { applyAppFixes } from './app-fixes.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SITE_FILES = ['index.html', 'manifest.webmanifest', 'sw.js', '404.html', '.nojekyll', 'icons', 'screenshots', 'fonts', 'articles'];
+const SITE_FILES = ['index.html', 'manifest.webmanifest', 'sw.js', '404.html', '.nojekyll', 'icons', 'screenshots', 'fonts', 'articles', 'search-index.json'];
 const HEAD_RX = /[ \t]*<!-- zola-pwa:head[\s\S]*?<!-- \/zola-pwa:head -->\n?/g;
 const BODY_RX = /[ \t]*<!-- zola-pwa:body[\s\S]*?<!-- \/zola-pwa:body -->\n?/g;
 // Tags the layer owns. A fresh build's own copies are dropped so the layer's win.
@@ -42,7 +42,8 @@ export function applyLayer(html) {
   html = applyAppFixes(html);
   const head = read('pwa/head.html').trim().replace('<!-- zola-data -->', '<script id="zola-data">\n' + read('pwa/data.js').trim() + '\n</script>') + '\n';
   const studio = '<style id="zstudio">\n' + read('pwa/studio.css') + '\n</style>\n<style id="zstudio-frame-source" media="not all">\n' + read('pwa/studio-frame.css') + '\n</style>\n<script>\n' + read('pwa/studio.js') + '\n</script>\n<script id="zstats">\n' + read('pwa/stats.js') + '\n</script>';
-  const body = read('pwa/body.html').trim().replace('<!-- zola-studio -->', studio) + '\n';
+  const search = '<script id="zsearch">\n' + read('pwa/search.js').trim() + '\n</script>';
+  const body = read('pwa/body.html').trim().replace('<!-- zola-studio -->', studio).replace('<!-- zola-search -->', search) + '\n';
   const h = html.search(/<\/head>/i);
   if (h < 0) throw new Error('no </head> in the page');
   let top = html.slice(0, h).replace(HEAD_RX, '');

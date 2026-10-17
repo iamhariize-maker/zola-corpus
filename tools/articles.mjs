@@ -21,7 +21,7 @@ const KINDS = ['Official', 'News report', 'Government', 'Research'];
 // Syllabus reasons and gaps must not predict questions. A cue is exempt only when it is directly negated
 // ("not expected questions", "is not guaranteed to be asked") or sits under "does not predict". Every match in
 // a clause is checked, and clause breaks stop a cue from reaching into an unrelated clause.
-const SYLLABUS_PREDICTION = /\b(?:likely|guaranteed|expected|predicted)\b[^;:,.!?]*\b(?:questions?|asked|appear)\b|\bcertain to\b[^;:,.!?]*\b(?:questions?|asked|appear)\b|\bwill (?:be asked|appear|come up|be tested)\b|\bmost important (?:question|topic)\b|\bimportant for (?:the )?exam\b|\bmust[- ]read\b/gi;
+const SYLLABUS_PREDICTION = /\bguaranteed\s+(?:(?:a|an|the|this)\s+)?(?:questions?|to be asked|to appear|to come up)\b|\bexpected\s+(?:questions?|to be asked|to appear)\b|\bpredicted\s+(?:questions?|to be asked)\b|\blikely\s+to\s+(?:be asked|appear|come up)\b|\bcertain\s+to\s+(?:be asked|appear|come up)\b|\bwill\s+be\s+asked\b|\bwill\s+appear\s+in\s+(?:the\s+)?(?:prelims|mains|exam|examination|upsc|paper)\b|\bmost important (?:question|topic)\b|\bimportant for (?:the )?exam\b|\bmust[- ]read\b/gi;
 const DIRECT_NEGATION = /(?:\bnot|n't|\bnever)\s+(?:(?:a|an|the)\s+)?$/i;
 const PREDICT_NEGATION = /\bnot\s+predict\b[^;:,]*$/i;
 const SYLLABUS_CLAUSE_BREAK = /[;:,]|\s(?:but|though|while|whereas|yet)\s/i;

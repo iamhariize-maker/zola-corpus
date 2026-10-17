@@ -76,6 +76,13 @@ ok(reasonProblems('These are not expected questions; this topic is guaranteed to
 ok(reasonProblems('Rights are guaranteed by Article 19; the note discusses constitutional questions.').length === 0, 'a guarantee and a separate questions mention in different clauses are accepted');
 ok(reasonProblems('This will appear in the Prelims exam.').some(p => /predicts questions/.test(p)), 'will appear is a prediction');
 ok(reasonProblems('This is not a guaranteed question.').length === 0, 'a directly negated guaranteed question is accepted');
+const predicts = text => reasonProblems(text).some(p => /predicts questions/.test(p));
+ok(predicts('Not expected questions and guaranteed to be asked.'), 'a negated cue does not exempt a second cue later in the clause');
+ok(predicts('This topic is not the only issue and it is guaranteed to be asked.'), 'a negation that governs another word does not exempt a guarantee');
+ok(predicts('This is not only a guaranteed question.'), '"not only" does not directly negate a guaranteed question');
+ok(predicts('This will appear in Prelims.'), 'will appear in Prelims is a prediction');
+ok(!predicts('Rights guaranteed by Article 19 raise constitutional questions.'), 'a guarantee and an unrelated questions mention in one clause are accepted');
+ok(!predicts('The notice will appear in the Gazette.'), 'will appear in the Gazette is accepted (not exam wording)');
 const nonArrayDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 nonArrayDoc.articles['nobel-peace-2026'].mappings = {};
 let nonArrayThrew = false, nonArrayProblems = [];

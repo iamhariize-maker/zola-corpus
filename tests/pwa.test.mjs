@@ -52,7 +52,7 @@ for (const article of ARTICLES_OCT17) {
  const url = new URL(`articles/${article.slug}.html`, base).href;
  await page.goto(url);
  const body = await page.locator('body').innerText();
- ok(await page.getByRole('heading', { name: article.title, level: 1 }).count() === 1 && body.includes('17 October 2026'), `${article.slug} opens from cache offline with its checked date`);
+ ok(await page.getByRole('heading', { name: article.title, level: 1 }).count() === 1 && body.includes(article.checked), `${article.slug} opens from cache offline with its checked date`);
 }
 await page.goto(base);
 await page.locator('#zart-link').click();

@@ -4170,6 +4170,11 @@ if(enabled){
     '#gsearch-res .gs-note{font-size:.78rem;color:var(--muted,#555);margin:.5rem .4rem}' +
     '#gsearch-res .gs-more{margin:.2rem .4rem .4rem;font:inherit;font-size:.8rem;background:none;border:1px solid var(--rule,#999);border-radius:4px;padding:.2rem .5rem;cursor:pointer;color:inherit}' +
     '#gsearch-res .gs-src{display:inline-block;margin:0 .4rem .3rem;font-size:.78rem;color:var(--pen,#06c)}' +
+    '#gsearch-res .gs-detail h3{margin:.5rem .4rem .2rem}' +
+    '#gsearch-res .gs-dt-title{font-weight:600;margin:.2rem .4rem .4rem;line-height:1.35}' +
+    '#gsearch-res .gs-dl{margin:.2rem .4rem .5rem}' +
+    '#gsearch-res .gs-dl dt{font-size:.75rem;text-transform:uppercase;letter-spacing:.03em;color:var(--muted,#555);margin-top:.5rem}' +
+    '#gsearch-res .gs-dl dd{margin:.1rem 0 0;line-height:1.4}' +
     '@media (max-width:640px){.hdr .top{flex-wrap:wrap}#gsearch-wrap{order:99;flex:1 1 100%;max-width:none;min-width:0;margin:.4rem 0 .2rem}}';
   var style = document.createElement('style');
   style.id = 'gsearch-css';
@@ -4200,6 +4205,7 @@ if(enabled){
   var LIVE_LABEL = { live: 'Live feed', saved: 'Saved copy', offline: 'Built-in data only', setup: 'Feed not set up' };
   var current = [];
   var expanded = {};
+  var detailRec = null;
 
   function norm(s) {
     return String(s || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
@@ -4288,7 +4294,43 @@ if(enabled){
     });
   }
 
+  // A record that has no page of its own (a syllabus topic, a Hacking claim or case) is shown here, in full, instead of
+  // a link that would only open a general page. The panel says what it is, and does not claim the Hacking page opened.
+  function field(label, value) {
+    return value ? '<dt>' + esc(label) + '</dt><dd>' + esc(value) + '</dd>' : '';
+  }
+  function detailHtml(r) {
+    var d = r.detail || {}, body, heading;
+    if (r.type === 'claim') {
+      heading = 'Hacking claim';
+      body = field('Claim', d.text) + field('Tag', d.tag) + field('Currency check', d.currency_check) +
+        field('Note or limit', d.note) + field('Locator', d.locator) + field('Evidence phrase', d.evidence_phrase);
+    } else if (r.type === 'case') {
+      heading = 'Hacking case';
+      body = field('Case', d.name) + field('Year', d.year ? String(d.year) : '') + field('Decided', d.decided) +
+        field('Court', d.court) + field('Citation', d.citation) + field('Posture', d.posture) +
+        field('Verified scope', d.verified_scope) + field('Null reason', d.null_reason);
+    } else {
+      heading = 'Syllabus topic';
+      body = field('Papers', (d.papers || []).join(', '));
+    }
+    return '<section class="gs-detail" aria-label="Record detail"><h3>' + esc(heading) + '</h3>' +
+      '<p class="gs-dt-title">' + esc(r.title) + '</p><dl class="gs-dl">' + body + '</dl>' +
+      '<button type="button" class="gs-more" data-back="1">Back to results</button></section>';
+  }
+  function showDetail(r) {
+    detailRec = r;
+    render(input.value);
+    status('Details for this ' + (r.type === 'claim' ? 'claim' : r.type === 'case' ? 'case' : 'topic') + ' are shown in the results panel.');
+  }
+
   function render(q) {
+    if (detailRec) {
+      res.innerHTML = detailHtml(detailRec);
+      res.hidden = false;
+      input.setAttribute('aria-expanded', 'true');
+      return;
+    }
     current = search(q);
     var groups = {};
     GROUPS.forEach(function (g) { groups[g[0]] = []; });
@@ -4327,6 +4369,7 @@ if(enabled){
     input.setAttribute('aria-expanded', 'false');
     current = [];
     expanded = {};
+    detailRec = null;
   }
 
   function cssEscape(v) {
@@ -4387,8 +4430,18 @@ if(enabled){
     if (r.type === 'article') { location.href = r.route; return; }
     if (r.type === 'forecast') { revealForecast(r); close(); return; }
     if (r.type === 'feed-event' || r.type === 'feed-inbox') { revealFeed(r); close(); return; }
-    if (r.type === 'topic') { status(r.title + ': ' + (r.sub || 'no papers listed')); return; }
-    if (r.route) { location.hash = r.route; close(); }
+    if (r.type === 'topic' || r.type === 'claim' || r.type === 'case') { showDetail(r); return; }
+    if (r.type === 'csat') {
+      location.hash = r.route;
+      close();
+      status('Opened the CSAT tab. "' + r.title + '" is listed in the results and is not selected there.');
+      return;
+    }
+    if (r.route) {
+      location.hash = r.route;
+      close();
+      status('Opened the page for ' + r.id + '.');
+    }
   }
 
   var timer = null;
@@ -4397,7 +4450,7 @@ if(enabled){
     var q = input.value;
     if (!norm(q).trim()) { close(); status(''); return; }
     timer = setTimeout(function () {
-      load().then(function () { render(q); }).catch(function () {
+      load().then(function () { detailRec = null; render(q); }).catch(function () {
         res.innerHTML = '<p class="gs-note">Search is unavailable: the search index could not be loaded. Reload once while online.</p>';
         res.hidden = false;
         status('Search is unavailable.');
@@ -4409,13 +4462,18 @@ if(enabled){
     if (e.key === 'Escape') { input.value = ''; close(); status(''); }
   });
   res.addEventListener('click', function (e) {
+    if (e.target.closest('[data-back]')) { detailRec = null; render(input.value); return; }
     var more = e.target.closest('[data-more]');
     if (more) { expanded[more.getAttribute('data-more')] = true; render(input.value); return; }
     var b = e.target.closest('[data-gi]');
     if (b) activate(current[Number(b.getAttribute('data-gi'))]);
   });
+  // The event path is read before any handler swaps the panel's contents, so a clicked button that a render has just
+  // replaced still counts as inside the control.
   document.addEventListener('click', function (e) {
-    if (!wrap.contains(e.target)) close();
+    var path = e.composedPath ? e.composedPath() : [];
+    var inside = path.length ? path.indexOf(wrap) !== -1 : wrap.contains(e.target);
+    if (!inside) close();
   });
   liveSnapshot();
 })();

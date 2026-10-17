@@ -54,7 +54,7 @@ export function buildSearchIndex({
   const records = [];
 
   for (const [id, t] of Object.entries(topics)) {
-    records.push({ type: 'topic', id, title: t.title, sub: t.papers.join(', '), text: parts(t.title, t.papers.join(' ')), route: null });
+    records.push({ type: 'topic', id, title: t.title, sub: t.papers.join(', '), text: parts(t.title, t.papers.join(' ')), route: null, detail: { papers: t.papers } });
   }
   for (const a of articles) {
     records.push({
@@ -75,14 +75,19 @@ export function buildSearchIndex({
   for (const c of zb.claim_bank) {
     records.push({
       type: 'claim', id: c.id, title: clip(c.text, 160), sub: parts(c.tag, c.currency_check && `currency: ${c.currency_check}`),
-      limit: c.note || '', text: parts(c.text, c.note, c.evidence_phrase, c.locator), route: '#hacking',
+      limit: c.note || '', text: parts(c.text, c.note, c.evidence_phrase, c.locator), route: null,
+      detail: { text: c.text, tag: c.tag, currency_check: c.currency_check || '', note: c.note || '', locator: c.locator || '', evidence_phrase: c.evidence_phrase || '' },
     });
   }
   for (const c of zb.case_bank) {
     records.push({
       type: 'case', id: c.id, title: `${c.name} (${c.year})`, sub: parts(c.court, c.decided && `decided ${c.decided}`),
       limit: c.null_reason || c.verified_scope || '', text: parts(c.name, c.citation, c.court, c.posture, c.verified_scope, c.null_reason),
-      route: '#hacking',
+      route: null,
+      detail: {
+        name: c.name, year: c.year, decided: c.decided || '', citation: c.citation || '', court: c.court || '', posture: c.posture || '',
+        verified_scope: c.verified_scope || '', null_reason: c.null_reason || '',
+      },
     });
   }
   for (const c of csatRecords(html)) {

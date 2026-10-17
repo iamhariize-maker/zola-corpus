@@ -144,6 +144,72 @@ try {
   ok(/Feed: /.test(await fp.textContent('#gsearch-res')), 'the feed state is shown in the results');
   await feedCtx.close();
 
+  // Records with no page of their own open in the results panel. They do not navigate, and they do not claim a page opened.
+  const clickFirstIn = (p, group) => p.evaluate(g => {
+    const h = [...document.querySelectorAll('#gsearch-res h3')].find(x => x.textContent.startsWith(g));
+    const b = h && h.nextElementSibling && h.nextElementSibling.querySelector('li button');
+    if (!b) return false;
+    b.click();
+    return true;
+  }, group);
+  const dp = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+  await dp.goto(base + 'index.html', { waitUntil: 'load' });
+  await dp.waitForSelector('#gsearch');
+  const hashBefore = await dp.evaluate(() => location.hash);
+  await showResults(dp, 'bill', 'Hacking claims');
+  ok(await clickFirstIn(dp, 'Hacking claims'), 'a Hacking claim result can be activated');
+  await dp.waitForSelector('.gs-detail');
+  const claimText = await dp.textContent('.gs-detail');
+  ok(/Hacking claim/.test(claimText) && /Tag/.test(claimText), 'a claim opens its full detail in the results panel');
+  ok(await dp.evaluate(() => location.hash) === hashBefore, 'a claim does not navigate away');
+  await dp.click('[data-back]');
+  ok(await dp.locator('.gs-detail').count() === 0 && await dp.locator('#gsearch-res li').count() > 0, 'Back returns to the results');
+  await showResults(dp, 'assent', 'Hacking cases');
+  ok(await clickFirstIn(dp, 'Hacking cases'), 'a Hacking case result can be activated');
+  await dp.waitForSelector('.gs-detail');
+  ok(/Hacking case/.test(await dp.textContent('.gs-detail')), 'a case opens its detail in the results panel');
+  ok(await dp.evaluate(() => location.hash) === hashBefore, 'a case does not navigate away');
+  await dp.click('[data-back]');
+  await showResults(dp, 'political system', 'Syllabus topics');
+  ok(await clickFirstIn(dp, 'Syllabus topics'), 'a syllabus topic result can be activated');
+  await dp.waitForSelector('.gs-detail');
+  ok(/Syllabus topic/.test(await dp.textContent('.gs-detail')) && /Papers/.test(await dp.textContent('.gs-detail')), 'a topic shows its papers in the panel, not as a silent status');
+  await dp.close();
+
+  // zola-live: an event the app loads after this control is set up appears once the app fires zola-live.
+  const lp = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+  await lp.goto(base + 'index.html', { waitUntil: 'load' });
+  await lp.waitForSelector('#gsearch');
+  await lp.waitForFunction(() => !!window.ZOLA_LIVE);
+  await lp.evaluate(() => {
+    window.ZOLA_LIVE.events = function () {
+      return [{ id: 'EV-LIVE-2', date: '2026-10-16', title: 'Live update test event', subject: 'Polity', hook: '', status: 'VERIFIED',
+        machines: [], source: { url: 'https://example.test/live', title: 'Live source' } }];
+    };
+    window.dispatchEvent(new CustomEvent('zola-live', { detail: { state: 'live' } }));
+  });
+  await showResults(lp, 'Live update test event', 'Live update test event');
+  const liveText = await lp.textContent('#gsearch-res');
+  ok(/Feed events/.test(liveText) && /Checked/.test(liveText) && /Live source/.test(liveText), 'an event that arrives on zola-live appears with its status and source');
+  await lp.close();
+
+  // A cached feed with the network blocked: the saved copy is searched, and the footer says it is a saved copy.
+  const cache = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  await cache.addInitScript(f => {
+    localStorage.setItem('zola.live.v1', JSON.stringify({ url: 'https://feed.example.test/zola.json', feed: f,
+      fetchedAt: Date.now() - 3600e3, lastAttempt: Date.now() - 3600e3, lastError: 'offline' }));
+  }, fixture);
+  await cache.route(/raw\.githubusercontent\.com/, r => r.abort());
+  await cache.route(/feed\.example\.test/, r => r.abort());
+  const cp = await cache.newPage();
+  await cp.goto(base + 'index.html', { waitUntil: 'load' });
+  await cp.waitForSelector('#gsearch');
+  await cp.waitForTimeout(1200);
+  await showResults(cp, news.title, news.title);
+  const cacheText = await cp.textContent('#gsearch-res');
+  ok(/Feed news/.test(cacheText) && /Feed: /.test(cacheText) && /fetched/.test(cacheText), 'a cached feed is searched and its fetch time is shown');
+  await cache.close();
+
   // No feed on the page: the limitation is visible and the rest of search still works.
   const noFeed = await browser.newContext({ viewport: { width: 1280, height: 800 } });
   await noFeed.route(/raw\.githubusercontent\.com/, r => r.abort());

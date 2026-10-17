@@ -85,6 +85,16 @@ ok(!predicts('Rights guaranteed by Article 19 raise constitutional questions.'),
 ok(!predicts('The notice will appear in the Gazette.'), 'will appear in the Gazette is accepted (not exam wording)');
 ok(predicts('This does not predict which questions will be asked and this is guaranteed to be asked.'), 'does not predict does not exempt a later guarantee in the same clause');
 ok(!predicts('This does not predict which questions will be asked.'), 'does not predict which questions will be asked is accepted');
+const probe = [
+  ['This does not predict which questions will be asked and this is a guaranteed question.', true],
+  ['This does not predict which questions will be asked and this is guaranteed to be asked.', true],
+  ['This does not predict which questions will be asked and this will appear in Prelims.', true],
+  ['This does not predict which questions will be asked and this is an expected question.', true],
+  ['This question will definitely be asked in Prelims.', true],
+  ['This question is expected in Prelims.', true],
+  ['The notice is likely to appear in the Gazette.', false],
+];
+for (const [text, rejected] of probe) ok(predicts(text) === rejected, `${rejected ? 'rejects' : 'accepts'}: ${text}`);
 const nonArrayDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 nonArrayDoc.articles['nobel-peace-2026'].mappings = {};
 let nonArrayThrew = false, nonArrayProblems = [];

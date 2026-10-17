@@ -21,7 +21,22 @@ const KINDS = ['Official', 'News report', 'Government', 'Research'];
 // Syllabus reasons and gaps must not predict questions. A cue is exempt only when it is directly negated
 // ("not expected questions", "is not guaranteed to be asked") or sits under "does not predict". Every match in
 // a clause is checked, and clause breaks stop a cue from reaching into an unrelated clause.
-const SYLLABUS_PREDICTION = /\bguaranteed\s+(?:(?:a|an|the|this)\s+)?(?:questions?|to be asked|to appear|to come up)\b|\bexpected\s+(?:questions?|to be asked|to appear)\b|\bpredicted\s+(?:questions?|to be asked)\b|\blikely\s+to\s+(?:be asked|appear|come up)\b|\bcertain\s+to\s+(?:be asked|appear|come up)\b|\bwill\s+be\s+asked\b|\bwill\s+appear\s+in\s+(?:the\s+)?(?:prelims|mains|exam|examination|upsc|paper)\b|\bmost important (?:question|topic)\b|\bimportant for (?:the )?exam\b|\bmust[- ]read\b/gi;
+// Each cue attaches a prediction directly to a question or to an exam term. A bare "likely to appear in the Gazette"
+// or "guaranteed by Article 19" carries no exam term or question, so it is not a prediction.
+const SYLLABUS_EXAM = /(?:prelims?|mains|exams?|examinations?|upsc|papers?)/;
+const SYLLABUS_PREDICTION = new RegExp([
+  /\bguaranteed\s+(?:(?:a|an|the|this)\s+)?(?:questions?|to be asked|to appear)\b/,
+  /\bexpected\s+(?:(?:a|an|the)\s+)?(?:questions?|to be asked)\b/,
+  new RegExp(String.raw`\bexpected\s+(?:in|at)\s+(?:the\s+)?${SYLLABUS_EXAM.source}\b`),
+  /\bpredicted\s+(?:questions?|to be asked)\b/,
+  /\b(?:definitely|certainly|surely)\s+(?:be asked|appear)\b/,
+  /\bwill\s+(?:definitely\s+|certainly\s+)?be asked\b/,
+  /\b(?:likely|certain)\s+to\s+be asked\b/,
+  new RegExp(String.raw`\b(?:likely|certain|will)\s+(?:to\s+)?appear\s+(?:in|at)\s+(?:the\s+)?${SYLLABUS_EXAM.source}\b`),
+  /\bmost important (?:question|topic)\b/,
+  /\bimportant for (?:the )?exam\b/,
+  /\bmust[- ]read\b/,
+].map(r => r.source).join('|'), 'gi');
 const DIRECT_NEGATION = /(?:\bnot|n't|\bnever)\s+(?:(?:a|an|the)\s+)?$/i;
 const PREDICT_NEGATION = /\bnot\s+predict\s+(?:(?:which|what|whether|how|when|the)\s+)*(?:questions?\s+)?$/i;
 const SYLLABUS_CLAUSE_BREAK = /[;:,]|\s(?:but|though|while|whereas|yet)\s/i;

@@ -55,6 +55,13 @@ assert.equal(ARTICLE_SYLLABUS_SCHEMA, ARTICLE_SYLLABUS_DOCUMENT.schema);
 assert.deepEqual(ARTICLES.map(article => article.slug), EXPECTED_ARTICLE_SLUGS, 'the current article export has the pinned 21 slugs');
 assert.deepEqual(Object.keys(ARTICLE_SYLLABUS_MAP), EXPECTED_ARTICLE_SLUGS, 'the sidecar has exactly the current article keys in export order');
 assert.deepEqual(validateArticleSyllabusMap(), [], 'the sidecar entries validate against the articles and taxonomy');
+assert.ok(
+  validateArticleSyllabusMap({
+    articles: [...ARTICLES, ARTICLES_OCT17[0]],
+    document: ARTICLE_SYLLABUS_DOCUMENT,
+  }).some(problem => /slug set mismatch/.test(problem)),
+  'a partial note import stays invalid until the complete extension is present',
+);
 
 const OCT17_ARTICLES = [...ARTICLES, ...ARTICLES_OCT17];
 const OCT17_SYLLABUS_DOCUMENT = composeArticleSyllabusDocument(
@@ -92,6 +99,10 @@ assert.throws(
   /duplicates slug/,
   'duplicate extension slugs fail closed',
 );
+const prototypeKeyFragment = JSON.parse('{"schema":"zola-article-syllabus-map-fragment/1","status":"draft-unverified","articles":{"__proto__":{"mappings":[],"mapping_gap":"synthetic test row"}}}');
+const prototypeKeyDocument = composeArticleSyllabusDocument(ARTICLE_SYLLABUS_DOCUMENT, [prototypeKeyFragment]);
+assert.ok(Object.hasOwn(prototypeKeyDocument.articles, '__proto__'), 'composition preserves a JSON __proto__ key as ordinary data');
+assert.equal(Object.getPrototypeOf(prototypeKeyDocument.articles), Object.prototype, 'extension data cannot change the sidecar prototype');
 
 assert.equal(ARTICLE_SYLLABUS_SOURCE.notificationUrl, 'https://www.upsc.gov.in/sites/default/files/Notif-CSP-2026-Engl-060226Rev.pdf');
 assert.equal(ARTICLE_SYLLABUS_SOURCE.examinationPageUrl, UPSC_SYLLABUS_SOURCE.examinationPageUrl);

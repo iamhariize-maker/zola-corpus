@@ -44,7 +44,12 @@ export function composeArticleSyllabusDocument(baseDocument, fragments = []) {
     }
     for (const [slug, entry] of Object.entries(fragment.articles)) {
       if (hasOwn(articles, slug)) throw new TypeError(`article syllabus fragment duplicates slug ${slug}`);
-      articles[slug] = entry;
+      Object.defineProperty(articles, slug, {
+        value: entry,
+        enumerable: true,
+        writable: true,
+        configurable: true,
+      });
     }
   }
   return { ...baseDocument, articles };

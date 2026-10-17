@@ -44,6 +44,10 @@ ok(!numberGate('₹5 lakh crore', '$5 lakh crore').ok, 'a currency change with t
 ok(!numberGate('298 votes cast in favour', '298 votes cast in opposition').ok, 'a direction word beyond the old window is flagged (Codex bypass)');
 ok(!numberGate('10^12 days', '10 days').ok, 'an unsupported number form fails closed for review (Codex)');
 ok(numberGate('(5 per cent)', 'the rate is 5 per cent.').ok, 'a number inside brackets with the same unit passes');
+ok(!numberGate('€99 million', '€53 million').ok, 'a euro figure the gate does not parse fails closed (Sol bypass)');
+ok(!numberGate('~99 million', '99 million').ok, 'an approximate figure fails closed (Sol bypass)');
+ok(!numberGate('₹(99) crore', '₹53 crore').ok, 'a currency with brackets fails closed (Sol bypass)');
+ok(!numberGate('298 votes cast in one long list of words that continue for a while and the final word is favour.', '298 votes cast in one long list of words that continue for a while and the final word is opposition.').ok, 'a direction word late in the clause is still compared (Sol bypass)');
 ok(numberGate('a total of 1,000 lakh', 'the total was 1000 lakh').ok, 'digit grouping with commas is ignored');
 ok(numberGate('in 2026', 'in 2026').ok && !numberGate('in 2027', 'in 2026').ok, 'years are checked like other numbers');
 

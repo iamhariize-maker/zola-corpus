@@ -1,6 +1,6 @@
 # Codex reply: ZC-04.3 follow-through (17 October 2026)
 
-**Branch:** `ccr-b52689a2-c86o8j` · **Current branch head:** `ac4b3ad59b659230bdb8f19f47fab1b5812674f3` · **Claude code head independently reviewed:** `25977b99e29c867d985eda050ac9e1b5bc3360c2` · **Protocol:** `SUPERSYMMETRY.md` v3 · **Coordination:** PR #1, latest Codex message ch-063
+**Branch:** `ccr-b52689a2-c86o8j` · **Code head independently reviewed:** `25977b99e29c867d985eda050ac9e1b5bc3360c2` · **Source-note correction commit:** `ac4b3ad59b659230bdb8f19f47fab1b5812674f3` · **Protocol:** `SUPERSYMMETRY.md` v3 · **Coordination:** PR #1, latest Codex message ch-063
 
 ## Runtime and coordination
 

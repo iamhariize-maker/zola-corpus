@@ -1,14 +1,18 @@
 import assert from 'node:assert/strict';
 import { ARTICLES } from '../tools/articles-data.mjs';
+import { ARTICLES_OCT17 } from '../tools/articles-oct17-notes.mjs';
 import {
+  ARTICLE_SYLLABUS_FRAGMENT_DOCUMENT,
   ARTICLE_SYLLABUS_DOCUMENT,
   ARTICLE_SYLLABUS_MAP,
   ARTICLE_SYLLABUS_SCHEMA,
   ARTICLE_SYLLABUS_SOURCE,
   ARTICLE_SYLLABUS_STATUS,
+  composeArticleSyllabusDocument,
   getArticleSyllabus,
   validateArticleSyllabusMap,
 } from '../tools/upsc-article-map.mjs';
+import { validate as validateArticles } from '../tools/articles.mjs';
 import {
   PAPERS,
   TAXONOMY_STATUS,
@@ -51,6 +55,43 @@ assert.equal(ARTICLE_SYLLABUS_SCHEMA, ARTICLE_SYLLABUS_DOCUMENT.schema);
 assert.deepEqual(ARTICLES.map(article => article.slug), EXPECTED_ARTICLE_SLUGS, 'the current article export has the pinned 21 slugs');
 assert.deepEqual(Object.keys(ARTICLE_SYLLABUS_MAP), EXPECTED_ARTICLE_SLUGS, 'the sidecar has exactly the current article keys in export order');
 assert.deepEqual(validateArticleSyllabusMap(), [], 'the sidecar entries validate against the articles and taxonomy');
+
+const OCT17_ARTICLES = [...ARTICLES, ...ARTICLES_OCT17];
+const OCT17_SYLLABUS_DOCUMENT = composeArticleSyllabusDocument(
+  ARTICLE_SYLLABUS_DOCUMENT,
+  [ARTICLE_SYLLABUS_FRAGMENT_DOCUMENT],
+);
+assert.deepEqual(
+  validateArticleSyllabusMap({ articles: OCT17_ARTICLES, document: OCT17_SYLLABUS_DOCUMENT }),
+  [],
+  'the 17 October fragment composes into a complete, exact-slug sidecar',
+);
+assert.deepEqual(
+  validateArticles(OCT17_ARTICLES, OCT17_SYLLABUS_DOCUMENT),
+  [],
+  'all 17 October article content and syllabus text pass the existing article contract',
+);
+for (const article of ARTICLES_OCT17) {
+  assert.ok(
+    getArticleSyllabus(article.slug, { articles: OCT17_ARTICLES, document: OCT17_SYLLABUS_DOCUMENT }),
+    `${article.slug} resolves against the supplied combined article list`,
+  );
+}
+assert.throws(
+  () => composeArticleSyllabusDocument(ARTICLE_SYLLABUS_DOCUMENT, [
+    { ...ARTICLE_SYLLABUS_FRAGMENT_DOCUMENT, schema: 'unsupported/0' },
+  ]),
+  /fragment schema must be/,
+  'unsupported fragment versions fail closed',
+);
+assert.throws(
+  () => composeArticleSyllabusDocument(ARTICLE_SYLLABUS_DOCUMENT, [
+    ARTICLE_SYLLABUS_FRAGMENT_DOCUMENT,
+    ARTICLE_SYLLABUS_FRAGMENT_DOCUMENT,
+  ]),
+  /duplicates slug/,
+  'duplicate extension slugs fail closed',
+);
 
 assert.equal(ARTICLE_SYLLABUS_SOURCE.notificationUrl, 'https://www.upsc.gov.in/sites/default/files/Notif-CSP-2026-Engl-060226Rev.pdf');
 assert.equal(ARTICLE_SYLLABUS_SOURCE.examinationPageUrl, UPSC_SYLLABUS_SOURCE.examinationPageUrl);

@@ -1,0 +1,33 @@
+{
+  "schema": "zola-article-syllabus-map-fragment/1",
+  "status": "draft-unverified",
+  "articles": {
+    "sukhna-wetland-sauj-jheel-ramsar-2026": {
+      "mappings": [
+        {
+          "topic": "environment-ecology",
+          "papers": ["prelims-gs1", "mains-gs3"],
+          "reason": "The note links two named wetlands and their site management to biodiversity and environment topics."
+        }
+      ]
+    },
+    "plfs-september-2026-monthly-bulletin": {
+      "mappings": [
+        {
+          "topic": "economy-macro",
+          "papers": ["prelims-gs1", "mains-gs3"],
+          "reason": "The note explains official labour-market indicators and the survey basis needed to interpret them."
+        }
+      ]
+    },
+    "nsap-continuation-pension-revisions-2026": {
+      "mappings": [
+        {
+          "topic": "polity-governance",
+          "papers": ["prelims-gs1", "mains-gs2"],
+          "reason": "The note covers a public-assistance programme, its approved benefit changes and their implementation status."
+        }
+      ]
+    }
+  }
+}

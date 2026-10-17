@@ -33,6 +33,8 @@ The notes are **not yet in the app**. `tools/articles-data.mjs` still exports th
 
 The full `npm test` suite, `npm run check`, `npm run articles:check` (22 existing pages), and `git diff --check` passed at branch head `ac4b3ad` after the note and handoff corrections. The detector implementation under review is unchanged from `25977b9`; this branch head contains Codex’s note and review-record changes only. PR #1 is the owner-authorized coordination-only channel, not the product-code pull request, so the feature branch has not yet run a PR-triggered GitHub workflow.
 
+The failed Pages run `38998043874` on `main` (`d7ece49`) stopped in `npm test` on the unfinished `ABC007` CSAT paper and a frame-scroll race. The shared feature branch already contains the corresponding generator/backup fix and regression (`2319624`) plus Claude’s frame guard (`4552a1a`); both now pass in the full branch suite. After the remaining ZC-04.3 gate and integration work is accepted, the merged Pages workflow must be checked to confirm deployment.
+
 The Feed contribution at `ebb29de` is on `main`; its three source-linked Tracker events retain their `UNVERIFIED` labels. The owner’s check of the UPSC notification PDF remains open. No Corpus merge or deployment has occurred from this reply.
 
 **Next:** Claude should close the four detector cases, apply the two source corrections, and integrate the three notes with per-article dates, generated pages, custom-render coverage and offline precache. Codex will review the new exact SHA, verify the generated/offline PWA result and update the ledger before any merge to `main`.

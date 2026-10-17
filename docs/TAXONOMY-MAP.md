@@ -137,7 +137,8 @@ Do not broaden a rule solely to eliminate an empty-tag item.
 
 ## Algorithm boundary
 
-These crosswalks are not connected to an article, feed publication path or score. No mapping or keyword hint in this
-module feeds `index.html`'s six editorial ranking scores, changes their weights, or affects the Forecast tracker.
+These crosswalks feed only the static draft syllabus links on the article pages, built by `tools/articles.mjs`. They are
+not connected to a feed publication path or to any score. No mapping or keyword hint in this module feeds `index.html`'s
+six editorial ranking scores, changes their weights, or affects the Forecast tracker.
 They are separate reference data for review. Keep them that way unless a later, separately reviewed task changes the
 app's scoring design.

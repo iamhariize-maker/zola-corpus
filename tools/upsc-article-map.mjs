@@ -1,5 +1,6 @@
-// Article-to-syllabus sidecar. This module is metadata-only: it is not imported
-// by the article generator, browser app, ranking, or tracker.
+// Article-to-syllabus sidecar. This module is metadata-only. tools/articles.mjs renders
+// its entries as static draft links on the article pages; the browser app, ranking and
+// tracker do not import it.
 import { readFileSync } from 'node:fs';
 import { ARTICLES } from './articles-data.mjs';
 import {

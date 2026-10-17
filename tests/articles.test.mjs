@@ -25,11 +25,17 @@ for (const [name, html] of Object.entries(files)) {
 ok(!fs.readdirSync(path.join(ROOT, 'articles')).some(f => f.endsWith('.html') && !(f in files)), 'no stray article pages without data');
 
 console.log('Study articles: draft syllabus links');
+const escapeText = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const unlabelled = ARTICLES.filter(a => {
   const html = read(path.join('articles', `${a.slug}.html`));
-  return !(/id="syllabus-links"/.test(html) && /Draft, unverified\./.test(html) && /class="papers"/.test(html));
+  const entry = ARTICLE_SYLLABUS_DOCUMENT.articles[a.slug];
+  // A mapped note must show its papers; a gap note must show its gap and no paper list.
+  const shown = entry.mappings.length
+    ? /class="papers"/.test(html)
+    : html.includes(escapeText(entry.mapping_gap)) && !/class="papers"/.test(html);
+  return !(/id="syllabus-links"/.test(html) && /Draft, unverified\./.test(html) && shown);
 }).map(a => a.slug);
-ok(unlabelled.length === 0, `every article page shows its draft syllabus links with the unverified label${unlabelled.length ? ': ' + unlabelled.join(', ') : ''}`);
+ok(unlabelled.length === 0, `every article page shows its draft syllabus links, or its gap, with the unverified label${unlabelled.length ? ': ' + unlabelled.join(', ') : ''}`);
 const gapDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 gapDoc.articles['union-budget-2026-27'] = { mappings: [], mapping_gap: 'Test gap: no current topic fits this note.' };
 ok(validate(ARTICLES, gapDoc).length === 0, 'an explicit whole-article mapping gap is a valid entry');
@@ -41,6 +47,13 @@ ok(validate(ARTICLES, missingDoc).some(p => /slug set mismatch/.test(p)), 'a syl
 let failedClosed = false;
 try { render(ARTICLES, missingDoc); } catch (e) { failedClosed = /no valid syllabus map entry/.test(e.message); }
 ok(failedClosed, 'rendering fails closed when an article has no valid syllabus entry');
+const forbiddenReasonDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
+forbiddenReasonDoc.articles['nobel-peace-2026'].mappings[0].reason = 'This is a guaranteed expected question.';
+ok(validate(ARTICLES, forbiddenReasonDoc).some(p => /nobel-peace-2026: syllabus text has forbidden phrase/.test(p)), 'a forbidden phrase in a syllabus reason fails the content rules');
+const forbiddenGapDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
+forbiddenGapDoc.articles['union-budget-2026-27'] = { mappings: [], mapping_gap: 'Likely to be asked in Prelims.' };
+ok(validate(ARTICLES, forbiddenGapDoc).some(p => /union-budget-2026-27: syllabus text has forbidden phrase/.test(p)), 'a forbidden phrase in a mapping gap fails the content rules');
+ok(validate(ARTICLES, ARTICLE_SYLLABUS_DOCUMENT).length === 0, 'ordinary factual rationales still pass the content rules');
 
 console.log('Study articles: pages are self-contained and offline-safe');
 for (const name of Object.keys(files)) {

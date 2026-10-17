@@ -62,7 +62,9 @@ syllabus coverage, exhaustive article coverage, or verified factual content.
 
 ## Engine boundary
 
-`tools/upsc-article-map.mjs` is a metadata-only lookup and validator. This sidecar is not imported by the article
-generator, the browser app, the ranking code or the Forecast tracker. It contains no score, rank, weight or probability
-fields and does not change the app's six ranking signals. It does not generate or predict questions. A separate reviewed
-task would be needed before integrating this reference data into any article-generation or display path.
+`tools/upsc-article-map.mjs` is a metadata-only lookup and validator. `tools/articles.mjs` renders each entry into its
+note's page at build time as a "Draft syllabus links" section, labelled "Draft, unverified", or as the explicit gap.
+Nothing fetches this data at runtime. The sidecar is not imported by the browser app, the ranking code or the Forecast
+tracker. It contains no score, rank, weight or probability fields and does not change the app's six ranking signals. It
+does not generate or predict questions. Reasons and gaps follow the article forbidden-phrase rules, and the build fails if
+the map drifts from the article slugs.

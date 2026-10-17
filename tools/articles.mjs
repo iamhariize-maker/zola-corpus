@@ -48,6 +48,14 @@ export function validate(articles = ARTICLES, syllabusDocument = ARTICLE_SYLLABU
   }
   // The syllabus sidecar must match these exact slugs; a stale or invalid map fails the build.
   problems.push(...validateArticleSyllabusMap({ articles, document: syllabusDocument }));
+  // Reasons and gaps are shown to readers, so they follow the same forbidden-phrase rules as article text.
+  for (const [slug, entry] of Object.entries(syllabusDocument?.articles ?? {})) {
+    const shown = [entry?.mapping_gap, ...(entry?.mappings ?? []).map(m => m?.reason)].filter(t => typeof t === 'string');
+    for (const text of shown) {
+      const bad = text.match(FORBIDDEN);
+      if (bad) problems.push(`${slug}: syllabus text has forbidden phrase "${bad[0]}"`);
+    }
+  }
   return problems;
 }
 

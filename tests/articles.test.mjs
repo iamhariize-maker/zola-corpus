@@ -57,6 +57,17 @@ ok(validate(ARTICLES, ARTICLE_SYLLABUS_DOCUMENT).length === 0, 'ordinary factual
 const ordinaryDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 ordinaryDoc.articles['nobel-peace-2026'].mappings[0].reason = 'Covers free trade and freedom of speech, which is guaranteed by Article 19.';
 ok(validate(ARTICLES, ordinaryDoc).length === 0, 'ordinary wording such as "free trade" and "guaranteed by Article 19" is not blocked');
+const reasonProblems = text => {
+  const d = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
+  d.articles['nobel-peace-2026'].mappings[0].reason = text;
+  return validate(ARTICLES, d);
+};
+ok(reasonProblems('This is a guaranteed question.').some(p => /predicts questions/.test(p)), 'a guaranteed question is rejected on its own');
+ok(reasonProblems('This topic is guaranteed to be asked in Prelims.').some(p => /predicts questions/.test(p)), 'a topic guaranteed to be asked is rejected');
+ok(reasonProblems('These are not expected questions. This is guaranteed to be asked.').some(p => /predicts questions/.test(p)), 'a disclaimer does not exempt a separate prediction in the same text');
+ok(reasonProblems('These links are study aids, not expected questions.').length === 0, 'a study-aid disclaimer that negates the cue is accepted');
+ok(reasonProblems('This does not predict which questions will be asked.').length === 0, 'a statement that does not predict questions is accepted');
+ok(reasonProblems('The topic is unlikely to be asked.').length === 0, 'unlikely to be asked is accepted (not the substring likely)');
 const nonArrayDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 nonArrayDoc.articles['nobel-peace-2026'].mappings = {};
 let nonArrayThrew = false, nonArrayProblems = [];

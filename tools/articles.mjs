@@ -18,7 +18,17 @@ const OUT = path.join(ROOT, 'articles');
 // Phrases that would predict exam questions or hype the content (AGENTS.md: voice and honesty).
 const FORBIDDEN = /likely (to be )?(asked|appear)|will be asked|expected question|predicted question|guaranteed|\bfree\b(?!-return)|must[- ]read|most important question/i;
 const KINDS = ['Official', 'News report', 'Government', 'Research'];
-const SYLLABUS_PREDICTION = /likely (to be )?(asked|appear)|will be asked|expected question|predicted question|most important question|important for (the )?exam|must[- ]read/i;
+// Syllabus reasons and gaps must not predict questions. A cue counts only when no negation comes before it in the same sentence,
+// so a disclaimer does not exempt a separate prediction elsewhere in the text.
+const SYLLABUS_PREDICTION = /\b(?:likely|guaranteed|expected|predicted)\b[^.!?]*\b(?:questions?|asked|appear)\b|\bcertain to\b[^.!?]*\b(?:questions?|asked|appear)\b|\bwill be asked\b|\bmost important (?:question|topic)\b|\bimportant for (?:the )?exam\b|\bmust[- ]read\b/i;
+const SYLLABUS_NEGATION = /\bnot\b|n't\b|\bno\b|\bnever\b|\bunlikely\b|\bwithout\b|\bcannot\b|\bnone\b|\bneither\b|\bnor\b/i;
+function predictionIn(text) {
+  for (const sentence of text.split(/(?<=[.!?])\s+/)) {
+    const hit = sentence.match(SYLLABUS_PREDICTION);
+    if (hit && !SYLLABUS_NEGATION.test(sentence.slice(0, hit.index))) return hit[0];
+  }
+  return null;
+}
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const categoryTitle = id => CATEGORIES.find(c => c.id === id)?.title ?? '';
@@ -55,8 +65,8 @@ export function validate(articles = ARTICLES, syllabusDocument = ARTICLE_SYLLABU
     const reasons = Array.isArray(entry?.mappings) ? entry.mappings.map(m => m?.reason) : [];
     for (const text of [entry?.mapping_gap, ...reasons]) {
       if (typeof text !== 'string') continue;
-      const bad = text.match(SYLLABUS_PREDICTION);
-      if (bad) problems.push(`${slug}: syllabus text predicts questions: "${bad[0]}"`);
+      const bad = predictionIn(text);
+      if (bad) problems.push(`${slug}: syllabus text predicts questions: "${bad}"`);
     }
   }
   return problems;

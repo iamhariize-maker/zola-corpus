@@ -3,7 +3,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, SITE, ok, failures, playwright, serve, FEED_FIXTURE } from './helpers.mjs';
-import { buildSearchIndex, caseRecord, SEARCH_INDEX_FILE } from '../tools/search-index.mjs';
+import { buildSearchIndex, caseRecord, claimRecord, SEARCH_INDEX_FILE } from '../tools/search-index.mjs';
+import { TAXONOMY_STATUS, UPSC_SYLLABUS_SOURCE } from '../tools/upsc-taxonomy.mjs';
 
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
 const html = read('index.html');
@@ -33,6 +34,22 @@ ok(objectCase.title === 'Test v State' && !JSON.stringify(objectCase).includes('
 ok(committed.records.every(r => !JSON.stringify(r).includes('[object Object]')), 'no committed record contains [object Object]');
 ok(committed.records.filter(r => r.type === 'case').every(r => typeof r.limit === 'string'), 'every case limit is text');
 ok(committed.records.every(r => typeof r.n === 'string' && r.text === undefined), 'the index carries its search text already normalised, so the page does not normalise it on load');
+const machine14 = committed.records.find(r => r.type === 'machine' && r.id === 'M14');
+const articleGlance = committed.records.find(r => r.type === 'article' && r.id === 'nobel-2026-at-a-glance');
+const forecast17 = committed.records.find(r => r.type === 'forecast' && r.id === 'TRK-016');
+ok(machine14.n.includes('m14') && machine14.n.includes('teaching model'), 'a machine is searchable by its ID and by a term from its own content');
+const machine01 = committed.records.find(r => r.type === 'machine' && r.id === 'M01');
+ok(machine01.n.includes('present and voting') && machine01.n.includes('silent rajya sabha') && machine01.n.includes('route chooser'),
+  'a machine is searchable by its transition guard, worked scenario and calculator wording');
+ok(articleGlance.n.includes('neutrino') && articleGlance.n.includes('automated tools'), 'an article is searchable by its syllabus reason and by its caveat');
+ok(forecast17.n.includes('2026-07-17') && forecast17.n.includes('17 jul 2026'), 'a Forecast event is searchable by its ISO date and by its displayed date');
+ok(committed.records.filter(r => r.type === 'topic').every(r => r.status === TAXONOMY_STATUS && r.sourceStatus === UPSC_SYLLABUS_SOURCE.status), 'every syllabus topic carries its taxonomy and UPSC source status as its own fields');
+ok(committed.records.filter(r => r.type === 'claim' && r.detail.sources.length).every(r => r.detail.sources.every(s => s.title && (!s.url || /^https:\/\/\S+$/.test(s.url)))), 'claim sources carry a title, and a link only when it is HTTPS');
+ok(committed.records.filter(r => r.type === 'claim' && r.detail.currency).every(r => (r.detail.currency.status || r.detail.currency.note) && (!r.detail.currency.status || r.detail.currency.checked)),
+  'a claim currency status always comes with its checked date; a check with no status shows its note instead');
+let unresolved = false;
+try { claimRecord({ id: 'T-NOSRC', text: 'Test claim', sources: ['NO-SUCH-SOURCE'] }); } catch (e) { unresolved = /NO-SUCH-SOURCE not found/.test(e.message); }
+ok(unresolved, 'a claim whose source id does not resolve fails the build instead of dropping its provenance');
 
 console.log('Global search: source boundaries');
 ok(!/localStorage|sessionStorage|indexedDB|document\.cookie|sendBeacon|XMLHttpRequest|WebSocket/.test(js), 'the search script stores nothing and opens no side channel');
@@ -187,6 +204,148 @@ try {
   await dp.waitForSelector('.gs-detail');
   ok(/Syllabus topic/.test(await dp.textContent('.gs-detail')) && /Papers/.test(await dp.textContent('.gs-detail')), 'a topic shows its papers in the panel, not as a silent status');
   await dp.close();
+
+  // Machine and article content, syllabus reasons, caveats and dates are searchable, and a topic and a claim show their
+  // qualifiers and sources as separate fields.
+  const mp = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+  await mp.goto(base + 'index.html', { waitUntil: 'load' });
+  await mp.waitForSelector('#gsearch');
+  await showResults(mp, 'teaching model', machine14.title);
+  ok(/Hacking machines/.test(await mp.textContent('#gsearch-res')), 'a machine is found by a term from its own content');
+  await showResults(mp, 'neutrino', articleGlance.title);
+  ok(/Articles/.test(await mp.textContent('#gsearch-res')), 'an article is found by a syllabus reason term');
+  await showResults(mp, 'automated tools', articleGlance.title);
+  ok(/Articles/.test(await mp.textContent('#gsearch-res')), 'an article is found by a caveat term');
+  await showResults(mp, '17 Jul 2026', forecast17.title);
+  ok(/Forecast events/.test(await mp.textContent('#gsearch-res')), 'a Forecast event is found by its displayed date');
+  await showResults(mp, '2026-07-17', forecast17.title);
+  ok(/Forecast events/.test(await mp.textContent('#gsearch-res')), 'a Forecast event is found by its ISO date');
+  await showResults(mp, 'political system', 'Syllabus topics');
+  await clickFirstIn(mp, 'Syllabus topics');
+  await mp.waitForSelector('.gs-detail');
+  const topicDetail = await mp.textContent('.gs-detail');
+  ok(/Taxonomy status/.test(topicDetail) && topicDetail.includes(TAXONOMY_STATUS) && /UPSC source status/.test(topicDetail) && topicDetail.includes(UPSC_SYLLABUS_SOURCE.status),
+    'a syllabus topic shows its taxonomy and UPSC source status as separate fields');
+  await mp.click('[data-back]');
+  const provClaim = committed.records.find(r => r.type === 'claim' && r.detail.currency && r.detail.sources.some(s => s.url));
+  const linkedSrc = provClaim.detail.sources.find(s => s.url);
+  await showResults(mp, provClaim.title, provClaim.title);
+  await mp.evaluate(t => {
+    const b = [...document.querySelectorAll('#gsearch-res li button')].find(x => x.firstChild && x.firstChild.textContent === t);
+    if (b) b.click();
+  }, provClaim.title);
+  await mp.waitForFunction(() => { const d = document.querySelector('.gs-detail'); return !!d && /Sources/.test(d.textContent); }, null, { timeout: 8000 });
+  const provText = await mp.textContent('.gs-detail');
+  ok(provText.includes(linkedSrc.title) && provText.includes(provClaim.detail.currency.status) && /Currency status/.test(provText),
+    'a claim shows its resolved source title and its currency status as separate fields');
+  ok((await mp.locator('.gs-detail a').first().getAttribute('href')) === linkedSrc.url, 'a claim source link is the source’s own HTTPS address');
+  await mp.close();
+
+  // Feed items: machine tags are searchable and shown, and a date-only value keeps its calendar day in a western timezone.
+  const tzFixture = JSON.parse(FEED_FIXTURE);
+  tzFixture.events = [{ id: 'EV-TZ-1', date: '2026-10-10', title: 'Timezone date test event', subject: 'Polity', hook: '', status: 'VERIFIED',
+    machines: ['M01'], source: { url: 'https://example.test/tz', title: 'TZ source' } }];
+  const tzCtx = await browser.newContext({ viewport: { width: 1280, height: 800 }, timezoneId: 'America/Los_Angeles' });
+  await tzCtx.route(/raw\.githubusercontent\.com/, r => r.fulfill({ status: 200, body: JSON.stringify(tzFixture), headers: { 'access-control-allow-origin': '*' } }));
+  const tzp = await tzCtx.newPage();
+  await tzp.goto(base + 'index.html', { waitUntil: 'load' });
+  await tzp.waitForSelector('#gsearch');
+  await tzp.waitForTimeout(1500);
+  await showResults(tzp, 'M01 timezone date', 'Timezone date test event');
+  const tzItem = await tzp.locator('#gsearch-res li', { hasText: 'Timezone date test event' }).first().textContent();
+  ok(/10 Oct 2026/.test(tzItem) && !/9 Oct 2026/.test(tzItem) && /Machines M01/.test(tzItem),
+    `a feed date keeps its calendar day in a western timezone, and its machine tag is shown (${tzItem.slice(0, 90)})`);
+  await tzCtx.close();
+
+  // A search whose index arrives late is dropped once Escape, a click outside, or a newer query has overtaken it.
+  const lag = await browser.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: 'block' });
+  const lagged = async () => {
+    const p = await lag.newPage();
+    await p.route(/search-index\.json/, async r => { await new Promise(s => setTimeout(s, 900)); await r.continue(); });
+    await p.goto(base + 'index.html', { waitUntil: 'load' });
+    await p.waitForSelector('#gsearch');
+    return p;
+  };
+  const escRace = await lagged();
+  await escRace.fill('#gsearch', 'bill');
+  await escRace.waitForTimeout(150);
+  await escRace.press('#gsearch', 'Escape');
+  await escRace.waitForTimeout(1500);
+  ok(await escRace.evaluate(() => document.getElementById('gsearch-res').hidden) && (await escRace.inputValue('#gsearch')) === '',
+    'a search that finishes after Escape does not reopen the panel');
+  await escRace.close();
+  const outRace = await lagged();
+  await outRace.fill('#gsearch', 'bill');
+  await outRace.waitForTimeout(150);
+  await outRace.mouse.click(20, 700);
+  await outRace.waitForTimeout(1500);
+  ok(await outRace.evaluate(() => document.getElementById('gsearch-res').hidden), 'a search that finishes after a click outside does not reopen the panel');
+  await outRace.close();
+  const newerRace = await lagged();
+  await newerRace.fill('#gsearch', 'bill');
+  await newerRace.waitForTimeout(150);
+  await newerRace.fill('#gsearch', 'unit digit');
+  await newerRace.waitForFunction(() => { const e = document.getElementById('gsearch-res'); return !!e && !e.hidden && e.textContent.includes('CSAT labels'); }, null, { timeout: 8000 });
+  ok(!/Hacking claims/.test(await newerRace.textContent('#gsearch-res')), 'a newer query replaces the results of an older one that finishes late');
+  await newerRace.close();
+  await lag.close();
+
+  // Focus and keys: Escape in the results closes them and returns focus to the box; a detail moves focus to its heading and
+  // Back returns it to the box; Show all moves focus to the first new item; a CSAT result says it is not selected.
+  const er = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+  await er.goto(base + 'index.html', { waitUntil: 'load' });
+  await er.waitForSelector('#gsearch');
+  await showResults(er, 'bill', 'Hacking claims');
+  await er.focus('#gsearch-res li button');
+  await er.keyboard.press('Escape');
+  ok(await er.evaluate(() => document.getElementById('gsearch-res').hidden) && (await er.inputValue('#gsearch')) === '' &&
+    (await er.evaluate(() => document.activeElement && document.activeElement.id)) === 'gsearch',
+    'Escape in the results closes them, clears the query and returns focus to the search box');
+  await showResults(er, 'bill', 'Hacking claims');
+  await er.click('#gsearch-res [data-more="claim"]');
+  ok(await er.evaluate(() => document.activeElement === document.querySelector('ul[data-group="claim"] li:nth-child(9) button')),
+    'Show all moves focus to the first newly shown item');
+  await er.locator('ul[data-group="claim"] li button').first().click();
+  await er.waitForSelector('.gs-detail');
+  ok(await er.evaluate(() => { const a = document.activeElement; return !!a && a.tagName === 'H3' && !!a.closest('.gs-detail'); }), 'opening a detail moves focus to its heading');
+  await er.click('[data-back]');
+  ok(await er.evaluate(() => document.activeElement && document.activeElement.id) === 'gsearch', 'Back returns focus to the search box');
+  await showResults(er, 'unit digit', 'CSAT labels');
+  await er.evaluate(() => { const b = document.querySelector('ul[data-group="csat"] li button'); if (b) b.click(); });
+  await er.waitForFunction(() => /Opened the CSAT tab/.test(document.getElementById('gsearch-status').textContent), null, { timeout: 5000 });
+  const csatStatus = await er.textContent('#gsearch-status');
+  ok(/is not selected there/.test(csatStatus) && !/listed in the results/.test(csatStatus), 'a CSAT label result says it is not selected, and not that it is listed in closed results');
+  await er.close();
+
+  // Phone: the box, result rows, Show all and a Source link are at least 44 px tall, and long text wraps.
+  const tap = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  await tap.goto(base + 'index.html', { waitUntil: 'load' });
+  await tap.waitForSelector('#gsearch');
+  await showResults(tap, 'bill', 'Hacking claims');
+  const sizes = await tap.evaluate(() => {
+    const h = sel => { const el = document.querySelector(sel); return el ? Math.round(el.getBoundingClientRect().height) : 0; };
+    return { box: h('#gsearch'), row: h('#gsearch-res li button'), more: h('#gsearch-res .gs-more') };
+  });
+  ok(sizes.box >= 44 && sizes.row >= 44 && sizes.more >= 44, `the search box, a result row and Show all are at least 44 px tall (${JSON.stringify(sizes)})`);
+  const linkedForecast = committed.records.find(r => r.type === 'forecast' && r.url);
+  await showResults(tap, linkedForecast.title, linkedForecast.title);
+  const srcH = await tap.evaluate(() => { const a = document.querySelector('#gsearch-res .gs-src'); return a ? Math.round(a.getBoundingClientRect().height) : 0; });
+  ok(srcH >= 44, `a Source link is at least 44 px tall (${srcH})`);
+  ok(await tap.evaluate(() => getComputedStyle(document.getElementById('gsearch-res')).overflowWrap === 'anywhere'), 'long text in the results wraps instead of overflowing');
+  await tap.close();
+
+  // The index fails to load: the box says the results are open, and the message is shown.
+  // The service worker is blocked here: once it has installed and claimed the page, its precached copy of the index would
+  // answer the search and the failure would never happen. Blocking it makes the failure path the one under test.
+  const failCtx = await browser.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: 'block' });
+  const fail = await failCtx.newPage();
+  await fail.route(/search-index\.json/, r => r.abort());
+  await fail.goto(base + 'index.html', { waitUntil: 'load' });
+  await fail.waitForSelector('#gsearch');
+  await fail.fill('#gsearch', 'bill');
+  await fail.waitForFunction(() => /Search is unavailable/.test(document.getElementById('gsearch-res').textContent), null, { timeout: 8000 });
+  ok((await fail.getAttribute('#gsearch', 'aria-expanded')) === 'true', 'when the index cannot load, the search box reports that its results are open');
+  await failCtx.close();
 
   // zola-live: an event the app loads after this control is set up appears once the app fires zola-live.
   const lp = await browser.newPage({ viewport: { width: 1280, height: 800 } });

@@ -8,19 +8,19 @@
 
   var css = '' +
     '#gsearch-wrap{position:relative;flex:1 1 220px;max-width:340px;min-width:160px;margin:0 .5rem}' +
-    '#gsearch{width:100%;box-sizing:border-box;font:inherit;font-size:.9rem;padding:.35rem .55rem;border:1px solid var(--rule,#999);border-radius:6px;background:var(--sheet,#fff);color:var(--ink,#111)}' +
+    '#gsearch{width:100%;box-sizing:border-box;min-height:44px;font:inherit;font-size:.9rem;padding:.35rem .55rem;border:1px solid var(--rule,#999);border-radius:6px;background:var(--sheet,#fff);color:var(--ink,#111)}' +
     '#gsearch:focus-visible{outline:2px solid var(--pen,#06c);outline-offset:1px}' +
-    '#gsearch-res{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:50;max-height:min(70vh,520px);overflow:auto;background:var(--sheet,#fff);color:var(--ink,#111);border:1px solid var(--rule,#999);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:.4rem;font-size:.9rem}' +
+    '#gsearch-res{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:50;max-height:min(70vh,520px);overflow:auto;overflow-wrap:anywhere;background:var(--sheet,#fff);color:var(--ink,#111);border:1px solid var(--rule,#999);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:.4rem;font-size:.9rem}' +
     '#gsearch-res[hidden]{display:none}' +
     '#gsearch-res h3{font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted,#555);margin:.5rem .4rem .2rem}' +
     '#gsearch-res ul{list-style:none;margin:0;padding:0}' +
-    '#gsearch-res li button{display:block;width:100%;text-align:left;font:inherit;background:none;border:0;border-radius:4px;padding:.4rem;color:inherit;cursor:pointer}' +
+    '#gsearch-res li button{display:block;width:100%;min-height:44px;box-sizing:border-box;text-align:left;font:inherit;background:none;border:0;border-radius:4px;padding:.4rem;color:inherit;cursor:pointer}' +
     '#gsearch-res li button:hover,#gsearch-res li button:focus-visible{background:var(--paper,#f4f4f4);outline:none;box-shadow:inset 0 0 0 2px var(--pen,#06c)}' +
     '#gsearch-res .gs-sub{display:block;font-size:.78rem;color:var(--muted,#555)}' +
     '#gsearch-res .gs-limit{display:block;font-size:.78rem;color:var(--warn,#8a5a00)}' +
     '#gsearch-res .gs-note{font-size:.78rem;color:var(--muted,#555);margin:.5rem .4rem}' +
-    '#gsearch-res .gs-more{margin:.2rem .4rem .4rem;font:inherit;font-size:.8rem;background:none;border:1px solid var(--rule,#999);border-radius:4px;padding:.2rem .5rem;cursor:pointer;color:inherit}' +
-    '#gsearch-res .gs-src{display:inline-block;margin:0 .4rem .3rem;font-size:.78rem;color:var(--pen,#06c)}' +
+    '#gsearch-res .gs-more{margin:.2rem .4rem .4rem;min-height:44px;font:inherit;font-size:.8rem;background:none;border:1px solid var(--rule,#999);border-radius:4px;padding:.2rem .5rem;cursor:pointer;color:inherit}' +
+    '#gsearch-res .gs-src{display:inline-flex;align-items:center;min-height:44px;margin:0 .4rem .3rem;font-size:.78rem;color:var(--pen,#06c)}' +
     '#gsearch-res .gs-detail h3{margin:.5rem .4rem .2rem}' +
     '#gsearch-res .gs-dt-title{font-weight:600;margin:.2rem .4rem .4rem;line-height:1.35}' +
     '#gsearch-res .gs-dl{margin:.2rem .4rem .5rem}' +
@@ -57,11 +57,15 @@
   var current = [];
   var expanded = {};
   var detailRec = null;
+  // frame: the pending input frame. seq: bumped by every new search and every close, so a result that arrives late
+  // (after Escape, a click outside, or a newer query) is dropped instead of reopening the panel.
+  var frame = 0, seq = 0;
 
   function norm(s) {
     return String(s || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
   }
   function status(msg) { statusEl.textContent = msg; }
+  function cancelFrame() { if (frame) { cancelAnimationFrame(frame); frame = 0; } }
 
   function load() {
     if (index) return Promise.resolve(index);
@@ -82,11 +86,19 @@
   // Current affairs: read-only. The app's ZOLA_LIVE API supplies the feed it already loaded. Only state, info, events and
   // inbox are read. The app's own refresh, storage and validation are left alone. The snapshot is rebuilt on setup and
   // whenever the app fires zola-live.
+  // A date-only value (2026-10-10) is a calendar date, so it is read and shown in UTC. Otherwise a reader west of UTC
+  // would see the day before.
   function fmtDate(v) {
-    var d = new Date(v);
-    return isNaN(d) ? '' : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    var s = String(v || '');
+    var dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(s);
+    var d = new Date(dateOnly ? s + 'T00:00:00Z' : v);
+    return isNaN(d) ? '' : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: dateOnly ? 'UTC' : undefined });
   }
   function httpsUrl(u) { return typeof u === 'string' && /^https:\/\//.test(u) ? u : ''; }
+  function machineTags(list) {
+    var t = (list || []).filter(Boolean).map(String).join(', ');
+    return t ? 'Machines ' + t : '';
+  }
   function liveSnapshot() {
     if (live) return live;
     var L = window.ZOLA_LIVE;
@@ -102,12 +114,12 @@
         var evs = L.events().map(function (e) {
           var st = e.status === 'VERIFIED' ? 'Checked' : 'Unverified';
           return { type: 'feed-event', id: 'ev:' + e.id, title: e.title, status: st,
-            sub: [fmtDate(e.date), e.subject, e.source && e.source.title, st].filter(Boolean).join(' · '),
+            sub: [fmtDate(e.date), e.subject, e.source && e.source.title, st, machineTags(e.machines)].filter(Boolean).join(' · '),
             url: httpsUrl(e.source && e.source.url), route: '#forecast/tracker' };
         });
         var news = L.inbox().map(function (i) {
           return { type: 'feed-inbox', id: 'in:' + i.id, title: i.title, status: 'Unverified',
-            sub: [i.source, fmtDate(i.published), (i.subjects || []).join(', '), 'Unverified'].filter(Boolean).join(' · '),
+            sub: [i.source, fmtDate(i.published), (i.subjects || []).join(', '), machineTags(i.machines), 'Unverified'].filter(Boolean).join(' · '),
             url: httpsUrl(i.url), route: '#forecast/tracker' };
         });
         snap.records = evs.concat(news);
@@ -151,25 +163,38 @@
   function field(label, value) {
     return value ? '<dt>' + esc(label) + '</dt><dd>' + esc(value) + '</dd>' : '';
   }
+  function currencyHtml(c) {
+    if (!c) return '';
+    return field('Currency status', c.status) + field('Currency checked', c.checked) + field('Currency scope', c.scope) + field('Currency note', c.note);
+  }
+  // Each source is listed with its title, issuer, tier and date, and its own link when it is a valid HTTPS address.
+  function sourcesBlock(list) {
+    if (!list || !list.length) return '';
+    return '<dt>Sources</dt>' + list.map(function (s) {
+      var line = [s.title, s.issuer, s.tier, s.document_date ? 'dated ' + s.document_date : ''].filter(Boolean).join(' · ');
+      var u = httpsUrl(s.url);
+      return '<dd>' + esc(line) + (u ? ' <a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">Open the source</a>' : '') + '</dd>';
+    }).join('');
+  }
+  function panelHtml(heading, title, dl) {
+    return '<section class="gs-detail" aria-label="Record detail"><h3 tabindex="-1">' + esc(heading) + '</h3>' +
+      '<p class="gs-dt-title">' + esc(title) + '</p><dl class="gs-dl">' + dl + '</dl>' +
+      '<button type="button" class="gs-more" data-back="1">Back to results</button></section>';
+  }
   function detailHtml(r) {
     if (r.fallback) return fallbackHtml(r);
-    var d = r.detail || {}, body, heading;
+    var d = r.detail || {};
     if (r.type === 'claim') {
-      heading = 'Hacking claim';
-      body = field('Claim', d.text) + field('Tag', d.tag) + field('Currency check', d.currency_check) +
-        field('Note or limit', d.note) + field('Locator', d.locator) + field('Evidence phrase', d.evidence_phrase);
-    } else if (r.type === 'case') {
-      heading = 'Hacking case';
-      body = field('Case', d.name) + field('Year', d.year ? String(d.year) : '') + field('Decided', d.decided) +
-        field('Court', d.court) + field('Citation', d.citation) + field('Posture', d.posture) +
-        field('Verified scope', d.verified_scope) + field('Null reason', d.null_reason);
-    } else {
-      heading = 'Syllabus topic';
-      body = field('Papers', (d.papers || []).join(', '));
+      return panelHtml('Hacking claim', r.title, field('Claim', d.text) + field('Tag', d.tag) + field('Note or limit', d.note) +
+        field('Locator', d.locator) + field('Evidence phrase', d.evidence_phrase) + currencyHtml(d.currency) + sourcesBlock(d.sources));
     }
-    return '<section class="gs-detail" aria-label="Record detail"><h3>' + esc(heading) + '</h3>' +
-      '<p class="gs-dt-title">' + esc(r.title) + '</p><dl class="gs-dl">' + body + '</dl>' +
-      '<button type="button" class="gs-more" data-back="1">Back to results</button></section>';
+    if (r.type === 'case') {
+      return panelHtml('Hacking case', r.title, field('Case', d.name) + field('Year', d.year ? String(d.year) : '') + field('Decided', d.decided) +
+        field('Court', d.court) + field('Citation', d.citation) + field('Posture', d.posture) +
+        field('Verified scope', d.verified_scope) + field('Null reason', d.null_reason) + sourcesBlock(d.sources));
+    }
+    return panelHtml('Syllabus topic', r.title, field('Papers', (d.papers || []).join(', ')) +
+      field('Taxonomy status', d.status) + field('UPSC source status', d.sourceStatus));
   }
   // A tracker or feed result that the tracker cannot show keeps its title, date, source and status in the panel, with the
   // reason. It does not say the item is selected.
@@ -178,20 +203,24 @@
     var facts = r.type === 'forecast'
       ? field('ID', r.id) + field('Date', r.date) + field('Source', r.source) + field('Status', r.status)
       : field('Date and source', r.sub) + field('Verification', r.status);
-    var link = r.url ? '<dt>Source link</dt><dd><a href="' + esc(r.url) + '" target="_blank" rel="noopener noreferrer">Open the source</a></dd>' : '';
-    return '<section class="gs-detail" aria-label="Record detail"><h3>' + esc(heading) + '</h3>' +
-      '<p class="gs-dt-title">' + esc(r.title) + '</p><dl class="gs-dl">' + facts +
-      '<dt>Why it is not selected here</dt><dd>' + esc(r.fallback) + '</dd>' + link + '</dl>' +
-      '<button type="button" class="gs-more" data-back="1">Back to results</button></section>';
+    var u = httpsUrl(r.url);
+    var link = u ? '<dt>Source link</dt><dd><a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">Open the source</a></dd>' : '';
+    return panelHtml(heading, r.title, facts + '<dt>Why it is not selected here</dt><dd>' + esc(r.fallback) + '</dd>' + link);
+  }
+  function focusDetail() {
+    var h = res.querySelector('.gs-detail h3');
+    if (h) h.focus();
   }
   function showFallback(r, why) {
     detailRec = { type: r.type, title: r.title, sub: r.sub, id: r.id, date: r.date, source: r.source, status: r.status, url: r.url, fallback: why };
     render(input.value);
+    focusDetail();
     status('"' + r.title + '" is shown in the results panel. It is not selected on the tracker.');
   }
   function showDetail(r) {
     detailRec = r;
     render(input.value);
+    focusDetail();
     status('Details for this ' + (r.type === 'claim' ? 'claim' : r.type === 'case' ? 'case' : 'topic') + ' are shown in the results panel.');
   }
 
@@ -211,7 +240,7 @@
       var list = groups[g[0]];
       if (!list.length) return;
       var show = expanded[g[0]] ? list : list.slice(0, LIMIT);
-      html += '<h3>' + esc(g[1]) + ' (' + list.length + ')</h3><ul>';
+      html += '<h3>' + esc(g[1]) + ' (' + list.length + ')</h3><ul data-group="' + g[0] + '">';
       show.forEach(function (x) {
         var r = x.r;
         html += '<li><button type="button" data-gi="' + x.i + '">' + esc(r.title) +
@@ -234,13 +263,21 @@
     status(current.length + (current.length === 1 ? ' result' : ' results'));
   }
 
+  // Every close bumps seq, so any search or reveal still in flight is dropped when it finishes.
   function close() {
+    cancelFrame();
+    seq++;
     res.hidden = true;
     res.innerHTML = '';
     input.setAttribute('aria-expanded', 'false');
     current = [];
     expanded = {};
     detailRec = null;
+  }
+  function dismiss() {
+    input.value = '';
+    close();
+    status('');
   }
 
   function cssEscape(v) {
@@ -249,12 +286,14 @@
 
   // A Forecast result opens the tracker and reveals its row. The tracker's own filter is cleared first, because the
   // row may be hidden by it. If the row cannot be shown, the result keeps its title and source, and nothing is claimed.
-  function revealForecast(r) {
+  // The token is the search's seq when the result was activated; a later Escape, close or click cancels the wait.
+  function revealForecast(r, token) {
     location.hash = r.route;
     var q = document.getElementById('trkQ');
     if (q && q.value) { q.value = ''; q.dispatchEvent(new Event('input', { bubbles: true })); }
     var t0 = Date.now();
     (function wait() {
+      if (token !== seq) return;
       var row = document.querySelector('[data-id="' + cssEscape(r.rowId) + '"]');
       if (row && row.offsetParent !== null) {
         row.open = true;
@@ -275,10 +314,11 @@
 
   // A feed result opens the tracker's feed box. The box has no per-item selection and shows only its current list, so the
   // result says whether the title is in that list and never claims it is selected. The source link opens the original page.
-  function revealFeed(r) {
+  function revealFeed(r, token) {
     location.hash = r.route;
     var t0 = Date.now();
     (function wait() {
+      if (token !== seq) return;
       var box = document.getElementById('zl-inbox');
       if (box && box.offsetParent !== null) {
         box.scrollIntoView({ block: 'start' });
@@ -299,15 +339,17 @@
   }
 
   function activate(r) {
-    if (frame) { cancelAnimationFrame(frame); frame = 0; }
+    cancelFrame();
+    seq++;
+    var token = seq;
     if (r.type === 'article') { location.href = r.route; return; }
-    if (r.type === 'forecast') { revealForecast(r); return; }
-    if (r.type === 'feed-event' || r.type === 'feed-inbox') { revealFeed(r); return; }
+    if (r.type === 'forecast') { revealForecast(r, token); return; }
+    if (r.type === 'feed-event' || r.type === 'feed-inbox') { revealFeed(r, token); return; }
     if (r.type === 'topic' || r.type === 'claim' || r.type === 'case') { showDetail(r); return; }
     if (r.type === 'csat') {
       location.hash = r.route;
       close();
-      status('Opened the CSAT tab. "' + r.title + '" is listed in the results and is not selected there.');
+      status('Opened the CSAT tab. The label "' + r.title + '" is not selected there.');
       return;
     }
     if (r.route) {
@@ -318,31 +360,45 @@
   }
 
   // One render per frame: fast typing coalesces into a single search, and the result appears on the next frame.
-  var frame = 0;
   input.addEventListener('input', function () {
-    if (frame) cancelAnimationFrame(frame);
+    cancelFrame();
     frame = requestAnimationFrame(function () {
       frame = 0;
+      var mine = ++seq;
       if (!norm(input.value).trim()) { close(); status(''); return; }
       load().then(function () {
-        if (!norm(input.value).trim()) { close(); return; }
+        if (mine !== seq) return;
         detailRec = null;
         render(input.value);
       }).catch(function () {
+        if (mine !== seq) return;
         res.innerHTML = '<p class="gs-note">Search is unavailable: the search index could not be loaded. Reload once while online.</p>';
         res.hidden = false;
+        input.setAttribute('aria-expanded', 'true');
         status('Search is unavailable.');
       });
     });
   });
   input.addEventListener('focus', function () { load().catch(function () {}); });
   input.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { input.value = ''; close(); status(''); }
+    if (e.key === 'Escape') dismiss();
+  });
+  // Escape in the results closes them, clears the query and returns focus to the search box, as it does from the box.
+  res.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { e.preventDefault(); dismiss(); input.focus(); }
   });
   res.addEventListener('click', function (e) {
-    if (e.target.closest('[data-back]')) { detailRec = null; render(input.value); return; }
+    if (e.target.closest('[data-back]')) { detailRec = null; render(input.value); input.focus(); return; }
     var more = e.target.closest('[data-more]');
-    if (more) { expanded[more.getAttribute('data-more')] = true; render(input.value); return; }
+    if (more) {
+      var g = more.getAttribute('data-more');
+      expanded[g] = true;
+      render(input.value);
+      // The first newly shown item takes focus, so keyboard users are not left at the top of the list.
+      var first = res.querySelector('ul[data-group="' + g + '"] li:nth-child(' + (LIMIT + 1) + ') button');
+      if (first) first.focus();
+      return;
+    }
     var b = e.target.closest('[data-gi]');
     if (b) activate(current[Number(b.getAttribute('data-gi'))]);
   });

@@ -39,14 +39,14 @@ const ADJ_WORDS = new Set(['expected', 'guaranteed', 'likely', 'predicted', 'cer
 const MODAL_HEADS = new Set(['will', 'going', 'expected', 'likely', 'certain', 'sure', 'guaranteed', 'definitely', 'certainly', 'surely']);
 const CUE_SKIP = new Set(['to', 'be', 'definitely', 'certainly', 'surely', 'going', 'not']);
 const PREP_WORDS = new Set(['in', 'for', 'at']);
-const AUX_WORDS = new Set(['is', 'are', 'was', 'were', 'will', 'would', 'can', 'could', 'may', 'might', 'must', 'shall', 'should', 'does', 'do', 'did', 'has', 'have', 'had', 'be', 'appear', 'appears', 'come', 'comes', 'expect', 'expects', 'offer', 'offers', 'raise', 'raises', 'cover', 'covers', 'discuss', 'discusses', 'list', 'lists', 'listed', 'include', 'includes', 'need', 'needs', 'require', 'requires', 'required', 'draw', 'draws', 'see', 'sees', 'claim', 'claims', 'read']);
+const AUX_WORDS = new Set(['is', 'are', 'was', 'were', 'will', 'would', 'can', 'could', 'may', 'might', 'must', 'shall', 'should', 'does', 'do', 'did', 'has', 'have', 'had', 'be', 'appear', 'appears', 'come', 'comes', 'expect', 'expects', 'offer', 'offers', 'raise', 'raises', 'cover', 'covers', 'discuss', 'discusses', 'list', 'lists', 'listed', 'include', 'includes', 'need', 'needs', 'require', 'requires', 'required', 'draw', 'draws', 'see', 'sees', 'claim', 'claims', 'read', 'guarantee', 'guarantees']);
 const NEG_WORDS = new Set(['not', 'never', 'no', 'nor', 'neither']);
 const DET_WORDS = new Set(['a', 'an', 'the', 'this', 'these', 'those', 'some', 'any']);
 const REPORTING_WORDS = new Set(['predict', 'predicts', 'claim', 'claims', 'claimed', 'say', 'says', 'said', 'state', 'states', 'stated', 'suggest', 'suggests', 'imply', 'implies', 'direct', 'directs', 'mention', 'mentions', 'mentioned']);
 const COMPLEMENT_START = new Set(['that', 'which', 'what', 'how', 'whether', 'any', 'all', 'these', 'this', 'some', 'none', 'no', 'many', 'those', 'the', 'each', 'every']);
 const SUBJECT_START_FOR_AND = new Set(['this', 'it', 'these', 'that', 'they', 'there', 'none', 'no', 'candidates', 'applicants', 'students']);
 // A bare predicate verb after "and" begins a new predicate ("...will be asked and offer guaranteed questions").
-const VERB_AFTER_AND = new Set(['be', 'is', 'are', 'was', 'were', 'will', 'would', 'can', 'could', 'may', 'might', 'must', 'shall', 'should', 'has', 'have', 'had', 'appear', 'appears', 'come', 'comes', 'expect', 'expects', 'offer', 'offers', 'raise', 'raises', 'cover', 'covers', 'discuss', 'discusses', 'include', 'includes', 'need', 'needs', 'require', 'requires', 'draw', 'draws', 'see', 'sees', 'mention', 'mentions']);
+const VERB_AFTER_AND = new Set(['be', 'is', 'are', 'was', 'were', 'will', 'would', 'can', 'could', 'may', 'might', 'must', 'shall', 'should', 'has', 'have', 'had', 'appear', 'appears', 'come', 'comes', 'expect', 'expects', 'offer', 'offers', 'raise', 'raises', 'cover', 'covers', 'discuss', 'discusses', 'include', 'includes', 'need', 'needs', 'require', 'requires', 'draw', 'draws', 'see', 'sees', 'mention', 'mentions', 'guarantee', 'guarantees']);
 // A preposition before a person word makes it a modifier, not the subject ("questions for candidates").
 const PREP_IN_SUBJECT = new Set(['for', 'of', 'in', 'to', 'from', 'by', 'with', 'on', 'at', 'among', 'about']);
 const CONTRAST_WORDS = new Set(['but', 'though', 'while', 'whereas', 'yet']);

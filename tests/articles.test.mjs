@@ -138,6 +138,8 @@ ok(predicts('This never predicts which questions will be asked.') === false, 'ac
 ok(predicts('This note discusses important questions of constitutional law.') === false, 'accepts: This note discusses important questions of constitutional law. (description, no exam)');
 ok(predicts('This is an important question for Prelims.') === true, 'rejects: This is an important question for Prelims. (important question aimed at an exam)');
 ok(predicts('We guarantee a question on this topic in Prelims.') === true, 'rejects: We guarantee a question on this topic in Prelims. (guarantee is a prediction verb)');
+ok(predicts('We do not predict which questions will be asked and we guarantee a question on this topic in Prelims.') === true, 'rejects: a positive guarantee after and is not hidden by the first clause\'s report negation (ch-075)');
+ok(predicts('We do not predict which questions will be asked and we guarantee questions in Prelims.') === true, 'rejects: the shorter form of the same guarantee after and (ch-075)');
 ok(predicts('We do not guarantee a question on this topic in Prelims.') === false, 'accepts: We do not guarantee a question on this topic in Prelims. (negated guarantee)');
 ok(predicts('No one doubts this question will be asked in Prelims.') === true, 'rejects: No one doubts this question will be asked in Prelims. (no one does not negate the predicate)');
 ok(predicts('None of these topics is guaranteed to be asked.') === false, 'accepts: None of these topics is guaranteed to be asked. (negative topic subject)');

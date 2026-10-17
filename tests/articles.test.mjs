@@ -108,6 +108,11 @@ ok(predicts('The Gazette notice is certain to appear tomorrow.') === false, 'acc
 ok(predicts('The notice will definitely appear in the Gazette.') === false, 'accepts: The notice will definitely appear in the Gazette.');
 ok(predicts('The notice will appear in the Gazette.') === false, 'accepts: The notice will appear in the Gazette.');
 ok(predicts('No expected questions are listed here.') === false, 'accepts: No expected questions are listed here.');
+ok(predicts('No question is expected to appear in Prelims.') === false, 'accepts: No question is expected to appear in Prelims.');
+ok(predicts('No questions are expected in Prelims.') === false, 'accepts: No questions are expected in Prelims.');
+ok(predicts('No questions will be asked in Prelims.') === false, 'accepts: No questions will be asked in Prelims.');
+ok(predicts('No topic is likely to come up in the exam.') === false, 'accepts: No topic is likely to come up in the exam.');
+ok(predicts('There is no doubt this is a guaranteed question.') === true, 'rejects: There is no doubt this is a guaranteed question.');
 ok(predicts('This does not predict how many questions will be asked.') === false, 'accepts: This does not predict how many questions will be asked.');
 ok(predicts('The article does not claim that this topic is guaranteed to be asked.') === false, 'accepts: The article does not claim that this topic is guaranteed to be asked.');
 ok(predicts('This topic is not guaranteed to be asked.') === false, 'accepts: This topic is not guaranteed to be asked.');

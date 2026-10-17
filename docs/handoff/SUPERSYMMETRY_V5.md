@@ -44,7 +44,7 @@ Rules:
 - When a tier is unavailable, record `MODEL_ROLE_BLOCKED` with a ready-to-run packet and continue the independent work.
 - Tiers are task-scoped. The owner or the binding attaches and releases them.
 - Nobody reviews their own work. Worker self-review cannot close a task.
-- **Lane identity.** A project either separates its lanes by GitHub identity (each active sender has its own numeric user ID, and the cards check runs), or it declares a shared identity in its binding. In a declared shared identity the owner's login speaks for every lane. The project's Safeguards must say so, and it must not claim that channel authority separates its lanes. Claims, leases, exact-SHA acceptance and the integration gates apply in full in both modes.
+- **Lane identity.** A project either separates its lanes by GitHub identity (each active sender has its own numeric user ID, and the cards check runs), or it declares a shared identity in its binding. In a declared shared identity the owner's login speaks for every lane. The project's Safeguards must say so, and it must not claim that channel authority separates its lanes. Claims, leases, exact-SHA acceptance and the integration gates apply in full in both modes. A declared shared identity names its exit date ("until YYYY-MM-DD") in the binding. Owner decisions made in that mode are recorded only on the default branch, by a pull request that the owner merges. Lanes never merge to the default branch, so a decision is told apart from a lane's comment by where it lives.
 
 ## 4. Work loop
 
@@ -76,6 +76,7 @@ Before integration, all of these hold:
 - the owner's go-ahead exists wherever the binding requires one. By default, the default branch needs it;
 - the reviewer is a different identity from the author, and the integrated commit is signed where the platform supports signing;
 - every file changed between the merge-base and the integrated SHA lies inside a claim the author still holds at integration time (section 5).
+- before any update to the default branch, the integrator runs `git diff --quiet <accepted SHA> <integrated SHA>`. Any output blocks the update, so the default branch receives exactly the reviewed commit. The default branch accepts changes only by pull request when the binding says so, and the owner merges.
 
 The integrator is the owner or a non-model gate. No lane holds default-branch rights.
 
@@ -206,7 +207,7 @@ The owner decides priorities, default-branch merges (unless the binding delegate
 ## 14. Adopting
 
 1. Copy this file into the project at the pinned version. Keep its text unchanged.
-2. Add a `## Project binding` section (template: `templates/BINDING.md`). Every field there is required, and the checker enforces them. The Lane identity field is `separated` or `declared shared`. It must name the provider policy, the allowed routes and the budget. Its Required checks must run the ledger check with a lease date (`--today=`), and the cards check.
+2. Add a `## Project binding` section (template: `templates/BINDING.md`). Every field there is required, and the checker enforces them. The Lane identity field is `separated` or `declared shared`, and a declared shared identity names its exit date. The checker is copied into the project at a pinned protocol commit, and the binding cites that commit. It must name the provider policy, the allowed routes and the budget. Its Required checks must run the ledger check with a lease date (`--today=`), and the cards check.
 3. Create the ledger from `templates/ACCEPTANCE_LEDGER.md`. When a project moves from an earlier ledger, the old ledger is frozen: tasks already in flight finish in it under its rules, and new tasks open only in the new ledger.
 4. Create a lane card for each lane (`schemas/agent-card.schema.json`), check each with `node <checker>/scripts/check.mjs card <file>`, and check the set against the binding with `node <checker>/scripts/check.mjs cards <dir> <binding>`.
 5. Add a startup pointer to the project's agent instruction files, keeping their existing rules.

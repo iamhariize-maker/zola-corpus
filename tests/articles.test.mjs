@@ -95,6 +95,22 @@ const probe = [
   ['The notice is likely to appear in the Gazette.', false],
 ];
 for (const [text, rejected] of probe) ok(predicts(text) === rejected, `${rejected ? 'rejects' : 'accepts'}: ${text}`);
+ok(predicts('This question will definitely be asked in Prelims.') === true, 'rejects: This question will definitely be asked in Prelims.');
+ok(predicts('This question is expected in Prelims.') === true, 'rejects: This question is expected in Prelims.');
+ok(predicts('This question is expected to appear in Prelims.') === true, 'rejects: This question is expected to appear in Prelims.');
+ok(predicts('This topic is likely to come up in Prelims.') === true, 'rejects: This topic is likely to come up in Prelims.');
+ok(predicts('This topic is guaranteed to come up in Prelims.') === true, 'rejects: This topic is guaranteed to come up in Prelims.');
+ok(predicts('This question is certainly going to appear in Prelims.') === true, 'rejects: This question is certainly going to appear in Prelims.');
+ok(predicts('This will appear in Prelims.') === true, 'rejects: This will appear in Prelims.');
+ok(predicts('The notice is likely to appear in the Gazette.') === false, 'accepts: The notice is likely to appear in the Gazette.');
+ok(predicts('The Gazette notice is expected to appear tomorrow.') === false, 'accepts: The Gazette notice is expected to appear tomorrow.');
+ok(predicts('The Gazette notice is certain to appear tomorrow.') === false, 'accepts: The Gazette notice is certain to appear tomorrow.');
+ok(predicts('The notice will definitely appear in the Gazette.') === false, 'accepts: The notice will definitely appear in the Gazette.');
+ok(predicts('The notice will appear in the Gazette.') === false, 'accepts: The notice will appear in the Gazette.');
+ok(predicts('No expected questions are listed here.') === false, 'accepts: No expected questions are listed here.');
+ok(predicts('This does not predict how many questions will be asked.') === false, 'accepts: This does not predict how many questions will be asked.');
+ok(predicts('The article does not claim that this topic is guaranteed to be asked.') === false, 'accepts: The article does not claim that this topic is guaranteed to be asked.');
+ok(predicts('This topic is not guaranteed to be asked.') === false, 'accepts: This topic is not guaranteed to be asked.');
 const nonArrayDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 nonArrayDoc.articles['nobel-peace-2026'].mappings = {};
 let nonArrayThrew = false, nonArrayProblems = [];

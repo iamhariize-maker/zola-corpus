@@ -25,27 +25,30 @@ const KINDS = ['Official', 'News report', 'Government', 'Research'];
 // or "guaranteed by Article 19" carries no exam term or question, so it is not a prediction.
 const SYLLABUS_EXAM = /(?:prelims?|mains|exams?|examinations?|upsc|papers?)/;
 const SYLLABUS_PREDICTION = new RegExp([
-  /\bguaranteed\s+(?:(?:a|an|the|this)\s+)?(?:questions?|to be asked|to appear)\b/,
+  /\bguaranteed\s+(?:(?:a|an|the|this)\s+)?(?:questions?|to be asked)\b/,
   /\bexpected\s+(?:(?:a|an|the)\s+)?(?:questions?|to be asked)\b/,
   new RegExp(String.raw`\bexpected\s+(?:in|at)\s+(?:the\s+)?${SYLLABUS_EXAM.source}\b`),
   /\bpredicted\s+(?:questions?|to be asked)\b/,
-  /\b(?:definitely|certainly|surely)\s+(?:be asked|appear)\b/,
+  /\b(?:definitely|certainly|surely)\s+be asked\b/,
   /\bwill\s+(?:definitely\s+|certainly\s+)?be asked\b/,
   /\b(?:likely|certain)\s+to\s+be asked\b/,
-  new RegExp(String.raw`\b(?:likely|certain|will)\s+(?:to\s+)?appear\s+(?:in|at)\s+(?:the\s+)?${SYLLABUS_EXAM.source}\b`),
+  new RegExp(String.raw`\b(?:guaranteed|likely|expected|certain|sure|going|will|definitely|certainly|surely|to)\b[^;:,.!?]{0,20}?\b(?:appear|come up)\s+(?:in|at)\s+(?:the\s+)?${SYLLABUS_EXAM.source}\b`),
   /\bmost important (?:question|topic)\b/,
   /\bimportant for (?:the )?exam\b/,
   /\bmust[- ]read\b/,
 ].map(r => r.source).join('|'), 'gi');
-const DIRECT_NEGATION = /(?:\bnot|n't|\bnever)\s+(?:(?:a|an|the)\s+)?$/i;
-const PREDICT_NEGATION = /\bnot\s+predict\s+(?:(?:which|what|whether|how|when|the)\s+)*(?:questions?\s+)?$/i;
+// A cue is exempt only when a negation directly governs it: "not/no/never" before it (with an optional article),
+// "does not predict" followed by a short question phrase, or "does not claim that" within three words.
+const DIRECT_NEGATION = /(?:\bnot|n't|\bnever|\bno)\s+(?:(?:a|an|the)\s+)?$/i;
+const PREDICT_NEGATION = /\bnot\s+predict\s+(?:(?:which|what|whether|how|when|the|many|much|few|some|all|any|these|those)\s+)*(?:questions?\s+)?$/i;
+const CLAIM_NEGATION = /\bnot\s+(?:claim|say|state|suggest|imply)\s+(?:that\s+)?(?:\S+\s+){0,3}$/i;
 const SYLLABUS_CLAUSE_BREAK = /[;:,]|\s(?:but|though|while|whereas|yet)\s/i;
 function predictionIn(text) {
   for (const sentence of text.split(/(?<=[.!?])\s+/)) {
     for (const clause of sentence.split(SYLLABUS_CLAUSE_BREAK)) {
       for (const hit of clause.matchAll(SYLLABUS_PREDICTION)) {
         const before = clause.slice(0, hit.index);
-        if (!DIRECT_NEGATION.test(before) && !PREDICT_NEGATION.test(before)) return hit[0];
+        if (!DIRECT_NEGATION.test(before) && !PREDICT_NEGATION.test(before) && !CLAIM_NEGATION.test(before)) return hit[0];
       }
     }
   }

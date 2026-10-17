@@ -4147,9 +4147,10 @@ if(enabled){
 
 </script>
 <script id="zsearch">
-// Global search (ZC-04.4). Inserted into the persistent header by the layer; the search index is the static
-// search-index.json, precached for offline use. Nothing is stored, sent or logged. The query and results live only in
-// the page's memory. The control uses its own ids (gsearch*), never the tracker's #trkQ.
+// Global search (ZC-04.4). Inserted into the persistent header by the layer. Two sources: the static search-index.json
+// (precached for offline use) and the current-affairs feed the app has already loaded, read through ZOLA_LIVE (read
+// only). Nothing is stored, sent or logged. The query and results live only in the page's memory. The control uses its
+// own ids (gsearch*), never the tracker's #trkQ.
 (function () {
   var hdr = document.querySelector('.hdr .top');
   if (!hdr || document.getElementById('gsearch-wrap')) return;
@@ -4168,6 +4169,7 @@ if(enabled){
     '#gsearch-res .gs-limit{display:block;font-size:.78rem;color:var(--warn,#8a5a00)}' +
     '#gsearch-res .gs-note{font-size:.78rem;color:var(--muted,#555);margin:.5rem .4rem}' +
     '#gsearch-res .gs-more{margin:.2rem .4rem .4rem;font:inherit;font-size:.8rem;background:none;border:1px solid var(--rule,#999);border-radius:4px;padding:.2rem .5rem;cursor:pointer;color:inherit}' +
+    '#gsearch-res .gs-src{display:inline-block;margin:0 .4rem .3rem;font-size:.78rem;color:var(--pen,#06c)}' +
     '@media (max-width:640px){.hdr .top{flex-wrap:wrap}#gsearch-wrap{order:99;flex:1 1 100%;max-width:none;min-width:0;margin:.4rem 0 .2rem}}';
   var style = document.createElement('style');
   style.id = 'gsearch-css';
@@ -4178,7 +4180,7 @@ if(enabled){
   wrap.id = 'gsearch-wrap';
   wrap.setAttribute('role', 'search');
   wrap.innerHTML =
-    '<label class="sr" for="gsearch">Search topics, articles, events, machines, claims and CSAT labels</label>' +
+    '<label class="sr" for="gsearch">Search topics, articles, events, machines, claims, CSAT labels and feed items</label>' +
     '<input id="gsearch" type="search" autocomplete="off" spellcheck="false" placeholder="Search everything" aria-controls="gsearch-res" aria-expanded="false">' +
     '<div id="gsearch-res" hidden></div>' +
     '<p id="gsearch-status" class="sr" aria-live="polite"></p>';
@@ -4188,12 +4190,14 @@ if(enabled){
   var input = document.getElementById('gsearch');
   var res = document.getElementById('gsearch-res');
   var statusEl = document.getElementById('gsearch-status');
-  var index = null, loading = null;
+  var index = null, loading = null, live = null;
   var LIMIT = 8;
   var GROUPS = [
     ['forecast', 'Forecast events'], ['article', 'Articles'], ['topic', 'Syllabus topics'],
-    ['machine', 'Hacking machines'], ['claim', 'Hacking claims'], ['case', 'Hacking cases'], ['csat', 'CSAT labels']
+    ['machine', 'Hacking machines'], ['claim', 'Hacking claims'], ['case', 'Hacking cases'], ['csat', 'CSAT labels'],
+    ['feed-event', 'Feed events'], ['feed-inbox', 'Feed news']
   ];
+  var LIVE_LABEL = { live: 'Live feed', saved: 'Saved copy', offline: 'Built-in data only', setup: 'Feed not set up' };
   var current = [];
   var expanded = {};
 
@@ -4217,11 +4221,58 @@ if(enabled){
     return loading;
   }
 
+  // Current affairs: read-only. The app's ZOLA_LIVE API supplies the feed it already loaded. Only state, info, events and
+  // inbox are read. The app's own refresh, storage and validation are left alone. The snapshot is rebuilt on setup and
+  // whenever the app fires zola-live.
+  function fmtDate(v) {
+    var d = new Date(v);
+    return isNaN(d) ? '' : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function httpsUrl(u) { return typeof u === 'string' && /^https:\/\//.test(u) ? u : ''; }
+  function liveSnapshot() {
+    if (live) return live;
+    var L = window.ZOLA_LIVE;
+    var snap = { ok: false, label: '', when: '', records: [] };
+    if (!L || typeof L.inbox !== 'function' || typeof L.events !== 'function' || typeof L.state !== 'function') {
+      snap.label = 'The feed is not on this page, so news and feed events are not searched.';
+    } else {
+      try {
+        var state = L.state();
+        var info = typeof L.info === 'function' ? L.info() : null;
+        snap.label = LIVE_LABEL[state] || 'Feed state unknown';
+        snap.when = info && info.fetchedAt ? new Date(info.fetchedAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+        var evs = L.events().map(function (e) {
+          var st = e.status === 'VERIFIED' ? 'Checked' : 'Unverified';
+          return { type: 'feed-event', id: 'ev:' + e.id, title: e.title, status: st,
+            sub: [fmtDate(e.date), e.subject, e.source && e.source.title, st].filter(Boolean).join(' · '),
+            url: httpsUrl(e.source && e.source.url), route: '#forecast/tracker' };
+        });
+        var news = L.inbox().map(function (i) {
+          return { type: 'feed-inbox', id: 'in:' + i.id, title: i.title, status: 'Unverified',
+            sub: [i.source, fmtDate(i.published), (i.subjects || []).join(', '), 'Unverified'].filter(Boolean).join(' · '),
+            url: httpsUrl(i.url), route: '#forecast/tracker' };
+        });
+        snap.records = evs.concat(news);
+        snap.records.forEach(function (r) { r._n = norm(r.title + ' ' + r.sub); r._t = norm(r.title); });
+        snap.ok = true;
+      } catch (e) {
+        snap.label = 'The feed could not be read, so news and feed events are not searched.';
+      }
+    }
+    live = snap;
+    return snap;
+  }
+  window.addEventListener('zola-live', function () {
+    live = null;
+    if (!res.hidden && input.value) render(input.value);
+  });
+
   function search(q) {
     var tokens = norm(q).split(/\s+/).filter(Boolean);
     if (!tokens.length) return [];
+    var pool = index.records.concat(liveSnapshot().records);
     var hits = [];
-    index.records.forEach(function (r) {
+    pool.forEach(function (r) {
       var ok = tokens.every(function (t) { return r._n.indexOf(t) !== -1; });
       if (!ok) return;
       var score = tokens.reduce(function (s, t) { return s + (r._t.indexOf(t) !== -1 ? 2 : 1); }, 0);
@@ -4252,14 +4303,18 @@ if(enabled){
         var r = x.r;
         html += '<li><button type="button" data-gi="' + x.i + '">' + esc(r.title) +
           (r.sub ? '<span class="gs-sub">' + esc(r.sub) + '</span>' : '') +
-          (r.limit ? '<span class="gs-limit">' + esc(r.limit) + '</span>' : '') + '</button></li>';
+          (r.limit ? '<span class="gs-limit">' + esc(r.limit) + '</span>' : '') + '</button>' +
+          (r.url ? '<a class="gs-src" href="' + esc(r.url) + '" target="_blank" rel="noopener noreferrer">Source</a>' : '') + '</li>';
       });
       html += '</ul>';
       if (list.length > LIMIT && !expanded[g[0]]) {
         html += '<button type="button" class="gs-more" data-more="' + esc(g[0]) + '">Show all ' + list.length + '</button>';
       }
     });
-    html += '<p class="gs-note">Searches this device only: nothing is sent, stored or logged. Current-affairs records are not searched in this version.</p>';
+    var snap = liveSnapshot();
+    html += '<p class="gs-note">Feed: ' + esc(snap.label) + (snap.when ? ' · fetched ' + esc(snap.when) : '') +
+      (snap.ok ? '. Feed items are unverified unless marked Checked.' : '.') + '</p>';
+    html += '<p class="gs-note">Searches this device only: nothing is sent, stored or logged.</p>';
     res.innerHTML = (current.length ? '' : '<p class="gs-note">No match.</p>') + html;
     res.hidden = false;
     input.setAttribute('aria-expanded', 'true');
@@ -4303,9 +4358,35 @@ if(enabled){
     })();
   }
 
+  // A feed result opens the tracker's feed box. The box has no per-item selection and shows only its current list, so the
+  // result says whether the title is in that list and never claims it is selected. The source link opens the original page.
+  function revealFeed(r) {
+    location.hash = r.route;
+    var t0 = Date.now();
+    (function wait() {
+      var box = document.getElementById('zl-inbox');
+      if (box && box.offsetParent !== null) {
+        box.scrollIntoView({ block: 'start' });
+        if (box.textContent.indexOf(r.title) !== -1) {
+          status('"' + r.title + '" is listed in the feed box on the tracker. It is not selected.');
+        } else {
+          status('"' + r.title + '" is not in the feed box\u2019s current list.' + (r.url ? ' Use its Source link.' : ''));
+        }
+        return;
+      }
+      if (Date.now() - t0 > 3000) {
+        status('"' + r.title + '" is not shown on the tracker right now.' + (r.url ? ' Use its Source link.' : ''));
+        return;
+      }
+      setTimeout(wait, 60);
+    })();
+  }
+
   function activate(r) {
+    clearTimeout(timer);
     if (r.type === 'article') { location.href = r.route; return; }
     if (r.type === 'forecast') { revealForecast(r); close(); return; }
+    if (r.type === 'feed-event' || r.type === 'feed-inbox') { revealFeed(r); close(); return; }
     if (r.type === 'topic') { status(r.title + ': ' + (r.sub || 'no papers listed')); return; }
     if (r.route) { location.hash = r.route; close(); }
   }
@@ -4336,6 +4417,7 @@ if(enabled){
   document.addEventListener('click', function (e) {
     if (!wrap.contains(e.target)) close();
   });
+  liveSnapshot();
 })();
 </script>
 <!-- /zola-pwa:body -->

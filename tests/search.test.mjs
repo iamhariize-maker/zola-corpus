@@ -2,7 +2,7 @@
 // Runs against the built _site (npm test builds it first).
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, SITE, ok, failures, playwright, serve } from './helpers.mjs';
+import { ROOT, SITE, ok, failures, playwright, serve, FEED_FIXTURE } from './helpers.mjs';
 import { buildSearchIndex, SEARCH_INDEX_FILE } from '../tools/search-index.mjs';
 
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -26,7 +26,11 @@ console.log('Global search: source boundaries');
 ok(!/localStorage|sessionStorage|indexedDB|document\.cookie|sendBeacon|XMLHttpRequest|WebSocket/.test(js), 'the search script stores nothing and opens no side channel');
 ok(!/\beval\(|new Function|Forge\.|decodeB64|srcC|srcB|showCat\(/.test(js), 'the search script never runs the CSAT or Hacking generators or reads their sources');
 ok((js.match(/\bfetch\(/g) || []).length === 1 && js.includes("fetch('search-index.json'"), 'the only request is the same-origin static index');
-ok(!/https?:\/\//.test(js), 'the search script contains no external URL');
+ok(!/https?:\/\/[a-z0-9]/i.test(js), 'the search script contains no external host');
+const liveCalls = [...new Set([...js.matchAll(/\bL\.(\w+)\(/g)].map(m => m[1]))].sort();
+ok(JSON.stringify(liveCalls) === JSON.stringify(['events', 'inbox', 'info', 'state']), `the feed is read through its read-only accessors only (${liveCalls.join(', ')})`);
+ok(!/ZOLA_LIVE\.(check|setUrl|forget|validate)\b/.test(js) && !/ZOLA_LIVE\s*=/.test(js), 'the search script never checks, changes, forgets or reassigns the feed');
+ok(/addEventListener\('zola-live'/.test(js), 'the snapshot is rebuilt when the app fires zola-live');
 ok(!/id=["']trkQ["']/.test(js) && (js.match(/getElementById\('trkQ'\)/g) || []).length === 1, 'the search script never creates the tracker input, and reads it only to clear a filter');
 
 console.log('Global search: layer wiring');
@@ -109,6 +113,48 @@ try {
   await op.waitForSelector('#gsearch-res:not([hidden])', { timeout: 10000 });
   ok(true, 'search works offline from the precached index');
   await off.close();
+
+  // Current affairs: the feed the app has loaded is searched read-only, with its date, source and status shown.
+  const fixture = JSON.parse(FEED_FIXTURE);
+  fixture.events = [{ id: 'EV-SEARCH-1', date: '2026-10-10', title: 'Zola search test event', subject: 'Polity', hook: 'Check the source before use.',
+    status: 'UNVERIFIED', machines: ['M01'], source: { url: 'https://example.test/src', title: 'Test source' } }];
+  const news = fixture.inbox[0];
+  const feedCtx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  await feedCtx.route(/raw\.githubusercontent\.com/, r => r.fulfill({ status: 200, body: JSON.stringify(fixture), headers: { 'access-control-allow-origin': '*' } }));
+  const fp = await feedCtx.newPage();
+  await fp.goto(base + 'index.html', { waitUntil: 'load' });
+  await fp.waitForSelector('#gsearch');
+  await fp.waitForTimeout(1500);
+  const showResults = async (p, q, expect) => {
+    await p.fill('#gsearch', q);
+    await p.waitForFunction(t => { const e = document.getElementById('gsearch-res'); return !!e && !e.hidden && e.textContent.includes(t); }, expect, { timeout: 8000 });
+  };
+  await showResults(fp, 'Zola search test event', 'Zola search test event');
+  const evSub = await fp.locator('#gsearch-res li').first().textContent();
+  ok(/Feed events/.test(await fp.textContent('#gsearch-res')) && /Unverified/.test(evSub) && /Test source/.test(evSub), 'a feed event shows its date, source and verification status');
+  ok(await fp.locator('#gsearch-res a.gs-src').first().getAttribute('href') === 'https://example.test/src', 'a feed event links to its own source');
+  await showResults(fp, news.title, news.title);
+  ok(/Feed news/.test(await fp.textContent('#gsearch-res')), 'feed news is grouped separately');
+  await fp.locator('#gsearch-res li button').first().click();
+  await fp.waitForTimeout(1200);
+  ok(await fp.evaluate(() => location.hash) === '#forecast/tracker', 'a feed result routes to the tracker');
+  const feedStatus = await fp.textContent('#gsearch-status');
+  ok(/not selected|current list|not shown/.test(feedStatus) && !/Showing/.test(feedStatus), `a feed result never claims to be selected (${feedStatus.trim()})`);
+  await showResults(fp, 'Zola search test event', 'Zola search test event');
+  ok(/Feed: /.test(await fp.textContent('#gsearch-res')), 'the feed state is shown in the results');
+  await feedCtx.close();
+
+  // No feed on the page: the limitation is visible and the rest of search still works.
+  const noFeed = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  await noFeed.route(/raw\.githubusercontent\.com/, r => r.abort());
+  const np = await noFeed.newPage();
+  await np.goto(base + 'index.html', { waitUntil: 'load' });
+  await np.waitForSelector('#gsearch');
+  await np.fill('#gsearch', 'bill');
+  await np.waitForSelector('#gsearch-res:not([hidden])');
+  const noFeedText = await np.textContent('#gsearch-res');
+  ok(/Forecast events/.test(noFeedText) && /Feed: /.test(noFeedText), 'with no feed, static results still work and the feed limitation is shown');
+  await noFeed.close();
 } catch (e) {
   ok(false, `browser checks ran: ${e.message.split('\n')[0]}`);
 } finally {

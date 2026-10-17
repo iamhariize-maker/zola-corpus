@@ -125,4 +125,14 @@ assert.ok(
   'an unexpected Feed key fails the exact-key check',
 );
 
+// Codex review: malformed root inputs must be reported, not thrown.
+assert.ok(
+  validateTaxonomy({ topics: null }).some(problem => /topics: must be an object/.test(problem)),
+  'a null topics root reports a problem instead of throwing',
+);
+assert.ok(
+  validateTaxonomy({ papers: null }).some(problem => /papers: must be an object/.test(problem)),
+  'a null papers root reports a problem instead of throwing',
+);
+
 console.log('✓ taxonomy mappings and pinned syllabus anchors pass');

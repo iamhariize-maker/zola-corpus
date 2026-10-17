@@ -177,6 +177,8 @@ export const TOPICS_WITHOUT_FEED_TAG = Object.freeze([
 // Items the engine must never tag: they would invite question prediction or mislead.
 export const NEVER_TAG = Object.freeze(['likely question', 'expected question', 'important for exam']);
 
+const isPlainRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+
 function exactKeys(map, expected, label, problems) {
   if (!map || typeof map !== 'object' || Array.isArray(map)) {
     problems.push(`${label}: must be an object`);
@@ -217,6 +219,10 @@ export function validateTaxonomy({
   topicsWithoutFeedTag = TOPICS_WITHOUT_FEED_TAG,
 } = {}) {
   const problems = [];
+  // Malformed root inputs are reported, not thrown: later loops assume plain objects.
+  if (!isPlainRecord(topics)) problems.push('topics: must be an object');
+  if (!isPlainRecord(papers)) problems.push('papers: must be an object');
+  if (problems.length) return problems;
   for (const [id, topic] of Object.entries(topics)) {
     if (!/^[a-z0-9-]+$/.test(id)) problems.push(`${id}: id must be lowercase, digits and hyphens`);
     if (!topic || typeof topic !== 'object' || Array.isArray(topic)) {

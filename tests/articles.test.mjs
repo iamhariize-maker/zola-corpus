@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, ok, failures } from './helpers.mjs';
-import { ARTICLES } from '../tools/articles-data.mjs';
+import { ARTICLES, VERIFIED } from '../tools/articles-data.mjs';
 import { validate, render } from '../tools/articles.mjs';
 import { validateTaxonomy, TAXONOMY_STATUS } from '../tools/upsc-taxonomy.mjs';
 import { ARTICLE_SYLLABUS_DOCUMENT } from '../tools/upsc-article-map.mjs';
@@ -137,6 +137,15 @@ nonArrayDoc.articles['nobel-peace-2026'].mappings = {};
 let nonArrayThrew = false, nonArrayProblems = [];
 try { nonArrayProblems = validate(ARTICLES, nonArrayDoc); } catch { nonArrayThrew = true; }
 ok(!nonArrayThrew && nonArrayProblems.some(p => /mappings must be an array/.test(p)), 'a non-array mappings field is reported, not thrown');
+
+console.log('Study articles: per-article checked date');
+const badDateArticles = ARTICLES.map(a => (a.slug === 'nobel-peace-2026' ? { ...a, checked: '17 Oct 2026' } : a));
+ok(validate(badDateArticles).some(p => /nobel-peace-2026: checked must be a date/.test(p)), 'a checked date must be written out in full (17 Oct 2026 is rejected)');
+const datedArticles = ARTICLES.map(a => (a.slug === 'nobel-peace-2026' ? { ...a, checked: '17 October 2026' } : a));
+const datedFiles = render(datedArticles);
+ok(datedFiles['nobel-peace-2026.html'].includes('Checked against the sources below on 17 October 2026.'), 'an article with its own checked date shows that date');
+ok(datedFiles['union-budget-2026-27.html'].includes(`Checked against the sources below on ${VERIFIED}.`), 'an article without its own date keeps the build date');
+ok(datedFiles['index.html'].includes('says when it was last checked') && !/Every article was checked/.test(datedFiles['index.html']), 'the index no longer says every article was checked on one date');
 
 console.log('Study articles: pages are self-contained and offline-safe');
 for (const name of Object.keys(files)) {

@@ -191,6 +191,10 @@ function predictionIn(text) {
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const categoryTitle = id => CATEGORIES.find(c => c.id === id)?.title ?? '';
+const MONTHS = 'January|February|March|April|May|June|July|August|September|October|November|December';
+const DATE_RX = new RegExp(`^\\d{1,2} (${MONTHS}) \\d{4}$`);
+// An article shows the date it was last checked. Articles without their own date share the build date in VERIFIED.
+const checkedOn = a => a.checked ?? VERIFIED;
 
 export function validate(articles = ARTICLES, syllabusDocument = ARTICLE_SYLLABUS_DOCUMENT) {
   const problems = [];
@@ -202,6 +206,7 @@ export function validate(articles = ARTICLES, syllabusDocument = ARTICLE_SYLLABU
     slugs.add(a.slug);
     if (!CATEGORIES.some(c => c.id === a.category)) problems.push(`${where}: unknown category ${a.category}`);
     if (!/^[a-z0-9-]+$/.test(a.slug || '')) problems.push(`${where}: slug must be lowercase letters, digits and hyphens`);
+    if (a.checked !== undefined && !DATE_RX.test(a.checked)) problems.push(`${where}: checked must be a date like 16 October 2026`);
     if (!a.facts?.length) problems.push(`${where}: needs key facts`);
     if (!a.sections?.length) problems.push(`${where}: needs at least one section`);
     if (!a.caveats?.length) problems.push(`${where}: needs a caveats entry, even if it says nothing is unverified`);
@@ -269,7 +274,7 @@ function renderArticle(a, syllabusDocument) {
     <p class="kicker">${esc(categoryTitle(a.category))} · ${esc(a.event)}</p>
     <h1>${esc(a.title)}</h1>
     <p class="dek">${esc(a.dek)}</p>
-    <p class="verified">Checked against the sources below on ${esc(VERIFIED)}. Items marked "background" are general knowledge, not taken from the sources.</p>
+    <p class="verified">Checked against the sources below on ${esc(checkedOn(a))}. Items marked "background" are general knowledge, not taken from the sources.</p>
     <section>
       <h2>Key facts</h2>
       <ul>
@@ -321,7 +326,7 @@ function renderIndex(articles) {
 <header class="bar"><a class="brand" href="../">Zola Corpus</a><nav aria-label="Articles"><a href="../">Back to the app</a></nav></header>
 <main id="main">
   <h1>Study articles on recent events</h1>
-  <p class="dek">Detailed notes on important events for UPSC and APSC Prelims 2027. Each article gives the key facts, what is still unverified, and its sources. Every article was checked on ${esc(VERIFIED)}.</p>
+  <p class="dek">Detailed notes on important events for UPSC and APSC Prelims 2027. Each article gives the key facts, what is still unverified, and its sources, and says when it was last checked.</p>
 ${groups}
 </main>
 <footer><p>Study notes on recent events. They say what happened and what to verify; they do not predict exam questions.</p><p><a href="../">Back to the app</a></p></footer>

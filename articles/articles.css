@@ -81,6 +81,8 @@ li { margin: 0 0 8px; }
 .caveats li { color: var(--ink-soft); }
 .sources li { margin-bottom: 10px; }
 .kind { margin-left: 4px; white-space: nowrap; }
+.syllabus li { margin-bottom: 10px; }
+.syllabus .papers { color: var(--ink-soft); font-size: 0.95em; }
 
 .cards { list-style: none; padding: 0; display: grid; gap: 12px; }
 .cards li { margin: 0; }

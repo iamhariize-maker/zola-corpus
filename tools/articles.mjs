@@ -9,6 +9,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ARTICLES, CATEGORIES, VERIFIED } from './articles-data.mjs';
+import { ARTICLE_SYLLABUS_DOCUMENT, getArticleSyllabus, validateArticleSyllabusMap } from './upsc-article-map.mjs';
+import { PAPERS, TOPICS } from './upsc-taxonomy.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'articles');
@@ -20,7 +22,7 @@ const KINDS = ['Official', 'News report', 'Government', 'Research'];
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const categoryTitle = id => CATEGORIES.find(c => c.id === id)?.title ?? '';
 
-export function validate(articles = ARTICLES) {
+export function validate(articles = ARTICLES, syllabusDocument = ARTICLE_SYLLABUS_DOCUMENT) {
   const problems = [];
   const slugs = new Set();
   for (const a of articles) {
@@ -44,10 +46,27 @@ export function validate(articles = ARTICLES) {
     const words = text.split(/\s+/).length;
     if (words < 200) problems.push(`${where}: only ${words} words; articles need enough detail to study from`);
   }
+  // The syllabus sidecar must match these exact slugs; a stale or invalid map fails the build.
+  problems.push(...validateArticleSyllabusMap({ articles, document: syllabusDocument }));
   return problems;
 }
 
-function renderArticle(a) {
+// Draft syllabus links: metadata only, labelled unverified, and never a prediction of questions.
+function renderSyllabus(syllabus) {
+  const body = syllabus.mappings.length
+    ? `      <ul>\n${syllabus.mappings.map(m => `        <li><strong>${esc(TOPICS[m.topic].title)}</strong> <span class="papers">${esc(m.papers.map(id => PAPERS[id]).join('; '))}</span><br>${esc(m.reason)}</li>`).join('\n')}\n      </ul>`
+    : `      <p>${esc(syllabus.mappingGap)}</p>`;
+  return `    <section class="syllabus" aria-labelledby="syllabus-links">
+      <h2 id="syllabus-links">Draft syllabus links</h2>
+      <p class="verified draft-status">Draft, unverified. These link the note to UPSC syllabus areas as study aids. They are not official UPSC wording, not a verdict on any syllabus section, and not a list of exam questions. The owner's check of the notification PDF is still pending.</p>
+${body}
+    </section>`;
+}
+
+function renderArticle(a, syllabusDocument) {
+  // Fail closed: a page without a valid syllabus entry is never written.
+  const syllabus = getArticleSyllabus(a.slug, { document: syllabusDocument });
+  if (!syllabus) throw new Error(`${a.slug}: no valid syllabus map entry; fix data/upsc-article-map.json`);
   const sections = a.sections.map(s => `      <section>\n        <h2>${esc(s.heading)}</h2>\n${s.paragraphs.map(p => `        <p>${esc(p)}</p>`).join('\n')}\n      </section>`).join('\n');
   const caveats = a.caveats.map(c => `        <li>${esc(c)}</li>`).join('\n');
   const sources = a.sources.map(s => `        <li><a href="${esc(s.url)}">${esc(s.label)}</a> <span class="kind">${esc(s.kind)}</span></li>`).join('\n');
@@ -78,6 +97,7 @@ ${a.facts.map(f => `        <li>${esc(f)}</li>`).join('\n')}
       </ul>
     </section>
 ${sections}
+${renderSyllabus(syllabus)}
     <section class="caveats">
       <h2>Caveats and unverified points</h2>
       <ul>
@@ -130,9 +150,9 @@ ${groups}
 `;
 }
 
-export function render(articles = ARTICLES) {
+export function render(articles = ARTICLES, syllabusDocument = ARTICLE_SYLLABUS_DOCUMENT) {
   const files = { 'index.html': renderIndex(articles) };
-  for (const a of articles) files[`${a.slug}.html`] = renderArticle(a);
+  for (const a of articles) files[`${a.slug}.html`] = renderArticle(a, syllabusDocument);
   return files;
 }
 

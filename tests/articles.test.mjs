@@ -5,6 +5,7 @@ import { ROOT, ok, failures } from './helpers.mjs';
 import { ARTICLES } from '../tools/articles-data.mjs';
 import { validate, render } from '../tools/articles.mjs';
 import { validateTaxonomy, TAXONOMY_STATUS } from '../tools/upsc-taxonomy.mjs';
+import { ARTICLE_SYLLABUS_DOCUMENT } from '../tools/upsc-article-map.mjs';
 
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
 const exists = f => fs.existsSync(path.join(ROOT, f));
@@ -22,6 +23,24 @@ for (const [name, html] of Object.entries(files)) {
   ok(exists(file) && read(file) === html, `${file} matches tools/articles-data.mjs (run: npm run articles)`);
 }
 ok(!fs.readdirSync(path.join(ROOT, 'articles')).some(f => f.endsWith('.html') && !(f in files)), 'no stray article pages without data');
+
+console.log('Study articles: draft syllabus links');
+const unlabelled = ARTICLES.filter(a => {
+  const html = read(path.join('articles', `${a.slug}.html`));
+  return !(/id="syllabus-links"/.test(html) && /Draft, unverified\./.test(html) && /class="papers"/.test(html));
+}).map(a => a.slug);
+ok(unlabelled.length === 0, `every article page shows its draft syllabus links with the unverified label${unlabelled.length ? ': ' + unlabelled.join(', ') : ''}`);
+const gapDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
+gapDoc.articles['union-budget-2026-27'] = { mappings: [], mapping_gap: 'Test gap: no current topic fits this note.' };
+ok(validate(ARTICLES, gapDoc).length === 0, 'an explicit whole-article mapping gap is a valid entry');
+const gapPage = render(ARTICLES, gapDoc)['union-budget-2026-27.html'];
+ok(gapPage.includes('Test gap: no current topic fits this note.') && !/class="papers"/.test(gapPage), 'a mapping gap is shown on the page and lists no topic links');
+const missingDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
+delete missingDoc.articles['padma-awards-2026'];
+ok(validate(ARTICLES, missingDoc).some(p => /slug set mismatch/.test(p)), 'a syllabus map missing an article fails the content rules');
+let failedClosed = false;
+try { render(ARTICLES, missingDoc); } catch (e) { failedClosed = /no valid syllabus map entry/.test(e.message); }
+ok(failedClosed, 'rendering fails closed when an article has no valid syllabus entry');
 
 console.log('Study articles: pages are self-contained and offline-safe');
 for (const name of Object.keys(files)) {

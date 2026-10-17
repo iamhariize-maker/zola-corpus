@@ -71,6 +71,11 @@ ok(reasonProblems('The topic is unlikely to be asked.').length === 0, 'unlikely 
 ok(reasonProblems('This topic is not the only issue; it is guaranteed to be asked.').some(p => /predicts questions/.test(p)), 'a negation in another clause does not cancel a guaranteed prediction');
 ok(reasonProblems('This is not a forecast, but likely to be asked in Prelims.').some(p => /predicts questions/.test(p)), 'a negation before a contrast does not cancel a likely prediction after it');
 ok(reasonProblems('This topic is not guaranteed to be asked.').length === 0, 'a directly negated guarantee is accepted');
+ok(reasonProblems('There is no doubt this is a guaranteed question.').some(p => /predicts questions/.test(p)), 'a negation elsewhere in the clause does not exempt a guaranteed question');
+ok(reasonProblems('These are not expected questions; this topic is guaranteed to be asked.').some(p => /predicts questions/.test(p)), 'a negated cue does not exempt a second, unnegated prediction after a semicolon');
+ok(reasonProblems('Rights are guaranteed by Article 19; the note discusses constitutional questions.').length === 0, 'a guarantee and a separate questions mention in different clauses are accepted');
+ok(reasonProblems('This will appear in the Prelims exam.').some(p => /predicts questions/.test(p)), 'will appear is a prediction');
+ok(reasonProblems('This is not a guaranteed question.').length === 0, 'a directly negated guaranteed question is accepted');
 const nonArrayDoc = structuredClone(ARTICLE_SYLLABUS_DOCUMENT);
 nonArrayDoc.articles['nobel-peace-2026'].mappings = {};
 let nonArrayThrew = false, nonArrayProblems = [];

@@ -18,17 +18,20 @@ const OUT = path.join(ROOT, 'articles');
 // Phrases that would predict exam questions or hype the content (AGENTS.md: voice and honesty).
 const FORBIDDEN = /likely (to be )?(asked|appear)|will be asked|expected question|predicted question|guaranteed|\bfree\b(?!-return)|must[- ]read|most important question/i;
 const KINDS = ['Official', 'News report', 'Government', 'Research'];
-// Syllabus reasons and gaps must not predict questions. A cue counts only when no negation comes before it in the same sentence,
-// so a disclaimer does not exempt a separate prediction elsewhere in the text.
-const SYLLABUS_PREDICTION = /\b(?:likely|guaranteed|expected|predicted)\b[^.!?]*\b(?:questions?|asked|appear)\b|\bcertain to\b[^.!?]*\b(?:questions?|asked|appear)\b|\bwill be asked\b|\bmost important (?:question|topic)\b|\bimportant for (?:the )?exam\b|\bmust[- ]read\b/i;
-const SYLLABUS_NEGATION = /\bnot\b|n't\b|\bno\b|\bnever\b|\bunlikely\b|\bwithout\b|\bcannot\b|\bnone\b|\bneither\b|\bnor\b/i;
-// A negation counts only when it is in the same clause as the cue and comes before it.
+// Syllabus reasons and gaps must not predict questions. A cue is exempt only when it is directly negated
+// ("not expected questions", "is not guaranteed to be asked") or sits under "does not predict". Every match in
+// a clause is checked, and clause breaks stop a cue from reaching into an unrelated clause.
+const SYLLABUS_PREDICTION = /\b(?:likely|guaranteed|expected|predicted)\b[^;:,.!?]*\b(?:questions?|asked|appear)\b|\bcertain to\b[^;:,.!?]*\b(?:questions?|asked|appear)\b|\bwill (?:be asked|appear|come up|be tested)\b|\bmost important (?:question|topic)\b|\bimportant for (?:the )?exam\b|\bmust[- ]read\b/gi;
+const DIRECT_NEGATION = /(?:\bnot|n't|\bnever)\s+(?:(?:a|an|the)\s+)?$/i;
+const PREDICT_NEGATION = /\bnot\s+predict\b[^;:,]*$/i;
 const SYLLABUS_CLAUSE_BREAK = /[;:,]|\s(?:but|though|while|whereas|yet)\s/i;
 function predictionIn(text) {
   for (const sentence of text.split(/(?<=[.!?])\s+/)) {
     for (const clause of sentence.split(SYLLABUS_CLAUSE_BREAK)) {
-      const hit = clause.match(SYLLABUS_PREDICTION);
-      if (hit && !SYLLABUS_NEGATION.test(clause.slice(0, hit.index))) return hit[0];
+      for (const hit of clause.matchAll(SYLLABUS_PREDICTION)) {
+        const before = clause.slice(0, hit.index);
+        if (!DIRECT_NEGATION.test(before) && !PREDICT_NEGATION.test(before)) return hit[0];
+      }
     }
   }
   return null;

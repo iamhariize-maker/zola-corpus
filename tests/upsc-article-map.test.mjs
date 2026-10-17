@@ -79,6 +79,7 @@ assert.deepEqual(
   'all 17 October article content and syllabus text pass the existing article contract',
 );
 for (const article of ARTICLES_OCT17) {
+  assert.equal(article.checked, '17 October 2026', `${article.slug} uses the generator's per-article date field`);
   assert.ok(
     getArticleSyllabus(article.slug, { articles: OCT17_ARTICLES, document: OCT17_SYLLABUS_DOCUMENT }),
     `${article.slug} resolves against the supplied combined article list`,

@@ -4,7 +4,7 @@
 export const ARTICLES_OCT17 = [
   {
     slug: 'sukhna-wetland-sauj-jheel-ramsar-2026',
-    checkedOn: '17 October 2026',
+    checked: '17 October 2026',
     category: 'governance',
     title: 'Sukhna Wetland and Sauj Jheel join the Ramsar List',
     dek: 'A 15 October announcement adds two very different wetlands: an urban-edge reservoir and a Ganga floodplain lake.',
@@ -47,7 +47,7 @@ export const ARTICLES_OCT17 = [
   },
   {
     slug: 'plfs-september-2026-monthly-bulletin',
-    checkedOn: '17 October 2026',
+    checked: '17 October 2026',
     category: 'economy',
     title: 'PLFS September 2026: read the basis with the rate',
     dek: 'The monthly bulletin puts unemployment at 5.0% for people aged 15 and above under Current Weekly Status. The denominator and survey window belong beside the figure.',
@@ -90,16 +90,16 @@ export const ARTICLES_OCT17 = [
   },
   {
     slug: 'nsap-continuation-pension-revisions-2026',
-    checkedOn: '17 October 2026',
+    checked: '17 October 2026',
     category: 'governance',
-    title: 'NSAP continues through 2030–31; disability pension changes await guidelines',
-    dek: 'The Cabinet approved a five-year continuation and higher disability assistance, with detailed guidelines promised within three months.',
+    title: 'Cabinet approves NSAP continuation; release sets three-month guideline window',
+    dek: 'The Cabinet approved continuation through 2030–31 and higher disability assistance. Its release says revised guidelines will be issued and implemented within three months; current operational status was not independently checked.',
     event: 'Cabinet approval announced 14 October 2026',
     facts: [
       'The Union Cabinet approved ₹53,428 crore to continue the National Social Assistance Programme from 2026–27 to 2030–31. The release says the approval covers 3.20 crore beneficiaries across all 36 States and Union Territories.',
       'The programme is to be called Pradhan Mantri Samajik Sahayata Yojana. The approved component names include Pradhan Mantri Vridhavastha Pension Yojana (old age), Pradhan Mantri Vidhawa Pension Yojana (widow), Pradhan Mantri Divyangjan Pension Yojana (disability) and Pradhan Mantri Parivar Labh Yojana (family benefit).',
       'For disability pension, the approved assistance is ₹375 for ages 0–79 and ₹625 from age 80. The benchmark-disability threshold changes from 80% to 40%, and the minimum-age rule changes to cover people from birth.',
-      'The Ministry of Rural Development says implementation guidelines setting the revised eligibility, coverage and assistance are due within three months.',
+      'The Cabinet release says guidelines setting the revised eligibility, coverage and assistance are to be issued and implemented within three months.',
       'Article 41 of the Constitution is the public-assistance directive. It asks the State to act within its economic capacity and development.',
     ],
     sections: [

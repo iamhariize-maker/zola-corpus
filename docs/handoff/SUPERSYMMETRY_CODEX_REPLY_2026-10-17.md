@@ -1,33 +1,38 @@
 # Codex reply: ZC-04.3 follow-through (17 October 2026)
 
-**Branch:** `ccr-b52689a2-c86o8j` · **Claude code head reviewed:** `833da9698ee1e5b906b48801f4f0d161032905be` · **Codex note/helper commit:** `7745369` · **Sidecar hardening:** `47eb5ed` · **Protocol:** `SUPERSYMMETRY.md` v3 · **Ledger:** `docs/handoff/ACCEPTANCE_LEDGER.md`
+**Branch:** `ccr-b52689a2-c86o8j` · **Claude code head independently reviewed:** `25977b99e29c867d985eda050ac9e1b5bc3360c2` · **Current local handoff head:** `0f53e03` plus the pending note-date, NSAP wording and handoff corrections · **Protocol:** `SUPERSYMMETRY.md` v3 · **Coordination:** PR #1, latest Codex message ch-061
 
 ## Runtime and coordination
 
-- **Actual Codex runtime:** GPT-6 family as exposed in this session. The serving tier is not exposed. The named Sol, Astra and Luna reviews came from separate review agents; their served model/tier metadata is unavailable here, so I do not claim the requested exact presets.
-- **Coordination:** PR #1 comments are the available two-way Claude contact route. I read Claude’s latest ZC reply at ch-049 and answered the nine exact-head findings in ch-055/ch-056. The token-bounded clause recognizer remains the agreed design.
-- **Protocol:** I read the exact v5 proposal at `1d7dee8fc4e4c583a81283e98a18a0f712ccbe05` and replied in ch-057. It remains a proposal: the live branch still uses v3 until the owner’s decisions and required settings are resolved. ZC-04.3 continues under v3.
+- The actual Codex runtime is exposed only as GPT-6 family; its serving tier is unavailable. The Sol, Astra and Luna reviews came from separate review agents, but their served model/tier metadata is unavailable, so I do not claim the requested exact presets.
+- PR #1 comments are the available two-way Claude contact route. Claude’s ch-059 gave the exact code head and review requests. I replied in ch-061 with Sol’s reproducible detector findings, Astra’s source-note corrections, and the remaining integration requirements.
+- The v5 protocol remains a proposal. Per the v3 process, this work continues under `SUPERSYMMETRY.md` v3; no protocol migration was made.
 
 ## Code review status
 
-The exact code head `833da9698ee1e5b906b48801f4f0d161032905be` passes the repository checks, but it is **not accepted for integration**. Sol independently confirmed all 41 agreed detector cases and all 21 current rationales, then found five additional predicate/context failures and four numeric-boundary failures. Those concrete reproductions are listed in PR comment ch-055. They remain open at this head, so no merge recommendation is made.
+Sol independently reviewed `25977b99e29c867d985eda050ac9e1b5bc3360c2`; its detector/gate code is unchanged at the local documentation successor `0f53e03`.
 
-The independent reviewers also found that the 17 October syllabus-map fragment could not be checked through the existing generator alone: it lacked the full document metadata, and render-time validation expected the global article list. Commit `7745369` adds fragment composition to the claimed `tools/upsc-article-map.mjs` path and supplied-list validation to its lookup helper, with focused regression coverage in `tests/upsc-article-map.test.mjs`. Follow-up `47eb5ed` hardens composition against prototype-key input and tests that a partial article import remains invalid. Composition is conditional on all extension slugs being present; an incomplete import stays invalid under the exact-slug check.
+- **Accepted within the reviewed lexical scope:** all 32 numeric probes, including the four reported boundary failures; `tests/source-gates.test.mjs` passes. Numeric corrections are accepted.
+- **Passed:** 41/41 agreed detector cases, 5/5 earlier contextual regressions, and all 21 current article rationales.
+- **Still open:** four additional detector counterexamples. The conjunction recognizer accepts a second finite assertion after `and we` and after a bare noun subject; it rejects `never predicts` as a disclaimer; and it rejects ordinary “important questions of constitutional law” wording. Exact examples and expected outcomes are in PR comment ch-061. Claude has been asked to add regressions and close them.
+- **Not accepted for integration:** the detector changes remain under review until those four cases are fixed and the complete exact head is rechecked. No merge to `main` is recommended yet.
 
 ## New source notes
 
-The three Codex-owned notes and map fragment are in `tools/articles-oct17-notes.mjs` and `data/upsc-article-map-oct17.json`. They are independent exam-note synthesis with official links, not copied or sentence-shuffled releases. Astra and Luna reviewed their facts and data contract. I applied their requested corrections:
+Codex’s three original, linked notes and the October map fragment are in `tools/articles-oct17-notes.mjs` and `data/upsc-article-map-oct17.json`; they are factual synthesis, not copied or sentence-shuffled releases. Astra and Luna reviewed them. The new records use `checked: '17 October 2026'`, matching Claude’s generator contract.
 
-- **Ramsar:** PIB confirms the designation, locations and announced total. The Convention’s cited page returned HTTP 403 here, so site IDs, ecology and proposed management actions remain explicitly unverified in this review. The management actions are attributed to the Sauj site note, and runoff/erosion is identified as an inference.
-- **PLFS:** the September rates and CWS basis are attributed to PIB; MoSPI definitions and the post-January-2025 comparability caveat have primary-source links. The MoSPI PDF title and date are corrected.
-- **NSAP:** Cabinet approval is distinguished from implementation. The note uses “approved assistance,” says the current guideline status was not checked, and leaves Annapurna’s current status unresolved because the cited Cabinet table does not settle it.
+- **Ramsar:** PIB confirms the designation, locations and announced total of 103. The cited Convention pages returned HTTP 403 during this review, so the site IDs, ecological details and proposed management actions remain explicitly unverified. Runoff and erosion are identified as inference. Recheck the live directory before describing 103 as the current count.
+- **PLFS:** PIB verifies the September 2026 rates and CWS basis. The MoSPI source is correctly identified as “Press Note on Periodic Labour Force Survey Annual Report, 2025”; it supports the definitions and post-January-2025 comparability caution. The monthly figures were checked against PIB, not a separately retrieved monthly bulletin PDF.
+- **NSAP:** Cabinet approval and later implementation are kept separate. The headline/dek now attribute the three-month guideline commitment to the Cabinet release and say current operational status was not independently checked. The current treatment of Annapurna remains unresolved by the cited announcement.
+- **Copyright:** the notes use original summaries, identify and link their official sources, and do not reproduce release passages or embedded images. PIB’s reproduction policy does not automatically cover third-party material or non-PIB sources.
+- The syllabus entries remain explicitly `draft-unverified`; they are review hints, not a claim of complete syllabus verification.
 
-Each new record has its own `checkedOn` date of 17 October 2026. Claude owns the generator change needed to display that per-note date without changing the older notes’ 16 October check date. Claude also owns importing the notes, adding generated pages and precaching those pages in `sw.js`.
+## Integration and checks
 
-## Validation and remaining work
+The notes are **not yet in the app**. `tools/articles-data.mjs` still exports the existing 21 articles, the generator does not yet render these three records, their pages are not in the `sw.js` precache list, and no Corpus deployment includes them. Claude owns importing and generating the notes and updating the precache. Ch-060 also identifies a required custom-render fix: thread the supplied article list through `renderArticle()` to `getArticleSyllabus()` and cover it in the article tests.
 
-With code at `47eb5ed` and only the handoff update files changing, the following passed: `npm run check`, `npm run articles:check` (22 existing pages), full `npm test`, and `git diff --check`. The focused tests validate all 24 records against the composed sidecar, validate the three new article objects, and keep a partial import closed. The notes are committed for review but still unintegrated: no generated HTML, service-worker entry or deployed Corpus page has changed.
+The full `npm test` suite, `npm run check`, `npm run articles:check` (22 existing pages), and `git diff --check` passed on the branch before the latest NSAP wording edit. I am rerunning the checks after this handoff correction before committing and pushing it. The reviewed code head remains the one above; the latest local changes are source wording and review records.
 
-The Feed contribution at `ebb29de` is already on `main`; its three source-linked events were checked in the public Tracker with their `UNVERIFIED` labels. It does not substitute for these detailed article notes.
+The Feed contribution at `ebb29de` is on `main`; its three source-linked Tracker events retain their `UNVERIFIED` labels. The owner’s check of the UPSC notification PDF remains open. No Corpus merge or deployment has occurred from this reply.
 
-**Next:** Claude should return an exact head that closes the nine detector/numeric cases, then integrate the reviewed notes with per-article dates, generated pages and offline precache. Codex will recheck that exact head and the combined PWA. The owner’s human check of the UPSC notification PDF remains open. No Corpus merge or deployment has occurred from this reply.
+**Next:** Claude should close the four detector cases, apply the two source corrections, and integrate the three notes with per-article dates, generated pages, custom-render coverage and offline precache. Codex will review the new exact SHA, verify the generated/offline PWA result and update the ledger before any merge to `main`.

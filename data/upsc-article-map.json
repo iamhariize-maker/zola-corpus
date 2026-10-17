@@ -1,0 +1,131 @@
+{
+  "schema": "zola-article-syllabus-map/1",
+  "status": "draft-unverified",
+  "syllabus_source": {
+    "title": "Civil Services Examination, 2026 notification",
+    "notificationUrl": "https://www.upsc.gov.in/sites/default/files/Notif-CSP-2026-Engl-060226Rev.pdf",
+    "examinationPageUrl": "https://www.upsc.gov.in/examinations/Civil%20Services%20%28Preliminary%29%20Examination%2C%202026",
+    "status": "human-pdf-check-pending",
+    "printedPageAnchors": {
+      "prelims-gs1": "Printed p. 32, Section III: Syllabi for the Examination, Part A—Preliminary Examination, Paper I (General Studies)",
+      "prelims-csat": "Printed p. 32, Section III: Syllabi for the Examination, Part A—Preliminary Examination, Paper II (CSAT); printed p. 26 states the 33% qualifying threshold",
+      "mains-gs1": "Printed pp. 33–34, General Studies Paper I",
+      "mains-gs2": "Printed pp. 34–35; GS-II begins on p. 34; p. 35 includes accountability, transparency, civil services and international relations",
+      "mains-gs3": "Printed pp. 35–36; GS-III begins on p. 35; p. 36 includes pollution, environmental impact assessment, science and technology, and IPR",
+      "mains-gs4": "Printed p. 36, General Studies Paper IV"
+    }
+  },
+  "articles": {
+    "nobel-2026-at-a-glance": {
+      "mappings": [
+        { "topic": "science-general-tech-ipr", "papers": ["prelims-gs1", "mains-gs3"], "reason": "The overview includes the Physics and Chemistry prizes for neutrino detection and asymmetric organic synthesis." },
+        { "topic": "science-health-biotech", "papers": ["prelims-gs1", "mains-gs3"], "reason": "The Medicine prize concerns light-gated ion channels and optogenetics." },
+        { "topic": "economy-macro", "papers": ["prelims-gs1", "mains-gs3"], "reason": "The Economics prize is specifically about macroeconomic stabilisation." }
+      ]
+    },
+    "nobel-physics-2026": {
+      "mappings": [
+        { "topic": "science-general-tech-ipr", "papers": ["prelims-gs1", "mains-gs3"], "reason": "The article explains high-energy astrophysical neutrinos and the IceCube observatory." }
+      ]
+    },
+    "nobel-medicine-2026": {
+      "mappings": [
+        { "topic": "science-health-biotech", "papers": ["prelims-gs1", "mains-gs3"], "reason": "The article explains light-gated ion channels and optogenetics as a biomedical research method." }
+      ]
+    },
+    "nobel-chemistry-2026": {
+      "mappings": [
+        { "topic": "science-general-tech-ipr", "papers": ["prelims-gs1", "mains-gs3"], "reason": "The article explains chirality, autocatalysis and asymmetric organic synthesis." }
+      ]
+    },
+    "nobel-literature-2026": {
+      "mappings": [
+        { "topic": "awards-honours", "papers": ["prelims-gs1"], "reason": "The article is a current-affairs note on the Nobel Literature distinction; the link is to the award fact, not to Indian art and culture." }
+      ]
+    },
+    "nobel-peace-2026": {
+      "mappings": [
+        { "topic": "ir-groupings", "papers": ["prelims-gs1", "mains-gs2"], "reason": "The article discusses the UN human-rights role and an International Court of Justice case under the Genocide Convention, a direct international-relations and institution link." }
+      ]
+    },
+    "nobel-economics-2026": {
+      "mappings": [
+        { "topic": "economy-macro", "papers": ["prelims-gs1", "mains-gs3"], "reason": "The prize citation concerns the microeconomic foundations of macroeconomic stabilisation." }
+      ]
+    },
+    "fields-medal-2026": {
+      "mappings": [
+        { "topic": "awards-honours", "papers": ["prelims-gs1"], "reason": "The article is a current-affairs note on the Fields Medal and its laureates; the link is to the award fact, not to general science and technology." }
+      ]
+    },
+    "artemis-ii-2026": {
+      "mappings": [
+        { "topic": "science-space", "papers": ["prelims-gs1", "mains-gs3"], "reason": "The article covers a crewed lunar mission, its trajectory and spacecraft systems testing." }
+      ]
+    },
+    "ai-impact-summit-2026": {
+      "mappings": [
+        { "topic": "science-general-tech-ipr", "papers": ["prelims-gs1", "mains-gs3"], "reason": "The declaration addresses AI systems, access, trust, science and technology policy." },
+        { "topic": "ir-groupings", "papers": ["prelims-gs1", "mains-gs2"], "reason": "The article reports a New Delhi declaration endorsed by countries and international organisations at a global summit." }
+      ]
+    },
+    "union-budget-2026-27": {
+      "mappings": [
+        { "topic": "economy-macro", "papers": ["prelims-gs1", "mains-gs3"], "reason": "The article focuses on fiscal deficit, expenditure, capital spending and budget allocations." }
+      ]
+    },
+    "padma-awards-2026": {
+      "mappings": [
+        { "topic": "awards-honours", "papers": ["prelims-gs1"], "reason": "The article covers Padma civilian honours, their three tiers and the annual award list." }
+      ]
+    },
+    "rbi-repo-hike-october-2026": {
+      "mappings": [
+        { "topic": "economy-macro", "papers": ["prelims-gs1", "mains-gs3"], "reason": "The article covers repo rates, the Monetary Policy Committee, inflation and growth projections." }
+      ]
+    },
+    "public-examinations-amendment-act-2026": {
+      "mappings": [
+        { "topic": "polity-governance", "papers": ["prelims-gs1", "mains-gs2"], "reason": "The Act changes investigation, trial and appeal arrangements for public examinations, including UPSC examinations." }
+      ]
+    },
+    "supreme-court-judges-amendment-2026": {
+      "mappings": [
+        { "topic": "polity-constitution", "papers": ["prelims-gs1", "mains-gs2"], "reason": "The article covers the statutory number of Supreme Court judges and its constitutional basis under Article 124." }
+      ]
+    },
+    "tribunals-reforms-act-2026": {
+      "mappings": [
+        { "topic": "polity-governance", "papers": ["prelims-gs1", "mains-gs2"], "reason": "The article covers tribunal administration, appointments, performance review and the Commission's pending establishment date." },
+        { "topic": "polity-bodies", "papers": ["prelims-gs1", "mains-gs2"], "reason": "The Act provides for a statutory National Tribunals Commission and describes its functions." }
+      ]
+    },
+    "mines-minerals-amendment-act-2026": {
+      "mappings": [
+        { "topic": "polity-constitution", "papers": ["prelims-gs1", "mains-gs2"], "reason": "The article's central issue is Parliament's limits on State levies and fiscal federalism." },
+        { "topic": "economy-macro", "papers": ["prelims-gs1", "mains-gs3"], "reason": "The Act changes State revenue from mineral rights and mineral-bearing land." }
+      ]
+    },
+    "ins-samarthak-commissioned-2026": {
+      "mappings": [
+        { "topic": "security-defence", "papers": ["prelims-gs1", "mains-gs3"], "reason": "The article covers an Indian Navy vessel, defence manufacturing and indigenous content." }
+      ]
+    },
+    "caqm-ptz-cameras-ncr-2026": {
+      "mappings": [
+        { "topic": "environment-pollution-assessment", "papers": ["prelims-gs1", "mains-gs3"], "reason": "The direction expands industrial emissions and fuel-use monitoring to reduce air pollution." },
+        { "topic": "polity-bodies", "papers": ["prelims-gs1", "mains-gs2"], "reason": "The article concerns a statutory CAQM direction and the Commission's regulatory role." }
+      ]
+    },
+    "pmay-urban-2-csmc-october-2026": {
+      "mappings": [
+        { "topic": "polity-governance", "papers": ["prelims-gs1", "mains-gs2"], "reason": "The article reports implementation and approvals under a Union urban housing scheme." }
+      ]
+    },
+    "constitution-131st-amendment-bill-2026": {
+      "mappings": [
+        { "topic": "polity-constitution", "papers": ["prelims-gs1", "mains-gs2"], "reason": "The article covers a constitutional amendment, Article 368 procedure, delimitation and Lok Sabha representation." }
+      ]
+    }
+  }
+}

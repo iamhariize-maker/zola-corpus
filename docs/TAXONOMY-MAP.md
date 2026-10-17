@@ -52,15 +52,18 @@ notification. Where a topic is a contextual link rather than a named syllabus ph
 | `security-defence` | Internal security, defence and cyber security | Prelims GS-I; Mains GS-III |
 | `disaster-management` | Disaster management | Prelims GS-I; Mains GS-III |
 | `indices-reports` | Indices and reports: publisher, year and India rank | Prelims GS-I |
+| `awards-honours` | Awards and honours: laureates, prizes and civilian distinctions | Prelims GS-I only; contextual link to printed p. 32 current events |
 | `ethics-integrity-probity` | Ethics, integrity, probity and accountability in public service | Mains GS-IV |
 | `csat-comprehension-reasoning` | CSAT: comprehension, reasoning, numeracy and data interpretation | Prelims CSAT; no current-affairs tag |
 | `assam-state-policy` | Assam: state schemes, economy and governance | APSC only; verify separately |
 | `assam-environment-disaster` | Assam and North-East: floods, Kaziranga, Manas and Brahmaputra | APSC only; verify separately |
 | `assam-society-polity` | Assam and North-East: communities, Sixth Schedule and Assam Accord | APSC only; verify separately |
 
-The three added IDs are deliberately narrow: environmental pollution/assessment, general technology/IPR, and
-co-operatives. The ethics/probity ID makes GS-IV accountability coverage explicit. These labels do not assert that
-every source-tag match contains facts sufficient for a note.
+Four added IDs are deliberately narrow: environmental pollution/assessment, general technology/IPR, co-operatives,
+and awards/honours. `awards-honours` is a Prelims GS-I current-events link used only for the Nobel Literature, Fields
+Medal and Padma Awards notes in the current article map. It does not relabel non-Indian literature as Indian art and
+culture or mathematics as general science and technology. The ethics/probity ID makes GS-IV accountability coverage
+explicit. These labels do not assert that every source-tag match contains facts sufficient for a note.
 
 ## Pinned Zola Feed input
 
@@ -122,6 +125,7 @@ the syllabus or that a topic will be found in the daily inbox. In this snapshot,
 no direct match from any Feed key:
 
 - `world-history`: the feed has no world-history-specific subject or machine pattern. The topic is Mains GS-I only.
+- `awards-honours`: no current Feed subject or machine key identifies awards or honours.
 - `indices-reports`: no current Feed key identifies indices or report rankings.
 - `csat-comprehension-reasoning`: CSAT is a skills paper; this current-affairs feed has no CSAT matching rule.
 - `assam-state-policy`, `assam-environment-disaster`, and `assam-society-polity`: Feed has no Assam-specific key.

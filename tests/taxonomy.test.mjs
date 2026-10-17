@@ -60,6 +60,7 @@ assert.deepEqual(TOPICS['world-history'].papers, ['mains-gs1'], 'world history m
 assert.deepEqual(TOPICS['environment-pollution-assessment'].papers, ['prelims-gs1', 'mains-gs3']);
 assert.deepEqual(TOPICS['science-general-tech-ipr'].papers, ['prelims-gs1', 'mains-gs3']);
 assert.deepEqual(TOPICS['economy-cooperatives'].papers, ['prelims-gs1', 'mains-gs3']);
+assert.deepEqual(TOPICS['awards-honours'].papers, ['prelims-gs1'], 'awards and honours are a bounded Prelims GS-I current-events link');
 assert.deepEqual(TOPICS['ethics-integrity-probity'].papers, ['mains-gs4']);
 assert.ok(MACHINE_TOPIC_MAP.M13.includes('polity-bodies'), 'GST Council can map to constitutional bodies');
 assert.ok(MACHINE_TOPIC_MAP.M17.includes('polity-bodies'), 'Finance Commission can map to constitutional bodies');
@@ -67,6 +68,7 @@ assert.ok(MACHINE_TOPIC_MAP.M17.includes('polity-constitution'), 'fiscal devolut
 assert.ok(MACHINE_TOPIC_MAP.M21.includes('polity-constitution'), 'Article 311 can map to constitutional protections');
 assert.deepEqual(TOPICS_WITHOUT_FEED_TAG, [
   'world-history',
+  'awards-honours',
   'indices-reports',
   'csat-comprehension-reasoning',
   'assam-state-policy',

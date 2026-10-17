@@ -82,6 +82,8 @@ export const TOPICS = Object.freeze({
   'security-defence': { title: 'Internal security, defence and cyber security', papers: ['prelims-gs1', 'mains-gs3'] },
   'disaster-management': { title: 'Disaster management', papers: ['prelims-gs1', 'mains-gs3'] },
   'indices-reports': { title: 'Indices and reports: publisher, year and India rank', papers: ['prelims-gs1'] },
+  // A narrow current-events link; not a claim that awards form a broader UPSC syllabus section.
+  'awards-honours': { title: 'Awards and honours: laureates, prizes and civilian distinctions', papers: ['prelims-gs1'] },
   'ethics-integrity-probity': { title: 'Ethics, integrity, probity and accountability in public service', papers: ['mains-gs4'] },
   'csat-comprehension-reasoning': { title: 'CSAT: comprehension, reasoning, numeracy and data interpretation (no current-affairs mapping)', papers: ['prelims-csat'] },
   'assam-state-policy': { title: 'Assam: state schemes, economy and governance', papers: ['apsc-assam'] },
@@ -164,6 +166,7 @@ export const MACHINE_TOPIC_MAP = Object.freeze({
 // unimportant or absent from current affairs.
 export const TOPICS_WITHOUT_FEED_TAG = Object.freeze([
   'world-history',
+  'awards-honours',
   'indices-reports',
   'csat-comprehension-reasoning',
   'assam-state-policy',

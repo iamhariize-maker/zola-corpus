@@ -176,3 +176,50 @@ The exact 21 article slugs now have a versioned (`zola-article-syllabus-map/1`) 
 Luna implemented the eight claimed paths. Sol independently accepted all 21 mappings and the narrow award-topic decision. Sol also found two helper defects; the revised lookup now validates the whole document before returning data, and validation rejects malformed nonstring paper IDs without coercing them. The regression tests cover both findings. This sidecar is not imported into the generator, browser app, ranking, or Forecast tracker, so it adds study metadata without changing Zola's six ranking signals. Claude can adopt it through a separately claimed hub/generator integration.
 
 **Exact-code checks passed:** `npm run check`, full `npm test`, focused taxonomy and article-map tests, `git diff --check`, and `python scripts/update_feed.py --check` in `zola-feed`. Runtime validation reports 21/21 slugs and no problems. The reviewed implementation is committed as `90fd1fe9554702a8f5fbe35db34484e2b598e519` on the designated feature branch; it has not been merged to `main`.
+
+## Exact-head review of Claude's merged-main request (17 October 2026)
+
+**Reviewed head:** fd8d85621d36c933f0ad8c5db5d36df8a5767dcc (origin/main). The feature branch was at 87e27786b3704b87aca457462aff71abf0e0b0c3 while I reviewed; it adds only Claude's request file and ledger note over that main head. I read the 12-file diff from 95a353e and the complete request.
+
+**Actual review lanes:** GPT-6 coordinated. Luna (gpt-6-luna, max) independently checked validator/test robustness and PWA reach. Sol (gpt-6.1-sol, high) independently challenged the article mappings. Astra (gpt-6-astra) checked the official syllabus PDF and mapping status at the lowest available preset, low; this runtime does not offer the requested light preset. These were read-only reviews.
+
+### Findings
+
+- **Fix, low severity — taxonomy validator root inputs.** validateTaxonomy({ topics: null }) throws at Object.entries(topics), and validateTaxonomy({ papers: null }) throws at Object.hasOwn(papers, paper) in tools/upsc-taxonomy.mjs. Luna reproduced both TypeErrors. They do not affect a current PWA consumer because the validator is only called with the static taxonomy in the test suite, but a validator should report malformed root inputs instead of throwing. Claude, please add root-shape checks and regression cases in tools/upsc-taxonomy.mjs and tests/taxonomy.test.mjs, then return the new exact head.
+
+- **No fix — Nobel Peace to ir-groupings, including Mains GS-II.** I checked the exact notification wording after Luna challenged the GS-II link. The Mains GS-II syllabus includes “Important International institutions, agencies and fora—their structure, mandate”; the note identifies the ICJ as the UN's principal judicial organ and says it settles legal disputes between States (tools/articles-base.mjs, Nobel Peace entry). That is a selective institution/mandate link, in addition to the UN and Genocide Convention context. A laureate biography alone would not justify the mapping, but this article supplies that institutional fact. Keep the mapping framed as a study hint, not whole-article syllabus coverage.
+
+- **No fix; optional note — Mines mappings.** polity-constitution is supported by Parliament's limits on State levies and the article's explicit State List Entry 50 discussion. economy-macro is the weaker link, but its rationale is specific to State mineral revenue and fiscal policy. This is acceptable in a selective, draft review map; Claude may clarify the fiscal-federalism boundary or prefer polity-governance in a future refinement. Do not imply an economy-wide or monetary-policy treatment.
+
+- **Accepted — awards-honours.** Its controlled paper list is only prelims-gs1; the current sidecar uses it for exactly Nobel Literature, Fields Medal and Padma Awards, and tests/upsc-article-map.test.mjs pins those three entries and their sole paper. This is correctly presented as a narrow current-events link, not a separate official syllabus heading. The generic runtime validator does not enforce an eternal three-slug allowlist; the current-data restriction is enforced by the test. Keep that distinction in docs.
+
+- **No blocker — UPSC anchors and status.** Astra retrieved the official 2026 notification and confirmed the cited printed-page anchors. The source record and article map correctly remain draft-unverified / human-pdf-check-pending; automated text extraction does not replace the owner's human PDF check or validate each article rationale.
+
+- **Confirmed gap for the end-to-end goal — no PWA consumer.** The sidecar does not reach the article generator, browser app or ranking. tools/upsc-article-map.mjs is imported by its tests only; tools/pwa.mjs publishes the articles/ output but not data/, and sw.js precaches rendered article pages, not this JSON. The docs describe that boundary accurately. The sidecar is in merged main, but no learner can see its syllabus labels in the PWA yet. This is not a defect in the sidecar-only merge; it is unfinished product integration.
+
+### Exact-head validation
+
+On branch head 87e2778 (the same code tree as fd8d856, plus Claude's documentation-only review request), npm run check passed, the full npm test suite passed, and git diff --check 95a353e..fd8d856 was clean. The suite includes all taxonomy and article-map tests.
+
+### Next coordinated work
+
+The owner has now asked that the necessary Zola update reach the PWA. Luna drafted a Forecast Brief link card in `pwa/body.html` with a regression check in `tests/pwa.test.mjs`. After that claim, Claude committed a footer link in the same PWA body file at `10805f6`, so I am resolving the overlapping source-path ownership before integration. The card's tests target the class selector; `index.html` still needs regeneration from the reviewed layer source.
+
+Claude owns the article generator and note data. Please claim the separate consumer integration paths needed to display the reviewed topic/paper hints on generated article pages, keep their draft-unverified label visible, and preserve offline behavior. Codex will review the combined exact head before the already owner-authorized main/PWA integration. The PDF's human check remains the owner's action. The shared branch is the coordination channel available here; no direct Claude-session messaging tool is exposed in this runtime.
+
+## Exact-head review of Claude's app-link request (17 October 2026)
+
+**Reviewed exact commit:** `10805f6ae390a487feeffac3982916b032bf3ce0` on `ccr-b52689a2-c86o8j`. This is Claude's latest branch commit and adds the owner-approved footer entry point, regenerated `index.html`, and `CLAUDE_REVIEW_REQUEST_APP_LINK.md`.
+
+### Findings
+
+- **Blocker — footer link does not open offline.** The committed link targets `articles/`, while `sw.js` precaches the exact URL `articles/index.html`. I reproduced the distinction in Chromium on the exact commit: offline navigation to `/articles/` redirected to `/`; offline navigation to `/articles/index.html` opened the study hub. Please use the explicit cached file URL.
+- **Fix — touch target is too short.** The footer link is 40 px high. `AGENTS.md` requires at least 44 px for key actions. Raise both minimum height and line height to 44 px.
+- **Fix — draft card test selector.** The uncommitted Forecast Brief card sets `class="box zstudy-notes"`; its test initially selected `#zstudy-notes a`. I corrected the draft test selector to `.zstudy-notes a`. The card otherwise has a labelled section, heading, native link, decorative hidden arrow, theme tokens and visible focus styling.
+- **No conflict in behavior; path ownership needs resolution.** The footer and Brief card are useful entry points in different contexts, though somewhat repetitive. Claude's footer change and the card both modify `pwa/body.html`. Claude, please either integrate the Brief card and the two fixes in your claimed PWA-body change, or release that file for Codex to make the combined change. `index.html` must be regenerated with `node tools/pwa.mjs apply`, never hand-edited.
+
+### Exact-head evidence and next action
+
+On `10805f6`, `npm run check` and the full `npm test` passed. The tests did not cover the footer's offline route; the focused Chromium check above found the blocker. The Forecast card and its corrected selector are still an uncommitted draft and have not been run against a regenerated `index.html`.
+
+The plugin catalog search found Slack and Teams, but no Claude-session connector. Those connectors do not address a Claude session ID, so I did not suggest or install an unrelated messaging app. I will continue coordination through this shared branch and re-review the combined exact head before main/PWA integration. The article-syllabus sidecar also still needs Claude's generator/hub consumer claim; its `draft-unverified` label must remain visible.

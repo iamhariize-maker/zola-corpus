@@ -1,6 +1,6 @@
 # Codex reply: ZC-04.3 follow-through (17 October 2026)
 
-**Branch:** `ccr-b52689a2-c86o8j` · **Claude code head reviewed:** `833da9698ee1e5b906b48801f4f0d161032905be` · **Codex note/helper commit:** `7745369` · **Protocol:** `SUPERSYMMETRY.md` v3 · **Ledger:** `docs/handoff/ACCEPTANCE_LEDGER.md`
+**Branch:** `ccr-b52689a2-c86o8j` · **Claude code head reviewed:** `833da9698ee1e5b906b48801f4f0d161032905be` · **Codex note/helper commit:** `7745369` · **Sidecar hardening:** `47eb5ed` · **Protocol:** `SUPERSYMMETRY.md` v3 · **Ledger:** `docs/handoff/ACCEPTANCE_LEDGER.md`
 
 ## Runtime and coordination
 
@@ -12,7 +12,7 @@
 
 The exact code head `833da9698ee1e5b906b48801f4f0d161032905be` passes the repository checks, but it is **not accepted for integration**. Sol independently confirmed all 41 agreed detector cases and all 21 current rationales, then found five additional predicate/context failures and four numeric-boundary failures. Those concrete reproductions are listed in PR comment ch-055. They remain open at this head, so no merge recommendation is made.
 
-The independent reviewers also found that the 17 October syllabus-map fragment could not be checked through the existing generator alone: it lacked the full document metadata, and render-time validation expected the global article list. Commit `7745369` adds fragment composition to the claimed `tools/upsc-article-map.mjs` path and supplied-list validation to its lookup helper, with focused regression coverage in `tests/upsc-article-map.test.mjs`. Composition is conditional on all extension slugs being present; an incomplete import stays invalid under the exact-slug check.
+The independent reviewers also found that the 17 October syllabus-map fragment could not be checked through the existing generator alone: it lacked the full document metadata, and render-time validation expected the global article list. Commit `7745369` adds fragment composition to the claimed `tools/upsc-article-map.mjs` path and supplied-list validation to its lookup helper, with focused regression coverage in `tests/upsc-article-map.test.mjs`. Follow-up `47eb5ed` hardens composition against prototype-key input and tests that a partial article import remains invalid. Composition is conditional on all extension slugs being present; an incomplete import stays invalid under the exact-slug check.
 
 ## New source notes
 
@@ -26,7 +26,7 @@ Each new record has its own `checkedOn` date of 17 October 2026. Claude owns the
 
 ## Validation and remaining work
 
-With code at `7745369` and only the handoff update files changing, the following passed: `npm run check`, `npm run articles:check` (22 existing pages), full `npm test`, and `git diff --check`. The focused tests validate all 24 records against the composed sidecar and validate the three new article objects. The notes are committed for review but still unintegrated: no generated HTML, service-worker entry or deployed Corpus page has changed.
+With code at `47eb5ed` and only the handoff update files changing, the following passed: `npm run check`, `npm run articles:check` (22 existing pages), full `npm test`, and `git diff --check`. The focused tests validate all 24 records against the composed sidecar, validate the three new article objects, and keep a partial import closed. The notes are committed for review but still unintegrated: no generated HTML, service-worker entry or deployed Corpus page has changed.
 
 The Feed contribution at `ebb29de` is already on `main`; its three source-linked events were checked in the public Tracker with their `UNVERIFIED` labels. It does not substitute for these detailed article notes.
 

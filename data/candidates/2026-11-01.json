@@ -1,0 +1,799 @@
+{
+  "schema": "zola-candidates/1",
+  "generated_at": "2026-11-01T09:36:14.856Z",
+  "sources": [
+    {
+      "source": "pib",
+      "status": "ok",
+      "count": 20,
+      "reason": ""
+    },
+    {
+      "source": "sci-judgments",
+      "status": "empty",
+      "count": 0,
+      "reason": "parsed zero items; the layout may have changed"
+    },
+    {
+      "source": "prs-billtrack",
+      "status": "ok",
+      "count": 29,
+      "reason": ""
+    }
+  ],
+  "items": [
+    {
+      "id": "pib:f3a291269a4c",
+      "source": "pib",
+      "tier": 1,
+      "title": "LOK SABHA SPEAKER TO INAUGURATE CONFERENCE OF CHAIRPERSONS OF PUBLIC ACCOUNTS COMMITTEES OF PARLIAMENT OF INDIA AND STATE/UT LEGISLATURES IN THIRUVANANTHAPURAM",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331150",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:5f9bea157f3e",
+      "source": "pib",
+      "tier": 1,
+      "title": "Vice-President Inaugurates National Organ Transplant Games 2026; Calls Organ Donation a ‘Mahadaan’",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331147",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:72b5217de301",
+      "source": "pib",
+      "tier": 1,
+      "title": "Prime Minister extends greetings to the people of Tamil Nadu on Tamil Nadu Day",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331099",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:2c06e31852da",
+      "source": "pib",
+      "tier": 1,
+      "title": "Prime Minister extends greetings to the people of Karnataka on Kannada Rajyotsava",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331098",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:00a830485d20",
+      "source": "pib",
+      "tier": 1,
+      "title": "Prime Minister extends greetings to the people of Keralam on Keralappiravi",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331097",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:69ccc602056d",
+      "source": "pib",
+      "tier": 1,
+      "title": "Prime Minister extends greetings to the people of Haryana on State foundation day",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331095",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:19e4062f7036",
+      "source": "pib",
+      "tier": 1,
+      "title": "Prime Minister extends greetings to the people of Chhattisgarh on State foundation day",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331092",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:02f48f32f827",
+      "source": "pib",
+      "tier": 1,
+      "title": "Prime Minister extends greetings to the people of Madhya Pradesh on State foundation day",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331090",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:aa0bf54b656d",
+      "source": "pib",
+      "tier": 1,
+      "title": "Hon’ble Union Minister, Shri Rajiv Ranjan Singh, to visit Gangtok and Mangan Districts, Sikkim on 2nd November 2026",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331082",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:485717005090",
+      "source": "pib",
+      "tier": 1,
+      "title": "Strengthening India’s Indigenous Navigation Capabilities",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331077",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:a0299a621c1c",
+      "source": "pib",
+      "tier": 1,
+      "title": "Coal Imports Decline by 5.83% in August 2026, Reflecting Reduced Import Dependence",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331073",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [
+        "economy-external-trade"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "pib:13e98e2f2ca9",
+      "source": "pib",
+      "tier": 1,
+      "title": "Ministry of Coal to Recognize Outstanding Achievements in Coal and Lignite Mining at Star Rating Awards in Raipur on 2nd November",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331074",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:001cf5a0d401",
+      "source": "pib",
+      "tier": 1,
+      "title": "INDIAN NAVAL SHIP TRISHUL CALLS AT SOUDA BAY, GREECE",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331076",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [
+        "security-defence"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "pib:fb2e7c8ce0e5",
+      "source": "pib",
+      "tier": 1,
+      "title": "Union Ministry of Environment, Forest and Climate Change and its organisations successfully conclude Special Campaign 6",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331056",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [
+        "environment-ecology",
+        "environment-climate"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "pib:5e06faba12fe",
+      "source": "pib",
+      "tier": 1,
+      "title": "High level CAQM Team reviews Paddy Straw Management Measures reviews in Sangrur, Patiala and Malerkotla of Punjab",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331055",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [
+        "polity-bodies",
+        "environment-climate"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "pib:55b8430e787d",
+      "source": "pib",
+      "tier": 1,
+      "title": "MY Bharat - NSS Mobilises Over 96,700 Youth in Nationwide Cyclothons and Walkathons under Nasha Mukt Yuva Abhiyan",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331041",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:d3248f7fefb5",
+      "source": "pib",
+      "tier": 1,
+      "title": "English rendering of PM’s speech at the Rashtriya Ekta Diwas programme in Kevadia, Gujarat",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331035",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:387badc7996e",
+      "source": "pib",
+      "tier": 1,
+      "title": "Prime Minister Shri Narendra Modi participates in Rashtriya Ekta Diwas Celebrations marking the 151st birth anniversary of Sardar Vallabhbhai Patel",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331033",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:e44ebb645900",
+      "source": "pib",
+      "tier": 1,
+      "title": "Delhi Records Lowest Average AQI for October in the Last Eight Years at 166",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331032",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:da0192807a2a",
+      "source": "pib",
+      "tier": 1,
+      "title": "LOK SABHA SPEAKER CALLS UPON YOUTH TO UPHOLD NATIONAL UNITY AND INTEGRITY AND CONTRIBUTE TO BUILDING A DEVELOPED INDIA",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2331012",
+      "published": null,
+      "first_seen": "2026-11-01T09:36:14.856Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:23864648bc95",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Occupational Safety, Health and Working Conditions (Central) Rules, 2026",
+      "url": "https://prsindia.org/billtrack/the-occupational-safety-health-and-working-conditions-central-rules-2026",
+      "published": null,
+      "first_seen": "2026-10-28T08:55:28.870Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance",
+        "science-health-biotech"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:08823e5d1d9e",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Social Security (Central) Rules, 2026",
+      "url": "https://prsindia.org/billtrack/the-social-security-central-rules-2026",
+      "published": null,
+      "first_seen": "2026-10-28T08:55:28.870Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:f9161ce03c43",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "Foreign Contribution (Regulation) Amendment Rules, 2026",
+      "url": "https://prsindia.org/billtrack/foreign-contribution-regulation-amendment-rules-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:5ecc1c1b61d4",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The National Co-operative Development Corporation (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-national-co-operative-development-corporation-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:00c516d86159",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Mines and Minerals (Development and Regulation) Amendment Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-mines-and-minerals-development-and-regulation-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:36ea41573562",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Tribunals Reforms Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-tribunals-reforms-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance",
+        "polity-bodies"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:86e3e0080778",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Kerala (Alteration of Name) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-kerala-alteration-of-name-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:954a96cbae49",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Taxation and Other Laws (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-taxation-and-other-laws-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance",
+        "economy-macro"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:011162feb9e0",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Indian Statistical Institute Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-indian-statistical-institute-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:ec6d61d71810",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Bankers’ Books Evidence Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-bankers%E2%80%99-books-evidence-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance",
+        "economy-banking-markets"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:177032706fa9",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Registration of Births and Deaths (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-registration-of-births-and-deaths-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:6d87a74ac012",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Micro, Small and Medium Enterprises Development (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-micro-small-and-medium-enterprises-development-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance",
+        "economy-macro"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:90b94c8ef6ec",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Public Examinations (Prevention of Unfair Means) Amendment Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-public-examinations-prevention-of-unfair-means-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:b449267b0a86",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Prevention of Insults to National Honour (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-prevention-of-insults-to-national-honour-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:3f20774bee2b",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Supreme Court (Number of Judges) Amendment Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-supreme-court-number-of-judges-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:e01946db1103",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Income-tax (Amendment) Ordinance, 2026",
+      "url": "https://prsindia.org/billtrack/the-income-tax-amendment-ordinance-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance",
+        "economy-macro"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:066ed8c87535",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "Industrial Relations (Central) Rules, 2026",
+      "url": "https://prsindia.org/billtrack/industrial-relations-central-rules-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:2f69100f879e",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "Code on Wages (Central) Rules, 2026",
+      "url": "https://prsindia.org/billtrack/code-on-wages-central-rules-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:402fa8c17591",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Supreme Court (Number of Judges) Amendment Ordinance, 2026",
+      "url": "https://prsindia.org/billtrack/supreme-court-number-of-judges-amendment-ordinance-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:2aecb36a8a4c",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Delimitation Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-delimitation-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:688efa7b3313",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Union Territories Laws (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-union-territories-laws-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:b9d62e6f20f7",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Constitution (131st Amendment) Bill, 2026 [Delimitation Bills of 2026]",
+      "url": "https://prsindia.org/billtrack/the-constitution-131st-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-constitution",
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:e7d23a419092",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Andhra Pradesh Reorganisation (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-andhra-pradesh-reorganisation-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:406d7e3d8809",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Jan Vishwas (Amendment of Provisions) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-jan-vishwas-amendment-of-provisions-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:b2fb3f436475",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Central Armed Police Forces (General Administration) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-central-armed-police-forces-general-administration-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance",
+        "security-defence"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:0a275d8e2863",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Foreign Contribution (Regulation) Amendment Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-foreign-contribution-regulation-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:322e4b792e58",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Corporate Laws (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-corporate-laws-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:e9c471801b3e",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Transgender Persons (Protection of Rights) Amendment Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-transgender-persons-protection-of-rights-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:e0b482ec3a18",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Industrial Relations Code (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-industrial-relations-code-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    }
+  ]
+}

@@ -1,0 +1,1208 @@
+{
+  "schema": "zola-candidates/1",
+  "generated_at": "2026-11-20T10:21:34.829Z",
+  "sources": [
+    {
+      "source": "pib",
+      "status": "ok",
+      "count": 20,
+      "reason": ""
+    },
+    {
+      "source": "sci-judgments",
+      "status": "ok",
+      "count": 25,
+      "reason": ""
+    },
+    {
+      "source": "prs-billtrack",
+      "status": "ok",
+      "count": 29,
+      "reason": ""
+    }
+  ],
+  "items": [
+    {
+      "id": "pib:c956bc10fed1",
+      "source": "pib",
+      "tier": 1,
+      "title": "Hon’ble Union Minister for Culture and Tourism Shri Gajendra Singh Shekhawat Flags Off ‘Yuva Somnath Yatra’ from New Delhi",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2339017",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:c39ea3643fae",
+      "source": "pib",
+      "tier": 1,
+      "title": "Secretary, DoUD, MoHUA chairs 11th meeting of CSMC under PMAY-U 2.0",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2339014",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "pib:eb4e4087bc5a",
+      "source": "pib",
+      "tier": 1,
+      "title": "Circle Level Dak Adalat on November 26",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2339011",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:032bb5c79725",
+      "source": "pib",
+      "tier": 1,
+      "title": "India's transformation, growing startup ecosystem and opportunities for youth reflect the country's journey towards a developed nation: Union Minister of Commerce and Industry Shri Piyush Goyal at Annual Convocation of DU",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2339009",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:39b0213df85d",
+      "source": "pib",
+      "tier": 1,
+      "title": "A new recipe to shape magnetisation that could open new doors to storing quantum information",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2339007",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:6c999771b3c1",
+      "source": "pib",
+      "tier": 1,
+      "title": "Pollen from wetland of Bandhavgarh Tiger Reserve regenerative capacity of tropical forest ecosystems",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2339006",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [
+        "environment-ecology"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "pib:4745f927670d",
+      "source": "pib",
+      "tier": 1,
+      "title": "LOK SABHA SPEAKER CALLS FOR MODERN TECHNOLOGY AND AI TO STRENGTHEN DEFENCE LAND MANAGEMENT",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338993",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [
+        "security-defence"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "pib:809afcc8846e",
+      "source": "pib",
+      "tier": 1,
+      "title": "Vice President to visit Maharashtra and Tamil Nadu on November 21–22",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338982",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:b13b025d7547",
+      "source": "pib",
+      "tier": 1,
+      "title": "Vice President calls for strengthening constitutional values through responsible citizenship; says duties are as important as rights",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338981",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [
+        "polity-constitution"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "pib:ed1a69585f2b",
+      "source": "pib",
+      "tier": 1,
+      "title": "PRESIDENT OF INDIA GRACES 12TH CONVOCATION OF ATAL BIHARI VAJPAYEE INSTITUTE OF MEDICAL SCIENCES AND DR RAM MANOHAR LOHIA HOSPITAL",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338974",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [
+        "science-health-biotech"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "pib:5cd520780bdf",
+      "source": "pib",
+      "tier": 1,
+      "title": "‘Stories Without Borders’: IFFI 57 to celebrate cinema beyond geographical and socio-cultural boundaries",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338972",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:feb2dd666e64",
+      "source": "pib",
+      "tier": 1,
+      "title": "From Creative Ideas to Global Opportunities: WAVES Film Bazaar 2026 Begins in Goa",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338970",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:3d604e93d8b2",
+      "source": "pib",
+      "tier": 1,
+      "title": "Union Health Ministry’s Health Pavilion at IITF 2026 Records Over 12,189 Stall Visits in First Five Days, Promoting Health Awareness and Preventive Healthcare",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338963",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [
+        "science-health-biotech"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "pib:6e0ded3423fb",
+      "source": "pib",
+      "tier": 1,
+      "title": "Indian Railways Organises Mega Camp Under Digital Life Certificate Campaign 5.0 in New Delhi",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338955",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:84ee6bf7943c",
+      "source": "pib",
+      "tier": 1,
+      "title": "Prime Minister shares an article on transformative initiatives undertaken to enhance farmers’ prosperity and strengthen rural India",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338948",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:baf9fae8c970",
+      "source": "pib",
+      "tier": 1,
+      "title": "NHRC, India takes suo motu cognizance of the reported transportation of the dead bodies of a woman and her daughter in a garbage vehicle for post-mortem after hospital staff failed to provide a hearse in Faridabad, Haryana",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338943",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [
+        "polity-bodies",
+        "science-health-biotech"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "pib:fe9447ef27b8",
+      "source": "pib",
+      "tier": 1,
+      "title": "Prime Minister shares Sanskrit Subhashitam emphasising the importance of respecting and honouring parents as an essential responsibility",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338937",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:1bf48bc04194",
+      "source": "pib",
+      "tier": 1,
+      "title": "President Droupadi Murmu Addresses 12th Convocation of ABVIMS and Dr. RML Hospital in Presence of Union Health Minister Shri J.P. Nadda",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338934",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [
+        "science-health-biotech"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "pib:7b97c18d2ca4",
+      "source": "pib",
+      "tier": 1,
+      "title": "Stories Without Borders, Now in Print and Pixels: IFFILOID Returns for 57th IFFI",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338918",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "pib:369458dd734b",
+      "source": "pib",
+      "tier": 1,
+      "title": "From Indian Fields to Global Markets: Agri-Exports Gather Pace",
+      "url": "https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338907",
+      "published": null,
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "https://pib.gov.in/Content/102_2_Copyright-Policy.aspx (reproduction allowed with acknowledgement; third-party material excluded)",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [
+        "economy-external-trade"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:d14dbc711cb6",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "SUBHASINDU DAS VS. BACCHU RANJAN DAS (C.A. No. 841-842/2023)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=341482022&type=j&order_date=2026-11-19&from=latest_judgements_order",
+      "published": "2026-11-19T00:00:00+05:30",
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:034bbf0ff860",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "POORNIMA GUPTA VS. SAURAV GUPTA (CONMT.PET.(C) No. 738/2026 in T.P.(C) No. 235/2025)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=523032026&type=j&order_date=2026-11-19&from=latest_judgements_order",
+      "published": "2026-11-19T00:00:00+05:30",
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:c6c52fcba424",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "HELENA ANNA MARIA LERSCH VS. STATE OF GOA (SLP(Crl) No. 11625/2026)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=373992026&type=j&order_date=2026-11-19&from=latest_judgements_order",
+      "published": "2026-11-19T00:00:00+05:30",
+      "first_seen": "2026-11-19T10:41:04.625Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:574ff6563386",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "THE GEM & JEWELLERY EXPORT PROMOTION COU VS. STATE OF MAHARASHTRA . (C.A. No. 1889/2015)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=140362013&type=j&order_date=2026-11-19&from=latest_judgements_order",
+      "published": "2026-11-19T00:00:00+05:30",
+      "first_seen": "2026-11-19T10:41:04.625Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:bf1c8d1520dc",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "UTTAR PRADESH GROUND WATER DEPARTMENT NON GAZETTED EMPLOYEE ASSOCIATION (REGD.) VS. THE CHIEF SECRETARY (W.P.(C) No. 1458/2020)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=278312020&type=j&order_date=2026-11-18&from=latest_judgements_order",
+      "published": "2026-11-18T00:00:00+05:30",
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:6308332aa840",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "NEYCER (INDIA) LTD. VS. GMB CERAMICS LTD. (C.A. No. 5937-5938/2021)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=383802018&type=j&order_date=2026-11-18&from=latest_judgements_order",
+      "published": "2026-11-18T00:00:00+05:30",
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:3c6ccfec18bf",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "BIBOL TOPPO VS. STATE OF ODISHA (C.A. No. 8294/2026)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=572972024&type=j&order_date=2026-11-18&from=latest_judgements_order",
+      "published": "2026-11-18T00:00:00+05:30",
+      "first_seen": "2026-11-19T10:41:04.625Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:3cdc337f0279",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "IN RE: PHALODI ACCIDENT VS. NATIONAL HIGHWAYS AUTHORITY OF INDIA (SMW(C) No. 9/2025)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=637652025&type=j&order_date=2026-11-18&from=latest_judgements_order",
+      "published": "2026-11-18T00:00:00+05:30",
+      "first_seen": "2026-11-19T10:41:04.625Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:c4490fa50457",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "ASHOK KUMAR VS. CENTRAL BANK OF INDIA (C.A. No. 14308/2026)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=385372024&type=j&order_date=2026-11-18&from=latest_judgements_order",
+      "published": "2026-11-18T00:00:00+05:30",
+      "first_seen": "2026-11-19T10:41:04.625Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:7a75d6a12fbb",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "PRITHVIRAJ S. SINGH (DECEASED) THROUGH LRS ETC. VS. THE SECRETARY, SCHOOL EDUCATION DEPARTMENT, STATE OF MAHARASHTRA (C.A. No. 10193-10194/2016)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=304632016&type=j&order_date=2026-11-18&from=latest_judgements_order",
+      "published": "2026-11-18T00:00:00+05:30",
+      "first_seen": "2026-11-19T10:41:04.625Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:c37e430e1cfe",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "BHARAT BHUSHAN JAIN (DEAD) THR. LRS. VS. M/S GOODYEAR INDIA LTD . (C.A. No. 9668-9669/2013)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=373232011&type=j&order_date=2026-11-18&from=latest_judgements_order",
+      "published": "2026-11-18T00:00:00+05:30",
+      "first_seen": "2026-11-19T10:41:04.625Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:3adc00a6fc55",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "BHEEMANAGOUDA @ BHEEMAJJA VS. STATE BY HARAPANAHALLI POLICE (Crl.A. No. 5402/2026)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=327062025&type=j&order_date=2026-11-18&from=latest_judgements_order",
+      "published": "2026-11-18T00:00:00+05:30",
+      "first_seen": "2026-11-19T10:41:04.625Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:62116ee6abee",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "M/S MARINO DREDGECO LIMITED VS. THE BOARD OF TRUSTEES OF THE PORT OF KOLKATA (C.A. No. 14303/2026)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=251342025&type=j&order_date=2026-11-18&from=latest_judgements_order",
+      "published": "2026-11-18T00:00:00+05:30",
+      "first_seen": "2026-11-19T10:41:04.625Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:3574684933e0",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "POWER GRID CORPORATION OF INDIA LIMITED VS. TANGEDCO (C.A. No. 14780-14781/2025)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=656092025&type=j&order_date=2026-11-18&from=latest_judgements_order",
+      "published": "2026-11-18T00:00:00+05:30",
+      "first_seen": "2026-11-19T10:41:04.625Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:6f9cc33e2627",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "ASHOK VS. MAHESH (Crl.A. No. 5370-5371/2026)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=117072025&type=j&order_date=2026-11-17&from=latest_judgements_order",
+      "published": "2026-11-17T00:00:00+05:30",
+      "first_seen": "2026-11-18T10:35:40.840Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:0c406b955416",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "KU. KIRAN D/O PURUSHOTTAM BHUJADE VS. SUDHIR SHIKSHAN SANSTHA (C.A. No. 14255/2026)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=306412025&type=j&order_date=2026-11-17&from=latest_judgements_order",
+      "published": "2026-11-17T00:00:00+05:30",
+      "first_seen": "2026-11-18T10:35:40.840Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:ca1e07353d1d",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "UTTAR PRADESH AVAS EVAM VIKAS PARISHAD VS. M/S GAURSONS INDIA PVT. LTD. (C.A. No. 9025/2026)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=113022023&type=j&order_date=2026-11-17&from=latest_judgements_order",
+      "published": "2026-11-17T00:00:00+05:30",
+      "first_seen": "2026-11-18T10:35:40.840Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:81490e5c4bf4",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "STATE OF U.P VS. MOHAMMAD AZAM KHAN (Crl.A. No. 5376-5378/2026)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=574692024&type=j&order_date=2026-11-17&from=latest_judgements_order",
+      "published": "2026-11-17T00:00:00+05:30",
+      "first_seen": "2026-11-18T10:35:40.840Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:2e95360de907",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "HAR PARSAD GAUR VS. STATE(NCT OF DELHI) (Crl.A. No. 571/2015)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=29722015&type=j&order_date=2026-11-17&from=latest_judgements_order",
+      "published": "2026-11-17T00:00:00+05:30",
+      "first_seen": "2026-11-17T11:01:38.166Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:2ebbe26cc7fe",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "IBRAHIM VS. STATE OF U P (Crl.A. No. 5436/2026)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=278172026&type=j&order_date=2026-11-16&from=latest_judgements_order",
+      "published": "2026-11-16T00:00:00+05:30",
+      "first_seen": "2026-11-20T10:21:34.829Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:a68855f6edb2",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "STATE OF GOA VS. AGNIV SENGUPTA (Crl.A. No. 5416/2026)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=577522026&type=j&order_date=2026-11-16&from=latest_judgements_order",
+      "published": "2026-11-16T00:00:00+05:30",
+      "first_seen": "2026-11-19T10:41:04.625Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:f24d926165f9",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "RAJASTHAN RAJYA VIDYUT UTPADAN NIGAM LIMITED, VS. PARSA KENTE COLLIERIES LIMITED (SLP(C) No. 32968/2026)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=343322026&type=j&order_date=2026-11-16&from=latest_judgements_order",
+      "published": "2026-11-16T00:00:00+05:30",
+      "first_seen": "2026-11-18T10:35:40.840Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:38b844f1ac39",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "DEVILAL GOND VS. STATE OF CHHATTISGARH (Crl.A. No. 5358/2026)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=354632026&type=j&order_date=2026-11-16&from=latest_judgements_order",
+      "published": "2026-11-16T00:00:00+05:30",
+      "first_seen": "2026-11-17T11:01:38.166Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:0d2ac778ccb0",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "ELAINE INFO SOLUTIONS PVT. LTD. VS. M/S. J AND A AVENUES INDIA PRIVATE LIMITED (C.A. No. 2821/2020)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=108722020&type=j&order_date=2026-11-16&from=latest_judgements_order",
+      "published": "2026-11-16T00:00:00+05:30",
+      "first_seen": "2026-11-17T11:01:38.166Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "sci-judgments:f0fab65b12c1",
+      "source": "sci-judgments",
+      "tier": 1,
+      "title": "BIRENDRA KUMAR AGRAWAL VS. S2 TECH.COM INDIA PVT LTD (C.A. No. 4171/2026)",
+      "url": "https://www.sci.gov.in/view-pdf/?diary_no=192872026&type=j&order_date=2026-11-16&from=latest_judgements_order",
+      "published": "2026-11-16T00:00:00+05:30",
+      "first_seen": "2026-11-17T11:01:38.166Z",
+      "reuse": "allowed",
+      "rights": {
+        "terms": "Court judgments are public records. Cite the Supreme Court and the diary number. robots.txt disallows only /wp-admin/.",
+        "checked_on": "2026-10-16"
+      },
+      "topics": [],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:23864648bc95",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Occupational Safety, Health and Working Conditions (Central) Rules, 2026",
+      "url": "https://prsindia.org/billtrack/the-occupational-safety-health-and-working-conditions-central-rules-2026",
+      "published": null,
+      "first_seen": "2026-10-28T08:55:28.870Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance",
+        "science-health-biotech"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:08823e5d1d9e",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Social Security (Central) Rules, 2026",
+      "url": "https://prsindia.org/billtrack/the-social-security-central-rules-2026",
+      "published": null,
+      "first_seen": "2026-10-28T08:55:28.870Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:f9161ce03c43",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "Foreign Contribution (Regulation) Amendment Rules, 2026",
+      "url": "https://prsindia.org/billtrack/foreign-contribution-regulation-amendment-rules-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:5ecc1c1b61d4",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The National Co-operative Development Corporation (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-national-co-operative-development-corporation-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:00c516d86159",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Mines and Minerals (Development and Regulation) Amendment Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-mines-and-minerals-development-and-regulation-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:36ea41573562",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Tribunals Reforms Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-tribunals-reforms-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance",
+        "polity-bodies"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:86e3e0080778",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Kerala (Alteration of Name) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-kerala-alteration-of-name-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:954a96cbae49",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Taxation and Other Laws (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-taxation-and-other-laws-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance",
+        "economy-macro"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:011162feb9e0",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Indian Statistical Institute Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-indian-statistical-institute-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:ec6d61d71810",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Bankers’ Books Evidence Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-bankers%E2%80%99-books-evidence-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance",
+        "economy-banking-markets"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:177032706fa9",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Registration of Births and Deaths (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-registration-of-births-and-deaths-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:6d87a74ac012",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Micro, Small and Medium Enterprises Development (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-micro-small-and-medium-enterprises-development-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance",
+        "economy-macro"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:90b94c8ef6ec",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Public Examinations (Prevention of Unfair Means) Amendment Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-public-examinations-prevention-of-unfair-means-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:b449267b0a86",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Prevention of Insults to National Honour (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-prevention-of-insults-to-national-honour-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:3f20774bee2b",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Supreme Court (Number of Judges) Amendment Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-supreme-court-number-of-judges-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:e01946db1103",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Income-tax (Amendment) Ordinance, 2026",
+      "url": "https://prsindia.org/billtrack/the-income-tax-amendment-ordinance-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance",
+        "economy-macro"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:066ed8c87535",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "Industrial Relations (Central) Rules, 2026",
+      "url": "https://prsindia.org/billtrack/industrial-relations-central-rules-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:2f69100f879e",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "Code on Wages (Central) Rules, 2026",
+      "url": "https://prsindia.org/billtrack/code-on-wages-central-rules-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:402fa8c17591",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Supreme Court (Number of Judges) Amendment Ordinance, 2026",
+      "url": "https://prsindia.org/billtrack/supreme-court-number-of-judges-amendment-ordinance-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:2aecb36a8a4c",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Delimitation Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-delimitation-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:688efa7b3313",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Union Territories Laws (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-union-territories-laws-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:b9d62e6f20f7",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Constitution (131st Amendment) Bill, 2026 [Delimitation Bills of 2026]",
+      "url": "https://prsindia.org/billtrack/the-constitution-131st-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-constitution",
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:e7d23a419092",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Andhra Pradesh Reorganisation (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-andhra-pradesh-reorganisation-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:406d7e3d8809",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Jan Vishwas (Amendment of Provisions) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-jan-vishwas-amendment-of-provisions-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:b2fb3f436475",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Central Armed Police Forces (General Administration) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-central-armed-police-forces-general-administration-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance",
+        "security-defence"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:0a275d8e2863",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Foreign Contribution (Regulation) Amendment Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-foreign-contribution-regulation-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:322e4b792e58",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Corporate Laws (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-corporate-laws-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:e9c471801b3e",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Transgender Persons (Protection of Rights) Amendment Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-transgender-persons-protection-of-rights-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    },
+    {
+      "id": "prs-billtrack:e0b482ec3a18",
+      "source": "prs-billtrack",
+      "tier": 2,
+      "title": "The Industrial Relations Code (Amendment) Bill, 2026",
+      "url": "https://prsindia.org/billtrack/the-industrial-relations-code-amendment-bill-2026",
+      "published": null,
+      "first_seen": "2026-10-16T23:57:59.341Z",
+      "reuse": "link-only",
+      "rights": null,
+      "topics": [
+        "polity-governance"
+      ],
+      "fact_text": null
+    }
+  ]
+}
